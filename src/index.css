@@ -2,41 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Partyspiele Design System - Fröhliche, einladende Farben für Spielspaß */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors - warme, helle Basis */
+    --background: 210 30% 98%;
+    --foreground: 225 15% 15%;
 
+    /* Card system - sanfte Schatten und Kontraste */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 225 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 225 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - lebendiges Orange für CTAs und wichtige Elemente */
+    --primary: 25 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 25 95% 65%;
+    
+    /* Secondary - beruhigendes Blau für Balance */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 225 25% 25%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted - subtile Grautöne */
+    --muted: 210 20% 94%;
+    --muted-foreground: 225 10% 55%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent - frisches Grün für Erfolg und positive Aktionen */
+    --accent: 145 60% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Team colors - für Teamspiele */
+    --team-blue: 215 85% 60%;
+    --team-red: 0 75% 60%;
+    --team-green: 145 65% 50%;
+    --team-purple: 265 70% 65%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Status colors */
+    --success: 145 60% 50%;
+    --warning: 45 90% 60%;
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Interactive elements */
+    --border: 210 20% 88%;
+    --input: 210 20% 95%;
+    --ring: 25 90% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Gradients für moderne Optik */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-game: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-team: linear-gradient(135deg, hsl(var(--team-blue)), hsl(var(--team-purple)));
+    --gradient-card: linear-gradient(180deg, hsl(var(--card)), hsl(var(--muted)));
+
+    /* Schatten für Tiefe */
+    --shadow-soft: 0 4px 12px hsl(var(--primary) / 0.1);
+    --shadow-medium: 0 8px 24px hsl(var(--primary) / 0.15);
+    --shadow-strong: 0 12px 32px hsl(var(--primary) / 0.2);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +126,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Hero Button Variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold px-8 py-4 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 hover:scale-105;
+  }
+  
+  .btn-game {
+    @apply bg-gradient-to-r from-accent to-primary text-white font-medium px-6 py-3 rounded-xl shadow-soft hover:shadow-medium transition-all duration-300;
+  }
+
+  /* Game Card Animations */
+  .game-card {
+    @apply bg-gradient-to-b from-card to-muted rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-2;
+  }
+
+  /* Team Badge Variants */
+  .team-blue { @apply bg-team-blue text-white; }
+  .team-red { @apply bg-team-red text-white; }
+  .team-green { @apply bg-team-green text-white; }
+  .team-purple { @apply bg-team-purple text-white; }
+
+  /* Fade-in Animation */
+  .fade-in {
+    @apply animate-[fadeIn_0.6s_ease-out];
+  }
+
+  /* Smooth hover effects */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .animate-bounce-in {
+    animation: bounceIn 0.6s ease-out;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 }
