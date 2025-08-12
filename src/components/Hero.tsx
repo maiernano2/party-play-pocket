@@ -8,66 +8,66 @@ interface HeroProps {
 
 export const Hero = ({ onDiscoverGames }: HeroProps) => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-muted to-secondary/20 py-20 px-4">
+    <section className="relative overflow-hidden bg-gradient-to-br from-background via-muted to-secondary/20 py-8 md:py-20 px-4">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-center">
           {/* Content */}
-          <div className="space-y-8 fade-in">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+          <div className="space-y-4 md:space-y-8 fade-in">
+            <div className="space-y-3 md:space-y-4">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
                 <span className="gradient-text">Partyspiele</span>
                 <br />
                 sofort spielen!
               </h1>
-              <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
                 Mobile-first Partyspiele für Gruppen. Nur das Handy als Moderator - 
                 keine weiteren Materialien nötig. Perfekt für jeden Anlass!
               </p>
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="flex items-center gap-3 p-4 bg-white/50 rounded-xl">
-                <div className="bg-primary p-2 rounded-lg">
-                  <Smartphone className="w-5 h-5 text-white" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
+              <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/50 rounded-xl">
+                <div className="bg-primary p-1.5 md:p-2 rounded-lg">
+                  <Smartphone className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Nur Handy</div>
+                  <div className="font-semibold text-xs md:text-sm">Nur Handy</div>
                   <div className="text-xs text-muted-foreground">Kein Material nötig</div>
                 </div>
               </div>
               
-              <div className="flex items-center gap-3 p-4 bg-white/50 rounded-xl">
-                <div className="bg-accent p-2 rounded-lg">
-                  <Users className="w-5 h-5 text-white" />
+              <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/50 rounded-xl">
+                <div className="bg-accent p-1.5 md:p-2 rounded-lg">
+                  <Users className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Für Gruppen</div>
+                  <div className="font-semibold text-xs md:text-sm">Für Gruppen</div>
                   <div className="text-xs text-muted-foreground">3-12 Spieler</div>
                 </div>
               </div>
               
-              <div className="flex items-center gap-3 p-4 bg-white/50 rounded-xl">
-                <div className="bg-team-blue p-2 rounded-lg">
-                  <Gamepad2 className="w-5 h-5 text-white" />
+              <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/50 rounded-xl">
+                <div className="bg-team-blue p-1.5 md:p-2 rounded-lg">
+                  <Gamepad2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Sofort los</div>
+                  <div className="font-semibold text-xs md:text-sm">Sofort los</div>
                   <div className="text-xs text-muted-foreground">Keine Vorbereitung</div>
                 </div>
               </div>
             </div>
 
             {/* CTA */}
-            <div className="space-y-4">
+            <div className="space-y-2 md:space-y-4">
               <Button 
                 onClick={onDiscoverGames}
-                className="btn-hero text-lg w-full sm:w-auto"
+                className="btn-hero text-base md:text-lg w-full sm:w-auto"
                 size="lg"
               >
                 Spiele entdecken
               </Button>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground">
                 Über 6 verschiedene Spiele verfügbar
               </p>
             </div>
