@@ -99,6 +99,15 @@ export const GameDetail = () => {
                   <span className="font-medium">{game.duration}</span>
                 </div>
               </div>
+              
+              <Button 
+                onClick={() => setShowInteractive(true)}
+                className="btn-hero text-lg mb-6"
+                size="lg"
+              >
+                <Play className="w-5 h-5 mr-2" />
+                Spiel starten
+              </Button>
             </div>
             
             <div className="relative">

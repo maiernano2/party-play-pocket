@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Hero } from '@/components/Hero';
 import { GameCard } from '@/components/GameCard';
 import { GameFilter } from '@/components/GameFilter';
+import { Button } from '@/components/ui/button';
 import { games, getGamesByCategory } from '@/data/games';
 
 const Index = () => {
@@ -66,8 +67,8 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-card border-t py-12 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-8">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-bold text-lg mb-4 gradient-text">Partyspiele</h3>
               <p className="text-muted-foreground">
@@ -75,21 +76,32 @@ const Index = () => {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Spielkategorien</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>Einzelspiele</li>
-                <li>Teamspiele</li>
-                <li>Quizspiele</li>
-                <li>Pantomime</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Rechtliches</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Impressum</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Datenschutz</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Kontakt</a></li>
-              </ul>
+              <h4 className="font-semibold mb-4">Kontakt</h4>
+              <form className="space-y-4" onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target as HTMLFormElement);
+                const subject = formData.get('subject') as string;
+                const message = formData.get('message') as string;
+                window.location.href = `mailto:contact@partyspiele.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+              }}>
+                <input
+                  name="subject"
+                  type="text"
+                  placeholder="Betreff"
+                  required
+                  className="w-full px-4 py-2 rounded-lg bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+                <textarea
+                  name="message"
+                  placeholder="Ihre Nachricht"
+                  required
+                  rows={3}
+                  className="w-full px-4 py-2 rounded-lg bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                ></textarea>
+                <Button type="submit" className="w-full">
+                  Nachricht senden
+                </Button>
+              </form>
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">

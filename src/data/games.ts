@@ -7,7 +7,7 @@ export const games: Game[] = [
   {
     id: 'der-duemmste-fliegt',
     title: 'Der Dümmste fliegt',
-    description: 'Wissensfragen mit Leben - wer die schlechtesten Antworten gibt, verliert ein Leben.',
+    description: 'Moderator stellt Wissensfragen - Spieler antworten mündlich. Schlechteste Antwort verliert ein Leben.',
     category: 'einzelspiel',
     playerCount: '3-10 Spieler',
     duration: '15-30 Minuten',
@@ -75,19 +75,19 @@ export const games: Game[] = [
   {
     id: 'team-quiz',
     title: 'Team-Quiz',
-    description: 'Multiple Choice Fragen für Teams - wer am meisten richtige Antworten hat, gewinnt.',
+    description: 'Ein Moderator stellt seinem Team schnell Fragen - möglichst viele in der Zeit beantworten.',
     category: 'teamspiel',
     playerCount: '4-12 Spieler (2-4 Teams)',
     duration: '20-40 Minuten',
     image: teamGameImage,
     rules: [
-      'Teams werden gebildet (2-4 Teams mit 2-3 Spielern)',
-      'Das Handy zeigt Multiple Choice Fragen',
-      'Teams beraten kurz und tippen ihre Antwort',
-      'Richtige Antwort = 1 Punkt für das Team',
-      'Schwierige Fragen können mehr Punkte geben',
-      'Nach allen Fragen wird das Siegerteam ermittelt',
-      'Optional: Buzzer-Runden für Extrapunkte'
+      'Teams werden gebildet (2-4 Teams)',
+      'Jedes Team bekommt einen Moderator aus einem anderen Team',
+      'Moderator stellt seinem Team schnell Fragen aus der App',
+      'Team muss möglichst viele Fragen in der Zeit beantworten',
+      'Richtige Antwort = 1 Punkt, falsche = 0 Punkte',
+      'Fragen können übersprungen werden',
+      'Team mit den meisten Punkten gewinnt'
     ],
     interactive: {
       hasTimer: true,

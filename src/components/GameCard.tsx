@@ -12,37 +12,37 @@ export const GameCard = ({ game }: GameCardProps) => {
   const categoryColor = game.category === 'einzelspiel' ? 'bg-accent' : 'bg-team-blue';
 
   return (
-    <div className="game-card p-6 group">
-      <div className="relative mb-4 overflow-hidden rounded-xl">
-        <img 
-          src={game.image} 
-          alt={`${game.title} Spielbild`}
-          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-        />
-        <div className={`absolute top-3 left-3 ${categoryColor} text-white px-3 py-1 rounded-full text-sm font-medium`}>
-          {categoryLabel}
+    <Link to={`/spiel/${game.id}`} className="block">
+      <div className="game-card p-6 group cursor-pointer">
+        <div className="relative mb-4 overflow-hidden rounded-xl">
+          <img 
+            src={game.image} 
+            alt={`${game.title} Spielbild`}
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+          />
+          <div className={`absolute top-3 left-3 ${categoryColor} text-white px-3 py-1 rounded-full text-sm font-medium`}>
+            {categoryLabel}
+          </div>
         </div>
-      </div>
-      
-      <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
-      <p className="text-muted-foreground mb-4 line-clamp-2">{game.description}</p>
-      
-      <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-        <div className="flex items-center gap-1">
-          <Users className="w-4 h-4" />
-          <span>{game.playerCount}</span>
+        
+        <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
+        <p className="text-muted-foreground mb-4 line-clamp-2">{game.description}</p>
+        
+        <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Users className="w-4 h-4" />
+            <span>{game.playerCount}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            <span>{game.duration}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1">
-          <Clock className="w-4 h-4" />
-          <span>{game.duration}</span>
-        </div>
-      </div>
-      
-      <Link to={`/spiel/${game.id}`} className="block">
-        <Button className="btn-game w-full">
+        
+        <div className="btn-game w-full text-center py-2 px-4 rounded-lg">
           Spiel ansehen
-        </Button>
-      </Link>
-    </div>
+        </div>
+      </div>
+    </Link>
   );
 };
