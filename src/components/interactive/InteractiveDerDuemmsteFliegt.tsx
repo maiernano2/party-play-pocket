@@ -164,7 +164,15 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                     onChange={(e) => setNewPlayerName(e.target.value)}
                     placeholder="Spielername"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                    onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addPlayer();
+                        setTimeout(() => {
+                          const nextInput = document.querySelector('input[placeholder="Spielername"]') as HTMLInputElement;
+                          nextInput?.focus();
+                        }, 50);
+                      }
+                    }}
                   />
                   <Button onClick={addPlayer} variant="secondary">Hinzufügen</Button>
                 </div>
@@ -222,6 +230,10 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   }
 
   if (gamePhase === 'question') {
+    const moderatorIndex = (currentPlayerIndex + 1) % activePlayers.length;
+    const moderatorPlayer = activePlayers[moderatorIndex];
+    const answeringPlayer = activePlayers[currentPlayerIndex];
+    
     return (
       <InteractiveGameContainer onExit={onExit} title="Der Dümmste fliegt">
         <div className="max-w-2xl mx-auto space-y-6">
@@ -236,33 +248,43 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
-            <h2 className="text-xl font-bold text-white mb-4">Frage für alle Spieler:</h2>
+            <div className="bg-blue-500/30 rounded-lg p-4 mb-6">
+              <h2 className="text-lg text-white/90 mb-2">Moderator:</h2>
+              <h3 className="text-xl font-bold text-white">{moderatorPlayer?.name}</h3>
+              <p className="text-white/80 text-sm mt-2">Du stellst die Frage an {answeringPlayer?.name}</p>
+            </div>
+            
             <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
+              <h2 className="text-lg text-white/90 mb-2">Frage:</h2>
               <p className="text-xl font-bold text-white">{currentQuestion}</p>
             </div>
             
-            <div className="mb-6">
-              <h3 className="text-lg font-medium text-white mb-4">Aktuelle Spieler:</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {activePlayers.map((player) => (
-                  <div key={player.id} className="bg-white/20 rounded-lg p-3">
-                    <div className="text-white font-medium mb-1">{player.name}</div>
-                    <div className="flex gap-1 justify-center">
-                      {Array.from({ length: player.lives }).map((_, i) => (
-                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            <div className="bg-orange-500/30 rounded-lg p-4 mb-6">
+              <h3 className="text-lg font-bold text-white mb-2">Antwortender:</h3>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xl font-bold text-white">{answeringPlayer?.name}</span>
+                <div className="flex gap-1">
+                  {Array.from({ length: answeringPlayer?.lives || 0 }).map((_, i) => (
+                    <Heart key={i} className="w-5 h-5 text-red-400 fill-current" />
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className="bg-yellow-500/20 border border-yellow-500/40 rounded-lg p-4">
               <AlertCircle className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
               <p className="text-white text-sm">
-                Alle Spieler sollen ihre Antworten laut sagen. Moderator: Merkt euch die Antworten für die Abstimmung!
+                {answeringPlayer?.name} antwortet mündlich. Bei Zeitablauf geht es zur Abstimmung!
               </p>
             </div>
+            
+            <Button 
+              onClick={nextPlayer}
+              className="bg-white text-primary hover:bg-white/90 mt-4"
+              size="lg"
+            >
+              Nächster Spieler
+            </Button>
           </div>
         </div>
       </InteractiveGameContainer>

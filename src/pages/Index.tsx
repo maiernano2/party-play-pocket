@@ -77,6 +77,9 @@ const Index = () => {
             </div>
             <div>
               <h4 className="font-semibold mb-4">Kontakt</h4>
+              <p className="text-muted-foreground text-sm mb-4">
+                Hier können Sie gerne Anmerkungen, Verbesserungsvorschläge oder Fehler melden:
+              </p>
               <form className="space-y-4" onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target as HTMLFormElement);
@@ -105,7 +108,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 Partyspiele. Alle Rechte vorbehalten.</p>
+            <p>Made with ❤️ in Mainz</p>
           </div>
         </div>
       </footer>

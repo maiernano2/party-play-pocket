@@ -62,7 +62,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
             <div className="space-y-4">
               <Button 
                 onClick={onDiscoverGames}
-                className="btn-hero text-lg"
+                className="btn-hero text-lg w-full sm:w-auto"
                 size="lg"
               >
                 Spiele entdecken

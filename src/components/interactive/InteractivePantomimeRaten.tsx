@@ -59,6 +59,10 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && gamePhase === 'playing') {
+      // Play time-up sound
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvGVABjOY3PCvfC4FJnzH8N+SQwsUX7Xj6qhXFApEm9/zv2Y/BjaY3PCvgC4FJnzA8N+SQwsTV7Xj4ahXFAg+k93zv2Y+BjaY3PCvgC0FJnzD8N2SQwoUYLPs4apYEwlWpe7VqGMyBj2D2PDJeS4IJXbE8+CQQAwTa7zr2qVUEQpMpu/dpmggB0J+9tHBfS8JO3pMsOm/gTEHNm5u3v+sBD2J2/HKeCgKPXPG8d+QQAoTV7Tl4apYEwlVpe7VqGM0BjuD2PDJei4IJXfE8+CQQAwTa7zr2qVUEQpLpu/dpmggCEJ+9tDBfS8JOoFNsOi/gTAHM3Dy+ddwGgsNgdn95HQqECOl0/PIhTQLF4u/+9WlSRNQ4s7fvIEyBj/7//0z2q7Z88bfcHIjCSOtzpn2xHUaCjtssW4/mTsQ');
+      audio.volume = 0.3;
+      audio.play().catch(() => {});
       setGamePhase('scoring');
     }
   }, [timeLeft, gamePhase]);
@@ -164,7 +168,15 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
                     onChange={(e) => setNewTeamName(e.target.value)}
                     placeholder="Teamname"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                    onKeyPress={(e) => e.key === 'Enter' && addTeam()}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addTeam();
+                        setTimeout(() => {
+                          const nextInput = document.querySelector('input[placeholder="Teamname"]') as HTMLInputElement;
+                          nextInput?.focus();
+                        }, 50);
+                      }
+                    }}
                   />
                   <Button 
                     onClick={addTeam} 
@@ -261,13 +273,20 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <Button 
               onClick={nextTerm}
               className="bg-green-500 hover:bg-green-600 text-white"
               size="lg"
             >
               ✓ Erraten!
+            </Button>
+            <Button 
+              onClick={() => setCurrentTerm(pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)])}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white"
+              size="lg"
+            >
+              Skippen
             </Button>
             <Button 
               onClick={finishRound}

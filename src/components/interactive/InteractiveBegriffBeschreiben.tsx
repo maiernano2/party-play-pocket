@@ -159,7 +159,15 @@ export const InteractiveBegriffBeschreiben = ({ onExit }: InteractiveBegriffBesc
                     onChange={(e) => setNewTeamName(e.target.value)}
                     placeholder="Teamname"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                    onKeyPress={(e) => e.key === 'Enter' && addTeam()}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addTeam();
+                        setTimeout(() => {
+                          const nextInput = document.querySelector('input[placeholder="Teamname"]') as HTMLInputElement;
+                          nextInput?.focus();
+                        }, 50);
+                      }
+                    }}
                   />
                   <Button 
                     onClick={addTeam} 
@@ -267,13 +275,20 @@ export const InteractiveBegriffBeschreiben = ({ onExit }: InteractiveBegriffBesc
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <Button 
               onClick={nextTerm}
               className="bg-green-500 hover:bg-green-600 text-white"
               size="lg"
             >
               ✓ Erraten!
+            </Button>
+            <Button 
+              onClick={() => setCurrentTerm(terms[Math.floor(Math.random() * terms.length)])}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white"
+              size="lg"
+            >
+              Skippen
             </Button>
             <Button 
               onClick={finishRound}

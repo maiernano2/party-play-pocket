@@ -149,7 +149,15 @@ export const InteractiveMimikMaster = ({ onExit }: InteractiveMimikMasterProps) 
                     onChange={(e) => setNewPlayerName(e.target.value)}
                     placeholder="Spielername"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                    onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addPlayer();
+                        setTimeout(() => {
+                          const nextInput = document.querySelector('input[placeholder="Spielername"]') as HTMLInputElement;
+                          nextInput?.focus();
+                        }, 50);
+                      }
+                    }}
                   />
                   <Button onClick={addPlayer} variant="secondary">Hinzufügen</Button>
                 </div>
