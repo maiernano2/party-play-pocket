@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getGameById } from '@/data/games';
 import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InteractiveDerDuemmsteFliegt } from '@/components/interactive/InteractiveDerDuemmsteFliegt';
 import { InteractiveSchnellantwort } from '@/components/interactive/InteractiveSchnellantwort';
 import { InteractiveMimikMaster } from '@/components/interactive/InteractiveMimikMaster';
@@ -15,6 +15,11 @@ export const GameDetail = () => {
   const { gameId } = useParams();
   const game = gameId ? getGameById(gameId) : null;
   const [showInteractive, setShowInteractive] = useState(false);
+
+  // Scroll to top when component mounts or game changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [gameId]);
 
   if (!game) {
     return (

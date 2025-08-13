@@ -2,8 +2,33 @@ import { Game } from '@/types/game';
 import quizGameImage from '@/assets/quiz-game.jpg';
 import charadesGameImage from '@/assets/charades-game.jpg';
 import teamGameImage from '@/assets/team-game.jpg';
+import chaosGameImage from '@/assets/chaos-game.jpg';
+import drawingGameImage from '@/assets/drawing-game.jpg';
+import triviaGameImage from '@/assets/trivia-game.jpg';
 
 export const games: Game[] = [
+  {
+    id: 'chaos-challenge',
+    title: 'Chaos-Challenge',
+    description: 'Interaktives Partyspiel mit Trinkregeln und überraschenden Aufgaben. Nur für Erwachsene ab 18 Jahren.',
+    category: 'einzelspiel',
+    playerCount: '3-12 Spieler',
+    duration: '30-60 Minuten',
+    image: chaosGameImage,
+    rules: [
+      'Nur für Personen ab 18 Jahren',
+      'Es wird ausschließlich Wasser oder alkoholfreie Getränke getrunken',
+      'Jeder Spieler ist der Reihe nach am Zug',
+      'Beim Zug zieht der Spieler eine Aufgabe/Regel für die gesamte Runde',
+      'Regel gilt bis der ursprüngliche Regelgeber wieder dran ist',
+      'Trink-Regeln werden zufällig eingebaut',
+      'Spieler bestimmen das Tempo selbst',
+      'Verantwortungsvoller Umgang mit Getränken'
+    ],
+    interactive: {
+      roundBased: true
+    }
+  },
   {
     id: 'der-duemmste-fliegt',
     title: 'Der Dümmste fliegt',
@@ -11,7 +36,7 @@ export const games: Game[] = [
     category: 'einzelspiel',
     playerCount: '3-10 Spieler',
     duration: '15-30 Minuten',
-    image: quizGameImage,
+    image: triviaGameImage,
     rules: [
       'Jeder Spieler startet mit einer einstellbaren Anzahl Leben (Standard: 3)',
       'Das Handy stellt Wissensfragen in einstellbaren Runden',
@@ -34,7 +59,7 @@ export const games: Game[] = [
     category: 'einzelspiel',
     playerCount: '3-8 Spieler',
     duration: '10-20 Minuten',
-    image: quizGameImage,
+    image: triviaGameImage,
     rules: [
       'Das Handy zeigt eine zufällige Kategorie (z.B. "Tiere mit 4 Buchstaben")',
       'Reihum muss jeder Spieler in 3 Sekunden eine passende Antwort nennen',
@@ -103,7 +128,7 @@ export const games: Game[] = [
     category: 'teamspiel',
     playerCount: '4-10 Spieler (2-3 Teams)',
     duration: '20-30 Minuten',
-    image: charadesGameImage,
+    image: drawingGameImage,
     rules: [
       'Ein Spieler aus dem Team bekommt einen Begriff gezeigt',
       'Er muss den Begriff umschreiben, ohne bestimmte Tabuwörter zu sagen',
@@ -144,28 +169,6 @@ export const games: Game[] = [
       roundBased: true
     }
   },
-  {
-    id: 'chaos-challenge',
-    title: 'Chaos-Challenge',
-    description: 'Interaktives Partyspiel mit Trinkregeln und überraschenden Aufgaben. Nur für Erwachsene ab 18 Jahren.',
-    category: 'einzelspiel',
-    playerCount: '3-12 Spieler',
-    duration: '30-60 Minuten',
-    image: teamGameImage,
-    rules: [
-      'Nur für Personen ab 18 Jahren',
-      'Es wird ausschließlich Wasser oder alkoholfreie Getränke getrunken',
-      'Jeder Spieler ist der Reihe nach am Zug',
-      'Beim Zug zieht der Spieler eine Aufgabe/Regel für die gesamte Runde',
-      'Regel gilt bis der ursprüngliche Regelgeber wieder dran ist',
-      'Trink-Regeln werden zufällig eingebaut',
-      'Spieler bestimmen das Tempo selbst',
-      'Verantwortungsvoller Umgang mit Getränken'
-    ],
-    interactive: {
-      roundBased: true
-    }
-  }
 ];
 
 export const getGameById = (id: string): Game | undefined => {

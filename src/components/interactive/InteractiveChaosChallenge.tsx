@@ -21,21 +21,56 @@ interface InteractiveChaosChallengeProps {
 }
 
 const chaosRules: ChaosRule[] = [
+  // Wer würde eher...
   { id: '1', text: 'Wer würde eher... einen ganzen Tag lang schweigen?', category: 'wer-würde-eher' },
   { id: '2', text: 'Wer würde eher... bei einer Zombie-Apokalypse überleben?', category: 'wer-würde-eher' },
+  { id: '15', text: 'Wer würde eher... heimlich Schokolade vor dem Fernseher essen?', category: 'wer-würde-eher' },
+  { id: '16', text: 'Wer würde eher... nackt durch die Stadt laufen für 1000€?', category: 'wer-würde-eher' },
+  { id: '17', text: 'Wer würde eher... einen Monat ohne Internet überleben?', category: 'wer-würde-eher' },
+  { id: '18', text: 'Wer würde eher... ihren Ex zurück nehmen?', category: 'wer-würde-eher' },
+  { id: '19', text: 'Wer würde eher... beim ersten Date zu viel trinken?', category: 'wer-würde-eher' },
+  { id: '20', text: 'Wer würde eher... auf einem Konzert auf die Bühne klettern?', category: 'wer-würde-eher' },
+  
+  // Fragen über andere
   { id: '3', text: 'Wer ist am zuverlässigsten in der Gruppe?', category: 'fragen-über-andere' },
   { id: '4', text: 'Wer hat die beste Ausrede, wenn er zu spät kommt?', category: 'fragen-über-andere' },
+  { id: '21', text: 'Wer würde am ehesten heimlich das Handy des Partners checken?', category: 'fragen-über-andere' },
+  { id: '22', text: 'Wer hat schon mal gelogen, um nicht zu einem Date zu müssen?', category: 'fragen-über-andere' },
+  { id: '23', text: 'Wer würde am ehesten einen One-Night-Stand haben?', category: 'fragen-über-andere' },
+  { id: '24', text: 'Wer schläft am wahrscheinlichsten nackt?', category: 'fragen-über-andere' },
+  
+  // Gruppenchallenges
   { id: '5', text: 'Alle müssen stumm den Song "Happy Birthday" singen', category: 'group-challenge' },
+  { id: '25', text: 'Alle müssen gleichzeitig ihren peinlichsten Moment erzählen', category: 'group-challenge' },
+  { id: '26', text: 'Macht eine Minute lang einen Gruppentanz zu imaginärer Musik', category: 'group-challenge' },
+  { id: '27', text: 'Alle müssen ihre schlimmste Dating-Story erzählen', category: 'group-challenge' },
+  
+  // Individuelle Regeln
   { id: '6', text: 'Fingerspitzen müssen sich berühren, bis du wieder dran bist', category: 'individual-rule' },
   { id: '7', text: 'Du darfst nicht "Ja" oder "Nein" sagen', category: 'individual-rule' },
+  { id: '13', text: 'Du musst jede Antwort mit "Meiner Meinung nach..." beginnen', category: 'speaking-rule' },
+  { id: '14', text: 'Sprich nur in Fragen, bis du wieder dran bist', category: 'speaking-rule' },
+  { id: '28', text: 'Du musst bei jedem Satz mit den Händen gestikulieren', category: 'individual-rule' },
+  { id: '29', text: 'Du darfst nur flüstern, bis du wieder dran bist', category: 'speaking-rule' },
+  { id: '30', text: 'Du musst jeden Satz mit "Ehm..." beginnen', category: 'speaking-rule' },
+  
+  // Challenges
   { id: '8', text: 'Zeichne in 30 Sekunden einen Elefanten mit geschlossenen Augen', category: 'challenge' },
   { id: '9', text: 'Imitiere 30 Sekunden lang einen berühmten Politiker', category: 'challenge' },
   { id: '10', text: 'Sage einen Zungenbrecher 5x hintereinander fehlerfrei', category: 'challenge' },
+  { id: '31', text: 'Erzähle eine erfundene Geschichte über dein erstes Mal', category: 'challenge' },
+  { id: '32', text: 'Tanze 30 Sekunden zu imaginärer Musik als wärst du allein', category: 'challenge' },
+  { id: '33', text: 'Imitiere einen Orgasmus (jugendfreie Version)', category: 'challenge' },
+  { id: '34', text: 'Erzähle dein peinlichstes Sex-Erlebnis (oder erfinde eins)', category: 'challenge' },
+  
+  // Trinkregeln
   { id: '11', text: 'TRINKRUNDE: Alle trinken 2 Schlucke!', category: 'drink' },
   { id: '12', text: 'TRINKREGEL: Wer lacht, muss trinken (gilt diese Runde)', category: 'drink-rule' },
-  { id: '13', text: 'Du musst jede Antwort mit "Meiner Meinung nach..." beginnen', category: 'speaking-rule' },
-  { id: '14', text: 'Sprich nur in Fragen, bis du wieder dran bist', category: 'speaking-rule' },
-  { id: '15', text: 'Wer würde eher... heimlich Schokolade vor dem Fernseher essen?', category: 'wer-würde-eher' }
+  { id: '35', text: 'TRINKREGEL: Wer "ich" sagt, muss trinken (gilt diese Runde)', category: 'drink-rule' },
+  { id: '36', text: 'TRINKRUNDE: Jeder trinkt so viele Schlucke wie sein Alter geteilt durch 10', category: 'drink' },
+  { id: '37', text: 'TRINKREGEL: Wer sein Handy berührt, muss trinken (gilt diese Runde)', category: 'drink-rule' },
+  { id: '38', text: 'TRINKRUNDE: Wer Single ist, trinkt 3 Schlucke', category: 'drink' },
+  { id: '39', text: 'TRINKREGEL: Bei Regelbruch oder nicht geschaffter Aufgabe: Trinken!', category: 'drink-rule' }
 ];
 
 export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeProps) => {
@@ -47,6 +82,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const [ruleGiver, setRuleGiver] = useState<string>('');
   const [round, setRound] = useState(1);
   const [usedRules, setUsedRules] = useState<string[]>([]);
+  const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
   
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,15 +119,21 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   };
 
   const drawNewRule = () => {
-    const availableRules = chaosRules.filter(rule => !usedRules.includes(rule.id));
+    // Filter rules to avoid repeating in the same round
+    const availableRules = chaosRules.filter(rule => 
+      !usedRulesThisRound.includes(rule.id)
+    );
+    
+    // If no rules available this round, reset round rules but keep global used rules
     if (availableRules.length === 0) {
-      setUsedRules([]);
+      setUsedRulesThisRound([]);
       return drawNewRule();
     }
     
     const randomRule = availableRules[Math.floor(Math.random() * availableRules.length)];
     setCurrentRule(randomRule);
     setUsedRules([...usedRules, randomRule.id]);
+    setUsedRulesThisRound([...usedRulesThisRound, randomRule.id]);
     setRuleGiver(players[currentPlayerIndex].name);
   };
 
@@ -100,6 +142,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     
     if (nextIndex === 0) {
       setRound(round + 1);
+      setUsedRulesThisRound([]); // Reset used rules for new round
     }
     
     // Check if we're back to the rule giver
@@ -226,9 +269,25 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
             </div>
           </div>
           
-          {currentRule?.category === 'drink' && (
+          {(currentRule?.category === 'drink' || currentRule?.category === 'drink-rule') && (
             <div className="p-4 bg-accent/20 rounded-lg border border-accent">
               <div className="text-accent font-semibold">🍺 Trinkregel aktiviert!</div>
+            </div>
+          )}
+          
+          {currentRule?.category === 'wer-würde-eher' && (
+            <div className="p-4 bg-secondary/20 rounded-lg border border-secondary">
+              <div className="text-secondary-foreground font-semibold">
+                👥 Die gewählte Person muss trinken!
+              </div>
+            </div>
+          )}
+          
+          {(currentRule?.category === 'challenge' || currentRule?.category === 'individual-rule') && (
+            <div className="p-4 bg-muted/50 rounded-lg border">
+              <div className="text-muted-foreground font-semibold">
+                ⚠️ Aufgabe nicht geschafft oder Regel gebrochen? Trinken!
+              </div>
             </div>
           )}
           
