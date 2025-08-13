@@ -104,6 +104,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const [usedRules, setUsedRules] = useState<string[]>([]);
   const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
   const [playerTasksThisRound, setPlayerTasksThisRound] = useState<{[playerId: string]: string[]}>({});
+  const [lastUsedRule, setLastUsedRule] = useState<string | null>(null);
   
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -143,18 +144,26 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     const currentPlayerId = players[currentPlayerIndex].id;
     const playerUsedTasks = playerTasksThisRound[currentPlayerId] || [];
     
-    // Filter rules that this player hasn't used in this round
-    const availableRules = chaosRules.filter(rule => 
-      !playerUsedTasks.includes(rule.id)
+    // Filter rules that this player hasn't used in this round AND is not the last used rule
+    let availableRules = chaosRules.filter(rule => 
+      !playerUsedTasks.includes(rule.id) && rule.id !== lastUsedRule
     );
     
-    // If no rules available for this player this round, allow any rule
-    const finalAvailableRules = availableRules.length > 0 ? availableRules : chaosRules;
+    // If no rules available, allow any rule except the last used one
+    if (availableRules.length === 0) {
+      availableRules = chaosRules.filter(rule => rule.id !== lastUsedRule);
+    }
     
-    const randomRule = finalAvailableRules[Math.floor(Math.random() * finalAvailableRules.length)];
+    // If still no rules (shouldn't happen with 60+ rules), use all rules
+    if (availableRules.length === 0) {
+      availableRules = chaosRules;
+    }
+    
+    const randomRule = availableRules[Math.floor(Math.random() * availableRules.length)];
     setCurrentRule(randomRule);
     setUsedRules([...usedRules, randomRule.id]);
     setUsedRulesThisRound([...usedRulesThisRound, randomRule.id]);
+    setLastUsedRule(randomRule.id);
     
     // Track that this player used this task in this round
     setPlayerTasksThisRound(prev => ({
@@ -172,6 +181,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       setRound(round + 1);
       setUsedRulesThisRound([]); // Reset used rules for new round
       setPlayerTasksThisRound({}); // Reset player tasks for new round
+      setLastUsedRule(null); // Reset last used rule for new round
     }
     
     // Check if we're back to the rule giver
@@ -208,10 +218,10 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           </div>
           <Button 
             onClick={acceptWarning}
-            className="w-full max-w-lg mx-auto bg-destructive hover:bg-destructive/90 text-white px-8 py-4 text-base"
+            className="w-full max-w-2xl mx-auto bg-destructive hover:bg-destructive/90 text-white px-12 py-6 text-lg font-semibold leading-tight"
             size="lg"
           >
-            Verstanden - Ich bin 18+ und stimme zu
+            Ich bin 18+ Jahre alt und stimme zu
           </Button>
         </div>
       </Card>
