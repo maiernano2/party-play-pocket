@@ -156,19 +156,25 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                 />
               </div>
               
+              <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary">
+                <div className="text-sm font-medium text-white text-center">
+                  🎯 Der erste Spieler ist der Moderator und behält das Handy
+                </div>
+              </div>
+              
               <div>
                 <label className="block text-white mb-2">Spieler hinzufügen</label>
                 <div className="flex gap-2">
                   <Input
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
-                    placeholder="Spielername"
+                    placeholder={players.length === 0 ? "Moderator-Name eingeben..." : "Spielername eingeben..."}
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
                         addPlayer();
                         setTimeout(() => {
-                          const nextInput = document.querySelector('input[placeholder="Spielername"]') as HTMLInputElement;
+                          const nextInput = document.querySelector('input') as HTMLInputElement;
                           nextInput?.focus();
                         }, 50);
                       }
@@ -184,11 +190,14 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <h3 className="text-xl font-bold text-white mb-4">Spieler ({players.length})</h3>
               <div className="space-y-2">
-                {players.map(player => (
-                  <div key={player.id} className="flex items-center justify-between bg-white/10 rounded-lg p-3">
+                {players.map((player, index) => (
+                  <div key={player.id} className={`flex items-center justify-between rounded-lg p-3 ${
+                    index === 0 ? 'bg-primary/20 border-2 border-primary' : 'bg-white/10'
+                  }`}>
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-white" />
                       <span className="text-white font-medium">{player.name}</span>
+                      {index === 0 && <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">MODERATOR</span>}
                       <div className="flex gap-1">
                         {Array.from({ length: startLives }).map((_, i) => (
                           <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
@@ -241,10 +250,14 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
             <div className="bg-white/20 rounded-full px-4 py-2 inline-block mb-4">
               <span className="text-white font-bold">Runde {currentRound} von {maxRounds}</span>
             </div>
-            <div className={`text-6xl font-bold mb-4 ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
-              {timeLeft}
+            <div className="mb-6 p-6 bg-gradient-to-r from-primary/30 to-accent/30 rounded-lg border-2 border-primary">
+              <div className={`text-8xl font-bold mb-2 ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+                ⏰ {timeLeft}
+              </div>
+              <div className="text-lg font-semibold text-white">
+                Sekunden verbleibend
+              </div>
             </div>
-            <Clock className="w-8 h-8 text-white mx-auto" />
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">

@@ -9,6 +9,7 @@ import { InteractiveMimikMaster } from '@/components/interactive/InteractiveMimi
 import { InteractiveTeamQuiz } from '@/components/interactive/InteractiveTeamQuiz';
 import { InteractiveBegriffBeschreiben } from '@/components/interactive/InteractiveBegriffBeschreiben';
 import { InteractivePantomimeRaten } from '@/components/interactive/InteractivePantomimeRaten';
+import { InteractiveChaosChallenge } from '@/components/interactive/InteractiveChaosChallenge';
 
 export const GameDetail = () => {
   const { gameId } = useParams();
@@ -47,6 +48,8 @@ export const GameDetail = () => {
         return <InteractiveBegriffBeschreiben onExit={handleExitInteractive} />;
       case 'pantomime-raten':
         return <InteractivePantomimeRaten onExit={handleExitInteractive} />;
+      case 'chaos-challenge':
+        return <InteractiveChaosChallenge onExit={handleExitInteractive} />;
       default:
         return (
           <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">

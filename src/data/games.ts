@@ -143,6 +143,28 @@ export const games: Game[] = [
       hasScoring: true,
       roundBased: true
     }
+  },
+  {
+    id: 'chaos-challenge',
+    title: 'Chaos-Challenge',
+    description: 'Interaktives Partyspiel mit Trinkregeln und überraschenden Aufgaben. Nur für Erwachsene ab 18 Jahren.',
+    category: 'einzelspiel',
+    playerCount: '3-12 Spieler',
+    duration: '30-60 Minuten',
+    image: teamGameImage,
+    rules: [
+      'Nur für Personen ab 18 Jahren',
+      'Es wird ausschließlich Wasser oder alkoholfreie Getränke getrunken',
+      'Jeder Spieler ist der Reihe nach am Zug',
+      'Beim Zug zieht der Spieler eine Aufgabe/Regel für die gesamte Runde',
+      'Regel gilt bis der ursprüngliche Regelgeber wieder dran ist',
+      'Trink-Regeln werden zufällig eingebaut',
+      'Spieler bestimmen das Tempo selbst',
+      'Verantwortungsvoller Umgang mit Getränken'
+    ],
+    interactive: {
+      roundBased: true
+    }
   }
 ];
 
