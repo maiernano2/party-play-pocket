@@ -163,6 +163,18 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
               </div>
               
               <div>
+                <label className="block text-white mb-2">Fragen pro Spieler pro Runde</label>
+                <Input
+                  type="number"
+                  min="1"
+                  max="5"
+                  value={1}
+                  readOnly
+                  className="bg-white/20 border-white/30 text-white"
+                />
+              </div>
+              
+              <div>
                 <label className="block text-white mb-2">Spieler hinzufügen</label>
                 <div className="flex gap-2">
                   <Input
@@ -173,14 +185,26 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
                         addPlayer();
+                        // Keep focus on input after adding player
                         setTimeout(() => {
-                          const nextInput = document.querySelector('input') as HTMLInputElement;
-                          nextInput?.focus();
+                          (e.target as HTMLInputElement).focus();
                         }, 50);
                       }
                     }}
                   />
-                  <Button onClick={addPlayer} variant="secondary">Hinzufügen</Button>
+                  <Button 
+                    onClick={() => {
+                      addPlayer();
+                      // Keep focus on input after button click
+                      setTimeout(() => {
+                        const input = document.querySelector('input[placeholder*="eingeben"]') as HTMLInputElement;
+                        input?.focus();
+                      }, 50);
+                    }} 
+                    variant="secondary"
+                  >
+                    Hinzufügen
+                  </Button>
                 </div>
               </div>
             </div>
@@ -261,24 +285,27 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
-            <div className="bg-blue-500/30 rounded-lg p-4 mb-6">
-              <h2 className="text-lg text-white/90 mb-2">Moderator:</h2>
-              <h3 className="text-xl font-bold text-white">{moderatorPlayer?.name}</h3>
-              <p className="text-white/80 text-sm mt-2">Du stellst die Frage an {answeringPlayer?.name}</p>
+            <div className="bg-blue-500/30 rounded-lg p-6 mb-6 border-2 border-blue-400">
+              <h2 className="text-2xl text-white/90 mb-3 text-center">🎯 MODERATOR</h2>
+              <h3 className="text-3xl font-bold text-white text-center mb-4">{moderatorPlayer?.name}</h3>
+              <div className="bg-white/20 rounded-lg p-4 text-center">
+                <p className="text-white text-lg font-semibold">Stelle diese Frage an:</p>
+                <p className="text-2xl font-bold text-yellow-300 mt-2">{answeringPlayer?.name}</p>
+              </div>
             </div>
             
-            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
-              <h2 className="text-lg text-white/90 mb-2">Frage:</h2>
-              <p className="text-xl font-bold text-white">{currentQuestion}</p>
+            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-8 mb-6 border-2 border-primary">
+              <h2 className="text-xl text-white/90 mb-4 text-center">📝 FRAGE FÜR {answeringPlayer?.name.toUpperCase()}:</h2>
+              <p className="text-2xl font-bold text-white text-center leading-relaxed">{currentQuestion}</p>
             </div>
             
-            <div className="bg-orange-500/30 rounded-lg p-4 mb-6">
-              <h3 className="text-lg font-bold text-white mb-2">Antwortender:</h3>
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xl font-bold text-white">{answeringPlayer?.name}</span>
+            <div className="bg-orange-500/30 rounded-lg p-6 mb-6 border-2 border-orange-400">
+              <h3 className="text-xl font-bold text-white mb-3 text-center">👤 ANTWORTENDER</h3>
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-3xl font-bold text-white">{answeringPlayer?.name}</span>
                 <div className="flex gap-1">
                   {Array.from({ length: answeringPlayer?.lives || 0 }).map((_, i) => (
-                    <Heart key={i} className="w-5 h-5 text-red-400 fill-current" />
+                    <Heart key={i} className="w-6 h-6 text-red-400 fill-current" />
                   ))}
                 </div>
               </div>

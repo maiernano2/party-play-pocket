@@ -1,10 +1,12 @@
 import { Game } from '@/types/game';
-import quizGameImage from '@/assets/quiz-game.jpg';
+import quizGameImage from '@/assets/quiz-thinking.jpg';
 import charadesGameImage from '@/assets/charades-game.jpg';
-import teamGameImage from '@/assets/team-game.jpg';
+import teamGameImage from '@/assets/team-collaboration.jpg';
 import chaosGameImage from '@/assets/chaos-game.jpg';
-import drawingGameImage from '@/assets/drawing-game.jpg';
+import drawingGameImage from '@/assets/word-description.jpg';
 import triviaGameImage from '@/assets/trivia-game.jpg';
+import speedGameImage from '@/assets/speed-game.jpg';
+import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 
 export const games: Game[] = [
   {
@@ -36,7 +38,7 @@ export const games: Game[] = [
     category: 'einzelspiel',
     playerCount: '3-10 Spieler',
     duration: '15-30 Minuten',
-    image: triviaGameImage,
+    image: quizGameImage,
     rules: [
       'Jeder Spieler startet mit einer einstellbaren Anzahl Leben (Standard: 3)',
       'Das Handy stellt Wissensfragen in einstellbaren Runden',
@@ -59,7 +61,7 @@ export const games: Game[] = [
     category: 'einzelspiel',
     playerCount: '3-8 Spieler',
     duration: '10-20 Minuten',
-    image: triviaGameImage,
+    image: speedGameImage,
     rules: [
       'Das Handy zeigt eine zufällige Kategorie (z.B. "Tiere mit 4 Buchstaben")',
       'Reihum muss jeder Spieler in 3 Sekunden eine passende Antwort nennen',
@@ -81,7 +83,7 @@ export const games: Game[] = [
     category: 'einzelspiel',
     playerCount: '4-10 Spieler',
     duration: '15-25 Minuten',
-    image: charadesGameImage,
+    image: facialExpressionsImage,
     rules: [
       'Das Handy zeigt einem Spieler eine Emotion oder Situation',
       'Der Spieler stellt diese pantomimisch dar (ohne Worte)',
