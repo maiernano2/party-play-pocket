@@ -189,6 +189,10 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       setGamePhase('rule-end');
     } else {
       setCurrentPlayerIndex(nextIndex);
+      // Draw a new rule for the next player immediately
+      setTimeout(() => {
+        drawNewRule();
+      }, 0);
     }
   };
 
@@ -292,7 +296,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
 
   const renderPlaying = () => (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center">
+      <div className="text-center md:text-center">
         <div className="text-sm text-muted-foreground mb-2">Runde {round}</div>
         <div className="text-lg font-semibold">
           {players[currentPlayerIndex].name} ist dran
@@ -316,7 +320,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           
           {currentRule?.category === 'wer-würde-eher' && (
             <div className="p-4 bg-orange-500/20 rounded-lg border border-orange-500">
-              <div className="text-orange-200 font-semibold">
+              <div className="text-orange-900 font-semibold">
                 👥 WICHTIG: Die gewählte Person muss trinken!
               </div>
             </div>
@@ -324,7 +328,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           
           {(currentRule?.category === 'challenge' || currentRule?.category === 'individual-rule' || currentRule?.category === 'speaking-rule') && (
             <div className="p-4 bg-red-500/20 rounded-lg border border-red-500">
-              <div className="text-red-200 font-semibold">
+              <div className="text-red-900 font-semibold">
                 ⚠️ WICHTIG: Aufgabe nicht geschafft oder Regel gebrochen? Trinken!
               </div>
             </div>
