@@ -21,7 +21,11 @@ export const GameFilter = ({ activeFilter, onFilterChange }: GameFilterProps) =>
           onClick={() => onFilterChange(filter.key)}
           className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
             activeFilter === filter.key 
-              ? 'bg-gradient-to-r from-primary to-primary-glow text-white shadow-medium' 
+              ? filter.key === 'einzelspiel' 
+                ? 'bg-green-500 hover:bg-green-600 text-white shadow-medium'
+                : filter.key === 'teamspiel'
+                ? 'bg-blue-500 hover:bg-blue-600 text-white shadow-medium'
+                : 'bg-gradient-to-r from-primary to-primary-glow text-white shadow-medium'
               : 'hover:scale-105'
           }`}
         >

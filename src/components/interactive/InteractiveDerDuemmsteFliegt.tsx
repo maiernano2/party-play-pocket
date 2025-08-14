@@ -39,24 +39,17 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [maxRounds, setMaxRounds] = useState(5);
-  const [timePerRound, setTimePerRound] = useState(30);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [questionsPerPlayerPerRound, setQuestionsPerPlayerPerRound] = useState(2);
+  const [currentQuestionInRound, setCurrentQuestionInRound] = useState(0);
   const [startLives, setStartLives] = useState(3);
   const [currentRound, setCurrentRound] = useState(1);
   const [votingFor, setVotingFor] = useState<string[]>([]);
+  const [usedQuestions, setUsedQuestions] = useState<string[]>([]);
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
   const winner = activePlayers.length === 1 ? activePlayers[0] : null;
 
-  useEffect(() => {
-    if (gamePhase === 'question' && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0 && gamePhase === 'question') {
-      setGamePhase('voting');
-    }
-  }, [timeLeft, gamePhase]);
 
   const addPlayer = () => {
     if (newPlayerName.trim()) {
@@ -82,16 +75,41 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   };
 
   const startNewRound = () => {
-    setCurrentQuestion(questions[Math.floor(Math.random() * questions.length)]);
-    setCurrentPlayerIndex(0);
+    setCurrentPlayerIndex(1); // Start with first non-moderator player
+    setCurrentQuestionInRound(1);
     setVotingFor([]);
     setGamePhase('question');
-    setTimeLeft(timePerRound);
+    getNewQuestion();
+  };
+
+  const getNewQuestion = () => {
+    const availableQuestions = questions.filter(q => !usedQuestions.includes(q));
+    if (availableQuestions.length === 0) {
+      setUsedQuestions([]);
+      setCurrentQuestion(questions[Math.floor(Math.random() * questions.length)]);
+    } else {
+      const newQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+      setCurrentQuestion(newQuestion);
+      setUsedQuestions(prev => [...prev, newQuestion]);
+    }
   };
 
   const nextPlayer = () => {
-    const nextIndex = (currentPlayerIndex + 1) % activePlayers.length;
-    setCurrentPlayerIndex(nextIndex);
+    // Check if current player has answered enough questions
+    if (currentQuestionInRound >= questionsPerPlayerPerRound) {
+      const nextIndex = currentPlayerIndex + 1;
+      if (nextIndex >= activePlayers.length) {
+        setGamePhase('voting');
+        return;
+      } else {
+        setCurrentPlayerIndex(nextIndex);
+        setCurrentQuestionInRound(1);
+        getNewQuestion();
+      }
+    } else {
+      setCurrentQuestionInRound(prev => prev + 1);
+      getNewQuestion();
+    }
   };
 
   const eliminatePlayer = (playerId: string) => {
@@ -104,12 +122,16 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
     
     if (remainingActive.length === 1) {
       setGamePhase('finished');
-    } else if (currentRound >= maxRounds) {
-      setGamePhase('finished');
-    } else {
-      setCurrentRound(currentRound + 1);
-      startNewRound();
-    }
+            } else if (currentRound >= maxRounds) {
+              setGamePhase('finished');
+            } else {
+              setCurrentRound(currentRound + 1);
+              // Keep scrolled position after voting
+              setTimeout(() => {
+                startNewRound();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+              }, 100);
+            }
   };
 
   if (gamePhase === 'setup') {
@@ -133,13 +155,13 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
               </div>
               
               <div>
-                <label className="block text-white mb-2">Zeit pro Runde (Sekunden)</label>
+                <label className="block text-white mb-2">Fragen pro Spieler pro Runde</label>
                 <Input
                   type="number"
-                  min="10"
-                  max="120"
-                  value={timePerRound}
-                  onChange={(e) => setTimePerRound(parseInt(e.target.value) || 30)}
+                  min="1"
+                  max="5"
+                  value={questionsPerPlayerPerRound}
+                  onChange={(e) => setQuestionsPerPlayerPerRound(parseInt(e.target.value) || 2)}
                   className="bg-white/20 border-white/30 text-white"
                 />
               </div>
@@ -162,17 +184,6 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                 </div>
               </div>
               
-              <div>
-                <label className="block text-white mb-2">Fragen pro Spieler pro Runde</label>
-                <Input
-                  type="number"
-                  min="1"
-                  max="5"
-                  value={1}
-                  readOnly
-                  className="bg-white/20 border-white/30 text-white"
-                />
-              </div>
               
               <div>
                 <label className="block text-white mb-2">Spieler hinzufügen</label>
@@ -263,8 +274,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   }
 
   if (gamePhase === 'question') {
-    const moderatorIndex = (currentPlayerIndex + 1) % activePlayers.length;
-    const moderatorPlayer = activePlayers[moderatorIndex];
+    const moderatorPlayer = players[0]; // First player is always moderator
     const answeringPlayer = activePlayers[currentPlayerIndex];
     
     return (
@@ -273,14 +283,6 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
           <div className="text-center">
             <div className="bg-white/20 rounded-full px-4 py-2 inline-block mb-4">
               <span className="text-white font-bold">Runde {currentRound} von {maxRounds}</span>
-            </div>
-            <div className="mb-6 p-6 bg-gradient-to-r from-primary/30 to-accent/30 rounded-lg border-2 border-primary">
-              <div className={`text-8xl font-bold mb-2 ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
-                ⏰ {timeLeft}
-              </div>
-              <div className="text-lg font-semibold text-white">
-                Sekunden verbleibend
-              </div>
             </div>
           </div>
 
@@ -311,10 +313,10 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
               </div>
             </div>
 
-            <div className="bg-yellow-500/20 border border-yellow-500/40 rounded-lg p-4">
+            <div className="bg-yellow-500/20 border border-yellow-500/40 rounded-lg p-4 mb-4">
               <AlertCircle className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
               <p className="text-white text-sm">
-                {answeringPlayer?.name} antwortet mündlich. Bei Zeitablauf geht es zur Abstimmung!
+                Frage <strong>{currentQuestionInRound}</strong> von <strong>{questionsPerPlayerPerRound}</strong> für {answeringPlayer?.name}
               </p>
             </div>
             
@@ -323,7 +325,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
               className="bg-white text-primary hover:bg-white/90 mt-4"
               size="lg"
             >
-              Nächster Spieler
+              {currentQuestionInRound >= questionsPerPlayerPerRound ? 'Nächster Spieler' : 'Nächste Frage'}
             </Button>
           </div>
         </div>

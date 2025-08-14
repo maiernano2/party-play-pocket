@@ -1,9 +1,9 @@
 import { Game } from '@/types/game';
-import quizGameImage from '@/assets/quiz-thinking.jpg';
+import quizGameImage from '@/assets/quiz-thinking-new.jpg';
 import charadesGameImage from '@/assets/charades-game.jpg';
 import teamGameImage from '@/assets/team-collaboration.jpg';
 import chaosGameImage from '@/assets/chaos-game.jpg';
-import drawingGameImage from '@/assets/word-description.jpg';
+import drawingGameImage from '@/assets/word-description-new.jpg';
 import triviaGameImage from '@/assets/trivia-game.jpg';
 import speedGameImage from '@/assets/speed-game.jpg';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
