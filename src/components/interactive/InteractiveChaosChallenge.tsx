@@ -80,6 +80,17 @@ interface InteractiveChaosChallengeProps {
   { id: '55', text: 'Imitiere deinen letzten Orgasmus mit Geräuschen', category: 'challenge' },
   { id: '56', text: 'Lecke deinen Ellbogen für 10 Sekunden', category: 'challenge' },
   { id: '57', text: 'Massiere die Schultern der Person links von dir für 30 Sekunden', category: 'challenge' },
+  { id: '60', text: 'Küsse die Hand der Person rechts von dir leidenschaftlich', category: 'challenge' },
+  { id: '61', text: 'Flüstere der Person links von dir etwas Verführerisches ins Ohr', category: 'challenge' },
+  { id: '62', text: 'Tanze einen langsamen, sinnlichen Tanz für 20 Sekunden', category: 'challenge' },
+  { id: '63', text: 'Erzähle von deinem verrücktesten Kuss', category: 'challenge' },
+  { id: '64', text: 'Mache Liegestütze und gib dabei verführerische Geräusche von dir', category: 'challenge' },
+  { id: '65', text: 'Beschreibe deinen Traumpartner im Bett (ohne Namen zu nennen)', category: 'challenge' },
+  { id: '66', text: 'Führe einen 15-sekündigen Strip-Tease auf (nur Oberteil)', category: 'challenge' },
+  { id: '67', text: 'Gib jemandem in der Runde ein Kompliment über sein Aussehen', category: 'challenge' },
+  { id: '68', text: 'Erzähle von deinem ersten Kuss in allen Details', category: 'challenge' },
+  { id: '69', text: 'Mache 30 Sekunden lang sexy Gesichtsausdrücke', category: 'challenge' },
+  { id: '70', text: 'Imitiere, wie du jemanden verführen würdest', category: 'challenge' },
   
   // Trinkregeln
   { id: '11', text: 'TRINKRUNDE: Alle trinken 2 Schlucke!', category: 'drink' },
