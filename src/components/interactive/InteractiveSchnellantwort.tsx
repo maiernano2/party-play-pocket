@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
-import { Users, Trophy, Clock, Zap } from 'lucide-react';
+import { GameCountdown } from '../GameCountdown';
+import { Users, Trophy, Clock, Zap, Heart } from 'lucide-react';
 
 interface Player {
   id: string;
   name: string;
-  isEliminated: boolean;
+  lives: number;
 }
 
 interface InteractiveSchnellantwortProps {
@@ -33,16 +34,20 @@ const categories = [
 ];
 
 export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'waiting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'countdown' | 'playing' | 'waiting' | 'finished'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(3);
+  const [timeLeft, setTimeLeft] = useState(10);
+  const [gameTime, setGameTime] = useState(10);
+  const [requiredAnswers, setRequiredAnswers] = useState(3);
+  const [startLives, setStartLives] = useState(3);
+  const [currentAnswers, setCurrentAnswers] = useState(0);
   const [usedAnswers, setUsedAnswers] = useState<string[]>([]);
   const [roundNumber, setRoundNumber] = useState(1);
 
-  const activePlayers = players.filter(p => !p.isEliminated);
+  const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
   const winner = activePlayers.length === 1 ? activePlayers[0] : null;
 
@@ -51,8 +56,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && gamePhase === 'playing') {
-      // Zeit abgelaufen - Spieler eliminieren
-      eliminateCurrentPlayer();
+      // Zeit abgelaufen - Show decision buttons
+      setGamePhase('waiting');
     }
   }, [timeLeft, gamePhase]);
 
@@ -61,7 +66,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
       const newPlayer: Player = {
         id: Date.now().toString(),
         name: newPlayerName.trim(),
-        isEliminated: false
+        lives: startLives
       };
       setPlayers([...players, newPlayer]);
       setNewPlayerName('');
@@ -74,19 +79,25 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
   const startGame = () => {
     if (players.length >= 3) {
-      startNewRound();
+      setGamePhase('countdown');
     }
   };
 
+  const onCountdownComplete = () => {
+    startNewRound();
+  };
+
   const startNewRound = () => {
-    setCurrentCategory(categories[Math.floor(Math.random() * categories.length)]);
+    setCurrentCategory(`Nenne ${requiredAnswers} Begriffe: ${categories[Math.floor(Math.random() * categories.length)]}`);
     setUsedAnswers([]);
+    setCurrentAnswers(0);
     setCurrentPlayerIndex(0);
     setGamePhase('waiting');
   };
 
   const startPlayerTurn = () => {
-    setTimeLeft(3);
+    setTimeLeft(gameTime);
+    setCurrentAnswers(0);
     setGamePhase('playing');
   };
 
@@ -98,23 +109,21 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
   const eliminateCurrentPlayer = () => {
     const updatedPlayers = players.map(p => 
-      p.id === currentPlayer.id ? { ...p, isEliminated: true } : p
+      p.id === currentPlayer.id ? { ...p, lives: p.lives - 1 } : p
     );
     setPlayers(updatedPlayers);
     
-    const remainingActive = updatedPlayers.filter(p => !p.isEliminated);
+    const remainingActive = updatedPlayers.filter(p => p.lives > 0);
     
     if (remainingActive.length === 1) {
       setGamePhase('finished');
     } else {
-      // Anpassen des Index nach Eliminierung
-      let newIndex = currentPlayerIndex;
-      if (currentPlayerIndex >= remainingActive.length) {
-        newIndex = 0;
-      }
-      setCurrentPlayerIndex(newIndex);
-      setGamePhase('waiting');
+      nextPlayer();
     }
+  };
+
+  const playerSucceeded = () => {
+    nextPlayer();
   };
 
   const submitAnswer = (answer: string) => {
@@ -137,6 +146,42 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
             <h2 className="text-2xl font-bold text-white mb-4 text-center">Spiel einrichten</h2>
             
             <div className="space-y-4">
+              <div>
+                <label className="block text-white mb-2">Zeit pro Runde (Sekunden)</label>
+                <Input
+                  type="number"
+                  min="5"
+                  max="30"
+                  value={gameTime}
+                  onChange={(e) => setGameTime(parseInt(e.target.value) || 10)}
+                  className="bg-white/20 border-white/30 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-white mb-2">Anzahl zu nennender Begriffe</label>
+                <Input
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={requiredAnswers}
+                  onChange={(e) => setRequiredAnswers(parseInt(e.target.value) || 3)}
+                  className="bg-white/20 border-white/30 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-white mb-2">Leben pro Spieler</label>
+                <Input
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={startLives}
+                  onChange={(e) => setStartLives(parseInt(e.target.value) || 3)}
+                  className="bg-white/20 border-white/30 text-white"
+                />
+              </div>
+              
               <div>
                 <label className="block text-white mb-2">Spieler hinzufügen</label>
                 <div className="flex gap-2">
@@ -170,6 +215,11 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-white" />
                       <span className="text-white font-medium">{player.name}</span>
+                      <div className="flex gap-1">
+                        {Array.from({ length: startLives }).map((_, i) => (
+                          <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                        ))}
+                      </div>
                     </div>
                     <Button
                       onClick={() => removePlayer(player.id)}
@@ -205,6 +255,15 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     );
   }
 
+  if (gamePhase === 'countdown') {
+    return (
+      <GameCountdown 
+        onCountdownComplete={onCountdownComplete}
+        onSkip={onCountdownComplete}
+      />
+    );
+  }
+
   if (gamePhase === 'waiting') {
     return (
       <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
@@ -225,32 +284,34 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
               <h3 className="text-lg font-medium text-white mb-2">Aktuelle Spieler:</h3>
               <div className="flex flex-wrap gap-2 justify-center">
                 {activePlayers.map((player, index) => (
-                  <span 
+                  <div 
                     key={player.id} 
-                    className={`px-3 py-1 rounded-full ${
+                    className={`px-3 py-1 rounded-full flex items-center gap-2 ${
                       index === currentPlayerIndex 
                         ? 'bg-white text-primary font-bold' 
                         : 'bg-white/20 text-white'
                     }`}
                   >
-                    {player.name}
-                  </span>
+                    <span>{player.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-3 h-3 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
 
-            {usedAnswers.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-white/80 mb-2">Bereits verwendet:</h3>
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {usedAnswers.map((answer, index) => (
-                    <span key={index} className="text-xs bg-white/10 rounded px-2 py-1 text-white/70">
-                      {answer}
-                    </span>
-                  ))}
+            <div className="mb-6">
+              <div className="bg-white/10 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-white mb-2">Fortschritt:</h3>
+                <div className="text-white/80 text-sm">
+                  <div>Benötigte Antworten: {requiredAnswers}</div>
+                  <div>Zeit: {gameTime} Sekunden</div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
@@ -258,14 +319,41 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
             <h3 className="text-xl font-bold text-white mb-2">
               {currentPlayer?.name} ist dran!
             </h3>
-            <p className="text-white/80 mb-6">Bereit für die 3-Sekunden-Herausforderung?</p>
-            <Button 
-              onClick={startPlayerTurn}
-              className="bg-white text-primary hover:bg-white/90 font-bold"
-              size="lg"
-            >
-              Timer starten
-            </Button>
+            <p className="text-white/80 mb-6">Bereit für die {gameTime}-Sekunden-Herausforderung?</p>
+            
+            {timeLeft === 0 && (
+              <div className="bg-red-500/20 border border-red-500/40 rounded-lg p-4 mb-4">
+                <h4 className="text-white font-bold mb-2">Zeit abgelaufen!</h4>
+                <p className="text-white/80 text-sm mb-4">
+                  Hat {currentPlayer?.name} {requiredAnswers} gültige Begriffe genannt?
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button 
+                    onClick={playerSucceeded}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                    size="lg"
+                  >
+                    ✓ Geschafft
+                  </Button>
+                  <Button 
+                    onClick={eliminateCurrentPlayer}
+                    className="bg-red-500 hover:bg-red-600 text-white"
+                    size="lg"
+                  >
+                    ✗ Nicht geschafft
+                  </Button>
+                </div>
+              </div>
+            )}
+            {timeLeft > 0 && (
+              <Button 
+                onClick={startPlayerTurn}
+                className="bg-white text-primary hover:bg-white/90 font-bold"
+                size="lg"
+              >
+                Timer starten
+              </Button>
+            )}
           </div>
         </div>
       </InteractiveGameContainer>
@@ -292,26 +380,21 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
               <p className="text-white/90">ist dran!</p>
             </div>
 
-            <p className="text-white/80 text-sm">
-              Schnell eine Antwort nennen! Keine Wiederholungen!
-            </p>
-          </div>
+            <div className="bg-white/10 rounded-lg p-4">
+              <div className="text-white font-bold text-lg">
+                Fortschritt: {currentAnswers}/{requiredAnswers} Begriffe
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-2 mt-2">
+                <div 
+                  className="bg-green-500 h-2 rounded-full transition-all duration-300" 
+                  style={{ width: `${(currentAnswers / requiredAnswers) * 100}%` }}
+                ></div>
+              </div>
+            </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Button 
-              onClick={() => submitAnswer('gültige antwort')}
-              className="bg-green-500 hover:bg-green-600 text-white"
-              size="lg"
-            >
-              ✓ Gültig
-            </Button>
-            <Button 
-              onClick={eliminateCurrentPlayer}
-              className="bg-red-500 hover:bg-red-600 text-white"
-              size="lg"
-            >
-              ✗ Ungültig/Zu spät
-            </Button>
+            <p className="text-white/80 text-sm">
+              Schnell {requiredAnswers} Begriffe nennen! Zeit läuft!
+            </p>
           </div>
         </div>
       </InteractiveGameContainer>

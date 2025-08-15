@@ -105,7 +105,7 @@ interface InteractiveChaosChallengeProps {
 ];
 
 export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeProps) => {
-  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'playing' | 'rule-end'>('warning');
+  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'countdown' | 'playing' | 'rule-end'>('warning');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -146,9 +146,13 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
 
   const startGame = () => {
     if (players.length >= 3) {
-      setGamePhase('playing');
-      drawNewRule();
+      setGamePhase('countdown');
     }
+  };
+
+  const onCountdownComplete = () => {
+    setGamePhase('playing');
+    drawNewRule();
   };
 
   const drawNewRule = () => {

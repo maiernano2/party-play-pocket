@@ -5,7 +5,7 @@ import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { InteractiveDerDuemmsteFliegt } from '@/components/interactive/InteractiveDerDuemmsteFliegt';
 import { InteractiveSchnellantwort } from '@/components/interactive/InteractiveSchnellantwort';
-import { InteractiveMimikMaster } from '@/components/interactive/InteractiveMimikMaster';
+
 import { InteractiveTeamQuiz } from '@/components/interactive/InteractiveTeamQuiz';
 import { InteractiveBegriffBeschreiben } from '@/components/interactive/InteractiveBegriffBeschreiben';
 import { InteractivePantomimeRaten } from '@/components/interactive/InteractivePantomimeRaten';
@@ -45,8 +45,6 @@ export const GameDetail = () => {
         return <InteractiveDerDuemmsteFliegt onExit={handleExitInteractive} />;
       case 'schnellantwort':
         return <InteractiveSchnellantwort onExit={handleExitInteractive} />;
-      case 'mimik-master':
-        return <InteractiveMimikMaster onExit={handleExitInteractive} />;
       case 'team-quiz':
         return <InteractiveTeamQuiz onExit={handleExitInteractive} />;
       case 'begriff-beschreiben':

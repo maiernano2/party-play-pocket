@@ -14,22 +14,27 @@ interface InteractiveDerDuemmsteFliegtProps {
   onExit: () => void;
 }
 
-const questions = [
-  "Wie viele Kontinente gibt es auf der Erde?",
-  "In welchem Jahr wurde die Berliner Mauer gebaut?",
-  "Wie heißt die Hauptstadt von Australien?",
-  "Welcher Planet ist der Sonne am nächsten?",
-  "Wie viele Herzen hat ein Oktopus?",
-  "In welchem Jahr wurde das Internet erfunden?",
-  "Wie heißt der größte Ozean der Welt?",
-  "Welches ist das kleinste Land der Welt?",
-  "Wie viele Beine hat eine Spinne?",
-  "In welchem Jahr fiel die Berliner Mauer?",
-  "Wie heißt der höchste Berg der Welt?",
-  "Welcher ist der längste Fluss der Welt?",
-  "Wie viele Planeten gibt es in unserem Sonnensystem?",
-  "In welchem Jahr landeten die ersten Menschen auf dem Mond?",
-  "Wie heißt die Währung von Japan?"
+const questionsWithAnswers = [
+  { question: "Wie viele Kontinente gibt es auf der Erde?", answer: "7 Kontinente" },
+  { question: "In welchem Jahr wurde die Berliner Mauer gebaut?", answer: "1961" },
+  { question: "Wie heißt die Hauptstadt von Australien?", answer: "Canberra" },
+  { question: "Welcher Planet ist der Sonne am nächsten?", answer: "Merkur" },
+  { question: "Wie viele Herzen hat ein Oktopus?", answer: "3 Herzen" },
+  { question: "In welchem Jahr wurde das Internet erfunden?", answer: "1969 (ARPANET)" },
+  { question: "Wie heißt der größte Ozean der Welt?", answer: "Pazifischer Ozean" },
+  { question: "Welches ist das kleinste Land der Welt?", answer: "Vatikanstadt" },
+  { question: "Wie viele Beine hat eine Spinne?", answer: "8 Beine" },
+  { question: "In welchem Jahr fiel die Berliner Mauer?", answer: "1989" },
+  { question: "Wie heißt der höchste Berg der Welt?", answer: "Mount Everest" },
+  { question: "Welcher ist der längste Fluss der Welt?", answer: "Nil" },
+  { question: "Wie viele Planeten gibt es in unserem Sonnensystem?", answer: "8 Planeten" },
+  { question: "In welchem Jahr landeten die ersten Menschen auf dem Mond?", answer: "1969" },
+  { question: "Wie heißt die Währung von Japan?", answer: "Yen" },
+  { question: "Wie viele Zähne hat ein erwachsener Mensch normalerweise?", answer: "32 Zähne" },
+  { question: "Welches ist das größte Säugetier der Welt?", answer: "Blauwal" },
+  { question: "Wie heißt die Hauptstadt von Kanada?", answer: "Ottawa" },
+  { question: "Welcher ist der tiefste Punkt der Erde?", answer: "Marianengraben" },
+  { question: "In welchem Jahr wurde die USA gegründet?", answer: "1776" }
 ];
 
 export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteFliegtProps) => {
@@ -37,10 +42,9 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState('');
+  const [currentQuestion, setCurrentQuestion] = useState<{question: string, answer: string} | null>(null);
   const [maxRounds, setMaxRounds] = useState(5);
-  const [questionsPerPlayerPerRound, setQuestionsPerPlayerPerRound] = useState(2);
-  const [currentQuestionInRound, setCurrentQuestionInRound] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [startLives, setStartLives] = useState(3);
   const [currentRound, setCurrentRound] = useState(1);
   const [votingFor, setVotingFor] = useState<string[]>([]);
@@ -49,6 +53,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
   const winner = activePlayers.length === 1 ? activePlayers[0] : null;
+  const moderator = players[0]; // First player is always moderator
 
 
   const addPlayer = () => {
@@ -76,38 +81,30 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
 
   const startNewRound = () => {
     setCurrentPlayerIndex(1); // Start with first non-moderator player
-    setCurrentQuestionInRound(1);
+    setCurrentQuestionIndex(0);
     setVotingFor([]);
     setGamePhase('question');
     getNewQuestion();
   };
 
   const getNewQuestion = () => {
-    const availableQuestions = questions.filter(q => !usedQuestions.includes(q));
-    if (availableQuestions.length === 0) {
-      setUsedQuestions([]);
-      setCurrentQuestion(questions[Math.floor(Math.random() * questions.length)]);
+    if (currentQuestionIndex < questionsWithAnswers.length) {
+      setCurrentQuestion(questionsWithAnswers[currentQuestionIndex]);
     } else {
-      const newQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
-      setCurrentQuestion(newQuestion);
-      setUsedQuestions(prev => [...prev, newQuestion]);
+      // Reset if we've gone through all questions
+      setCurrentQuestionIndex(0);
+      setCurrentQuestion(questionsWithAnswers[0]);
     }
   };
 
   const nextPlayer = () => {
-    // Check if current player has answered enough questions
-    if (currentQuestionInRound >= questionsPerPlayerPerRound) {
-      const nextIndex = currentPlayerIndex + 1;
-      if (nextIndex >= activePlayers.length) {
-        setGamePhase('voting');
-        return;
-      } else {
-        setCurrentPlayerIndex(nextIndex);
-        setCurrentQuestionInRound(1);
-        getNewQuestion();
-      }
+    const nextIndex = currentPlayerIndex + 1;
+    if (nextIndex >= activePlayers.length) {
+      setGamePhase('voting');
+      return;
     } else {
-      setCurrentQuestionInRound(prev => prev + 1);
+      setCurrentPlayerIndex(nextIndex);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
       getNewQuestion();
     }
   };
@@ -154,17 +151,6 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                 />
               </div>
               
-              <div>
-                <label className="block text-white mb-2">Fragen pro Spieler pro Runde</label>
-                <Input
-                  type="number"
-                  min="1"
-                  max="5"
-                  value={questionsPerPlayerPerRound}
-                  onChange={(e) => setQuestionsPerPlayerPerRound(parseInt(e.target.value) || 2)}
-                  className="bg-white/20 border-white/30 text-white"
-                />
-              </div>
               
               <div>
                 <label className="block text-white mb-2">Maximale Runden</label>
@@ -298,7 +284,12 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
             
             <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-8 mb-6 border-2 border-primary">
               <h2 className="text-xl text-white/90 mb-4 text-center">📝 FRAGE FÜR {answeringPlayer?.name.toUpperCase()}:</h2>
-              <p className="text-2xl font-bold text-white text-center leading-relaxed">{currentQuestion}</p>
+              <p className="text-2xl font-bold text-white text-center leading-relaxed mb-4">{currentQuestion?.question}</p>
+              <div className="bg-white/20 rounded-lg p-4 border-2 border-white/30">
+                <p className="text-lg text-green-300 font-semibold text-center">
+                  💡 Antwort: {currentQuestion?.answer}
+                </p>
+              </div>
             </div>
             
             <div className="bg-orange-500/30 rounded-lg p-6 mb-6 border-2 border-orange-400">
@@ -313,19 +304,13 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
               </div>
             </div>
 
-            <div className="bg-yellow-500/20 border border-yellow-500/40 rounded-lg p-4 mb-4">
-              <AlertCircle className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
-              <p className="text-white text-sm">
-                Frage <strong>{currentQuestionInRound}</strong> von <strong>{questionsPerPlayerPerRound}</strong> für {answeringPlayer?.name}
-              </p>
-            </div>
             
             <Button 
               onClick={nextPlayer}
               className="bg-white text-primary hover:bg-white/90 mt-4"
               size="lg"
             >
-              {currentQuestionInRound >= questionsPerPlayerPerRound ? 'Nächster Spieler' : 'Nächste Frage'}
+              Nächster Spieler
             </Button>
           </div>
         </div>
@@ -340,7 +325,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
             <h2 className="text-2xl font-bold text-white mb-4">Zeit ist um!</h2>
             <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-6">
-              <p className="text-lg text-white">Frage war: {currentQuestion}</p>
+              <p className="text-lg text-white">Frage war: {currentQuestion?.question}</p>
             </div>
             
             <p className="text-white/80 mb-6">
@@ -348,7 +333,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-              {activePlayers.map((player) => (
+              {activePlayers.filter(player => player.id !== moderator?.id).map((player) => (
                 <Button
                   key={player.id}
                   onClick={() => eliminatePlayer(player.id)}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
+import { GameCountdown } from '../GameCountdown';
 import { Users, Trophy, Clock, Play, SkipForward } from 'lucide-react';
 import { Team } from '@/types/game';
 
@@ -9,35 +10,40 @@ interface InteractiveTeamQuizProps {
   onExit: () => void;
 }
 
-const questions = [
-  "Wie heißt die Hauptstadt von Frankreich?",
-  "Welcher Planet ist der größte in unserem Sonnensystem?",
-  "In welchem Jahr wurde die Titanic versenkt?",
-  "Wie viele Saiten hat eine Standard-Gitarre?",
-  "Welcher ist der längste Fluss in Afrika?",
-  "Wer malte die Mona Lisa?",
-  "Wie viele Herzen hat ein Oktopus?",
-  "In welchem Land befindet sich Machu Picchu?",
-  "Welches chemische Element hat das Symbol 'Au'?",
-  "Wie heißt der kleinste Ozean der Welt?",
-  "Wer schrieb 'Romeo und Julia'?",
-  "Welcher ist der höchste Wasserfall der Welt?",
-  "In welchem Jahr fiel die Berliner Mauer?",
-  "Wie viele Knochen hat ein erwachsener Mensch?",
-  "Welcher ist der größte Kontinent?",
-  "Wer erfand das Telefon?",
-  "Welche Farbe entsteht aus Rot und Gelb?",
-  "Wie heißt die Währung von Japan?",
-  "Welcher Planet ist der Sonne am nächsten?",
-  "In welchem Land wurden die ersten Olympischen Spiele abgehalten?"
+const questionsWithAnswers = [
+  { question: "Wie heißt die Hauptstadt von Frankreich?", answer: "Paris" },
+  { question: "Welcher Planet ist der größte in unserem Sonnensystem?", answer: "Jupiter" },
+  { question: "In welchem Jahr wurde die Titanic versenkt?", answer: "1912" },
+  { question: "Wie viele Saiten hat eine Standard-Gitarre?", answer: "6 Saiten" },
+  { question: "Welcher ist der längste Fluss in Afrika?", answer: "Nil" },
+  { question: "Wer malte die Mona Lisa?", answer: "Leonardo da Vinci" },
+  { question: "Wie viele Herzen hat ein Oktopus?", answer: "3 Herzen" },
+  { question: "In welchem Land befindet sich Machu Picchu?", answer: "Peru" },
+  { question: "Welches chemische Element hat das Symbol 'Au'?", answer: "Gold" },
+  { question: "Wie heißt der kleinste Ozean der Welt?", answer: "Arktischer Ozean" },
+  { question: "Wer schrieb 'Romeo und Julia'?", answer: "William Shakespeare" },
+  { question: "Welcher ist der höchste Wasserfall der Welt?", answer: "Salto Ángel (Venezuela)" },
+  { question: "In welchem Jahr fiel die Berliner Mauer?", answer: "1989" },
+  { question: "Wie viele Knochen hat ein erwachsener Mensch?", answer: "206 Knochen" },
+  { question: "Welcher ist der größte Kontinent?", answer: "Asien" },
+  { question: "Wer erfand das Telefon?", answer: "Alexander Graham Bell" },
+  { question: "Welche Farbe entsteht aus Rot und Gelb?", answer: "Orange" },
+  { question: "Wie heißt die Währung von Japan?", answer: "Yen" },
+  { question: "Welcher Planet ist der Sonne am nächsten?", answer: "Merkur" },
+  { question: "In welchem Land wurden die ersten Olympischen Spiele abgehalten?", answer: "Griechenland" },
+  { question: "Wie viele Minuten hat eine Stunde?", answer: "60 Minuten" },
+  { question: "Welches Tier ist das Symbol von WWF?", answer: "Panda" },
+  { question: "Wie heißt der größte Vogel der Welt?", answer: "Strauß" },
+  { question: "In welchem Jahr wurde Berlin zur Hauptstadt Deutschlands?", answer: "1990" },
+  { question: "Welches ist das härteste natürliche Material?", answer: "Diamant" }
 ];
 
 export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'waiting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'countdown' | 'playing' | 'waiting' | 'finished'>('setup');
   const [teams, setTeams] = useState<Team[]>([]);
   const [newTeamName, setNewTeamName] = useState('');
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState('');
+  const [currentQuestion, setCurrentQuestion] = useState<{question: string, answer: string} | null>(null);
   const [timePerTeam, setTimePerTeam] = useState(60);
   const [timeLeft, setTimeLeft] = useState(60);
   const [currentScore, setCurrentScore] = useState(0);
@@ -74,9 +80,13 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
 
   const startGame = () => {
     if (teams.length >= 2) {
-      setCurrentTeamIndex(0);
-      setGamePhase('waiting');
+      setGamePhase('countdown');
     }
+  };
+
+  const onCountdownComplete = () => {
+    setCurrentTeamIndex(0);
+    setGamePhase('waiting');
   };
 
   const startTeamTurn = () => {
@@ -87,14 +97,14 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
   };
 
   const getNewQuestion = () => {
-    const availableQuestions = questions.filter(q => !usedQuestions.includes(q));
+    const availableQuestions = questionsWithAnswers.filter(q => !usedQuestions.includes(q.question));
     if (availableQuestions.length === 0) {
       setUsedQuestions([]);
-      setCurrentQuestion(questions[Math.floor(Math.random() * questions.length)]);
+      setCurrentQuestion(questionsWithAnswers[Math.floor(Math.random() * questionsWithAnswers.length)]);
     } else {
       const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
       setCurrentQuestion(randomQuestion);
-      setUsedQuestions([...usedQuestions, randomQuestion]);
+      setUsedQuestions([...usedQuestions, randomQuestion.question]);
     }
   };
 
@@ -216,6 +226,15 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
     );
   }
 
+  if (gamePhase === 'countdown') {
+    return (
+      <GameCountdown 
+        onCountdownComplete={onCountdownComplete}
+        onSkip={onCountdownComplete}
+      />
+    );
+  }
+
   if (gamePhase === 'waiting') {
     return (
       <InteractiveGameContainer onExit={onExit} title="Team-Quiz">
@@ -295,7 +314,12 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
             
             <div className="bg-white/20 rounded-lg p-6 mb-6">
               <h2 className="text-lg text-white/80 mb-2">Frage:</h2>
-              <p className="text-xl font-bold text-white">{currentQuestion}</p>
+              <p className="text-xl font-bold text-white mb-4">{currentQuestion?.question}</p>
+              <div className="bg-green-500/20 rounded-lg p-4 border-2 border-green-400/30">
+                <p className="text-lg text-green-300 font-semibold">
+                  💡 Antwort: {currentQuestion?.answer}
+                </p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

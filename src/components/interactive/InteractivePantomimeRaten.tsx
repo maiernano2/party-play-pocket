@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
+import { GameCountdown } from '../GameCountdown';
 import { Users, Trophy, Clock, Star } from 'lucide-react';
 
 interface Team {
@@ -16,32 +17,46 @@ interface InteractivePantomimeRatenProps {
 }
 
 const pantomimeTerms = [
-  "Zähne putzen",
-  "Auto fahren",
-  "Pizza essen", 
-  "Fenster putzen",
-  "Hund ausführen",
-  "Kaffee trinken",
-  "Zeitung lesen",
-  "Musik hören",
-  "Telefon benutzen",
-  "Kochen",
-  "Tanzen",
-  "Schlafen",
-  "Duschen",
-  "Fahrrad fahren",
-  "Blumen gießen",
-  "Staubsaugen",
-  "Fußball spielen",
-  "Malen",
-  "Singen",
-  "Schwimmen"
+  // Tägliche Aktivitäten
+  "Zähne putzen", "Auto fahren", "Pizza essen", "Fenster putzen", "Hund ausführen",
+  "Kaffee trinken", "Zeitung lesen", "Musik hören", "Telefon benutzen", "Kochen",
+  "Tanzen", "Schlafen", "Duschen", "Fahrrad fahren", "Blumen gießen", "Staubsaugen",
+  
+  // Sport und Bewegung
+  "Fußball spielen", "Tennis spielen", "Basketball spielen", "Schwimmen", "Joggen",
+  "Yoga machen", "Gewichte heben", "Skifahren", "Surfen", "Klettern", "Golf spielen",
+  "Volleyball spielen", "Bowling", "Dart spielen", "Tischtennis",
+  
+  // Hobbys und Freizeit
+  "Malen", "Singen", "Gitarre spielen", "Lesen", "Nähen", "Stricken", "Fotografieren",
+  "Gärtnern", "Angeln", "Wandern", "Puzzeln", "Schach spielen", "Kartenspiel",
+  "Videospiele spielen", "Filme schauen",
+  
+  // Berufe
+  "Lehrer", "Arzt", "Polizist", "Feuerwehrmann", "Koch", "Friseur", "Mechaniker",
+  "Pilot", "Verkäufer", "Postbote", "Bauarbeiter", "Tänzer", "Musiker", "Maler",
+  
+  // Tiere
+  "Hund", "Katze", "Elefant", "Affe", "Pinguin", "Schlange", "Frosch", "Känguru",
+  "Bär", "Löwe", "Pferd", "Kuh", "Schwein", "Huhn", "Fisch", "Vogel", "Spinne",
+  
+  // Gegenstände
+  "Hammer", "Schere", "Regenschirm", "Brille", "Handy", "Computer", "Auto",
+  "Flugzeug", "Boot", "Uhr", "Stuhl", "Tisch", "Bett", "Lampe", "Fernseher",
+  
+  // Essen und Trinken
+  "Apfel", "Banane", "Hamburger", "Spaghetti", "Eis", "Kuchen", "Brot", "Käse",
+  "Wasser", "Bier", "Wein", "Tee", "Milch", "Saft",
+  
+  // Emotionen und Zustände
+  "Glücklich", "Traurig", "Wütend", "Müde", "Überrascht", "Verängstigt",
+  "Verliebt", "Gelangweilt", "Aufgeregt", "Nervös", "Stolz", "Enttäuscht"
 ];
 
 const teamColors = ['bg-blue-500', 'bg-red-500', 'bg-green-500', 'bg-purple-500'];
 
 export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'scoring' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'countdown' | 'playing' | 'scoring' | 'finished'>('setup');
   const [teams, setTeams] = useState<Team[]>([]);
   const [newTeamName, setNewTeamName] = useState('');
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
@@ -51,6 +66,7 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
   const [maxRounds, setMaxRounds] = useState(3);
   const [currentRound, setCurrentRound] = useState(1);
   const [correctGuesses, setCorrectGuesses] = useState(0);
+  const [teamTerms, setTeamTerms] = useState<Record<string, string[]>>({});
 
   const currentTeam = teams[currentTeamIndex];
 
@@ -59,10 +75,6 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && gamePhase === 'playing') {
-      // Play time-up sound
-      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvGVABjOY3PCvfC4FJnzH8N+SQwsUX7Xj6qhXFApEm9/zv2Y/BjaY3PCvgC4FJnzA8N+SQwsTV7Xj4ahXFAg+k93zv2Y+BjaY3PCvgC0FJnzD8N2SQwoUYLPs4apYEwlWpe7VqGMyBj2D2PDJeS4IJXbE8+CQQAwTa7zr2qVUEQpMpu/dpmggB0J+9tHBfS8JO3pMsOm/gTEHNm5u3v+sBD2J2/HKeCgKPXPG8d+QQAoTV7Tl4apYEwlVpe7VqGM0BjuD2PDJei4IJXfE8+CQQAwTa7zr2qVUEQpLpu/dpmggCEJ+9tDBfS8JOoFNsOi/gTAHM3Dy+ddwGgsNgdn95HQqECOl0/PIhTQLF4u/+9WlSRNQ4s7fvIEyBj/7//0z2q7Z88bfcHIjCSOtzpn2xHUaCjtssW4/mTsQ');
-      audio.volume = 0.3;
-      audio.play().catch(() => {});
       setGamePhase('scoring');
     }
   }, [timeLeft, gamePhase]);
@@ -86,19 +98,34 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
 
   const startGame = () => {
     if (teams.length >= 2) {
-      startNewRound();
+      // Initialize unique terms for each team
+      const newTeamTerms: Record<string, string[]> = {};
+      teams.forEach(team => {
+        const shuffledTerms = [...pantomimeTerms].sort(() => Math.random() - 0.5);
+        newTeamTerms[team.id] = shuffledTerms;
+      });
+      setTeamTerms(newTeamTerms);
+      setGamePhase('countdown');
     }
   };
 
+  const onCountdownComplete = () => {
+    startNewRound();
+  };
+
   const startNewRound = () => {
-    setCurrentTerm(pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)]);
+    const currentTeamTerms = teamTerms[currentTeam.id] || [];
+    const termIndex = (currentRound - 1) * 10 + correctGuesses; // Use different terms each round
+    setCurrentTerm(currentTeamTerms[termIndex] || pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)]);
     setTimeLeft(roundTime);
     setCorrectGuesses(0);
     setGamePhase('playing');
   };
 
   const nextTerm = () => {
-    setCurrentTerm(pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)]);
+    const currentTeamTerms = teamTerms[currentTeam.id] || [];
+    const termIndex = (currentRound - 1) * 10 + correctGuesses + 1;
+    setCurrentTerm(currentTeamTerms[termIndex] || pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)]);
     setCorrectGuesses(correctGuesses + 1);
   };
 
@@ -234,6 +261,15 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
     );
   }
 
+  if (gamePhase === 'countdown') {
+    return (
+      <GameCountdown 
+        onCountdownComplete={onCountdownComplete}
+        onSkip={onCountdownComplete}
+      />
+    );
+  }
+
   if (gamePhase === 'playing') {
     return (
       <InteractiveGameContainer onExit={onExit} title="Pantomime-Raten">
@@ -282,7 +318,11 @@ export const InteractivePantomimeRaten = ({ onExit }: InteractivePantomimeRatenP
               ✓ Erraten!
             </Button>
             <Button 
-              onClick={() => setCurrentTerm(pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)])}
+              onClick={() => {
+                const currentTeamTerms = teamTerms[currentTeam.id] || [];
+                const termIndex = (currentRound - 1) * 10 + correctGuesses + 1;
+                setCurrentTerm(currentTeamTerms[termIndex] || pantomimeTerms[Math.floor(Math.random() * pantomimeTerms.length)]);
+              }}
               className="bg-yellow-500 hover:bg-yellow-600 text-white"
               size="lg"
             >
