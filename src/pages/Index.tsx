@@ -24,7 +24,7 @@ const Index = () => {
       <Hero onDiscoverGames={scrollToGames} />
 
       {/* Games Section */}
-      <section ref={gamesRef} className="py-16 px-4 bg-muted/30">
+      <section ref={gamesRef} data-games-section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 fade-in">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

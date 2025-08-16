@@ -44,11 +44,13 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<{question: string, answer: string} | null>(null);
   const [maxRounds, setMaxRounds] = useState(5);
+  const [questionsPerRound, setQuestionsPerRound] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [startLives, setStartLives] = useState(3);
   const [currentRound, setCurrentRound] = useState(1);
   const [votingFor, setVotingFor] = useState<string[]>([]);
-  const [usedQuestions, setUsedQuestions] = useState<string[]>([]);
+  const [usedQuestions, setUsedQuestions] = useState<number[]>([]);
+  const [playerQuestions, setPlayerQuestions] = useState<{[playerId: string]: number[]}>({});
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];

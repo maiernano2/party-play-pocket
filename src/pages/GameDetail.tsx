@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getGameById } from '@/data/games';
 import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { InteractiveDerDuemmsteFliegt } from '@/components/interactive/InteractiveDerDuemmsteFliegt';
 import { InteractiveSchnellantwort } from '@/components/interactive/InteractiveSchnellantwort';
@@ -13,6 +14,7 @@ import { InteractiveChaosChallenge } from '@/components/interactive/InteractiveC
 
 export const GameDetail = () => {
   const { gameId } = useParams();
+  const navigate = useNavigate();
   const game = gameId ? getGameById(gameId) : null;
   const [showInteractive, setShowInteractive] = useState(false);
 
@@ -77,10 +79,19 @@ export const GameDetail = () => {
       {/* Header */}
       <header className="sticky top-0 bg-background/80 backdrop-blur-sm border-b z-10">
         <div className="container mx-auto px-4 py-4">
-          <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+          <button 
+            onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const gamesSection = document.querySelector('[data-games-section]');
+                gamesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 100);
+            }}
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
             <ArrowLeft className="w-5 h-5" />
             Zurück zu allen Spielen
-          </Link>
+          </button>
         </div>
       </header>
 
@@ -184,9 +195,6 @@ export const GameDetail = () => {
             <Play className="w-5 h-5 mr-2" />
             Spiel starten
           </Button>
-          <p className="text-sm text-muted-foreground mt-4">
-            Interaktiver Modus mit automatischer Moderation
-          </p>
         </div>
       </main>
     </div>

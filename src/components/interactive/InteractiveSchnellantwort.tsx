@@ -34,7 +34,7 @@ const categories = [
 ];
 
 export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'countdown' | 'playing' | 'waiting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'category-countdown' | 'playing' | 'waiting' | 'finished'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
@@ -79,7 +79,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
   const startGame = () => {
     if (players.length >= 3) {
-      setGamePhase('countdown');
+      setGamePhase('category-countdown');
     }
   };
 
@@ -255,7 +255,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     );
   }
 
-  if (gamePhase === 'countdown') {
+  if (gamePhase === 'category-countdown') {
     return (
       <GameCountdown 
         onCountdownComplete={onCountdownComplete}

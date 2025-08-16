@@ -39,7 +39,7 @@ const questionsWithAnswers = [
 ];
 
 export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'countdown' | 'playing' | 'waiting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'waiting' | 'finished'>('setup');
   const [teams, setTeams] = useState<Team[]>([]);
   const [newTeamName, setNewTeamName] = useState('');
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
@@ -80,13 +80,9 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
 
   const startGame = () => {
     if (teams.length >= 2) {
-      setGamePhase('countdown');
+      setCurrentTeamIndex(0);
+      setGamePhase('waiting');
     }
-  };
-
-  const onCountdownComplete = () => {
-    setCurrentTeamIndex(0);
-    setGamePhase('waiting');
   };
 
   const startTeamTurn = () => {
@@ -226,14 +222,6 @@ export const InteractiveTeamQuiz = ({ onExit }: InteractiveTeamQuizProps) => {
     );
   }
 
-  if (gamePhase === 'countdown') {
-    return (
-      <GameCountdown 
-        onCountdownComplete={onCountdownComplete}
-        onSkip={onCountdownComplete}
-      />
-    );
-  }
 
   if (gamePhase === 'waiting') {
     return (

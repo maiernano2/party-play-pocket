@@ -77,29 +77,6 @@ export const games: Game[] = [
     }
   },
   {
-    id: 'mimik-master',
-    title: 'Mimik-Master',
-    description: 'Emotion oder Situation pantomimisch darstellen - andere raten mit.',
-    category: 'einzelspiel',
-    playerCount: '4-10 Spieler',
-    duration: '15-25 Minuten',
-    image: facialExpressionsImage,
-    rules: [
-      'Das Handy zeigt einem Spieler eine Emotion oder Situation',
-      'Der Spieler stellt diese pantomimisch dar (ohne Worte)',
-      'Die anderen Spieler raten, was dargestellt wird',
-      'Wer richtig rät, bekommt einen Punkt',
-      'Der Darsteller bekommt ebenfalls einen Punkt bei richtiger Lösung',
-      'Reihum ist jeder einmal Darsteller',
-      'Spieler mit den meisten Punkten gewinnt'
-    ],
-    interactive: {
-      hasTimer: true,
-      hasScoring: true,
-      roundBased: true
-    }
-  },
-  {
     id: 'team-quiz',
     title: 'Team-Quiz',
     description: 'Ein Moderator stellt seinem Team schnell Fragen - möglichst viele in der Zeit beantworten.',
