@@ -366,101 +366,44 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     if (!currentRule) return null;
     
     const isThisOrThat = currentRule.category === 'dies-oder-das';
-    const voteCount: {[option: string]: string[]} = {};
     
-    // Count current votes
-    Object.entries(votes).forEach(([playerId, vote]) => {
-      if (!voteCount[vote]) voteCount[vote] = [];
-      voteCount[vote].push(playerId);
-    });
-
     return (
       <div className="max-w-2xl mx-auto space-y-6">
-        <Card className="p-8">
-          <div className="text-center space-y-6">
-            <div className="space-y-2">
-              <div className="text-sm text-muted-foreground">Abstimmung:</div>
-              <div className="text-xl font-bold p-4 bg-primary/10 rounded-lg border-2 border-primary">
-                {currentRule.text}
-              </div>
-            </div>
-            
-            {isThisOrThat && (
-              <div className="p-4 bg-blue-500/20 rounded-lg border border-blue-500">
-                <div className="text-blue-900 font-semibold">
-                  🗳️ Alle stimmen ab! Die Minderheit muss trinken!
-                </div>
-              </div>
-            )}
-            
-            {currentRule.category === 'wer-würde-eher' && (
-              <div className="p-4 bg-orange-500/20 rounded-lg border border-orange-500">
-                <div className="text-orange-900 font-semibold">
-                  👥 Alle zeigen gleichzeitig auf eine Person!
-                </div>
-              </div>
-            )}
-            
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Wähle deine Option:</h3>
-              
-              {isThisOrThat ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Extract options from the question text */}
-                  {(() => {
-                    const match = currentRule.text.match(/Abstimmung: (.+) oder (.+)\?/);
-                    if (match) {
-                      const [, option1, option2] = match;
-                      return [
-                        <Button
-                          key="option1"
-                          onClick={() => castVote(players[currentPlayerIndex].id, option1)}
-                          variant={votes[players[currentPlayerIndex].id] === option1 ? "default" : "outline"}
-                          className="h-16 text-lg"
-                        >
-                          {option1}
-                        </Button>,
-                        <Button
-                          key="option2"
-                          onClick={() => castVote(players[currentPlayerIndex].id, option2)}
-                          variant={votes[players[currentPlayerIndex].id] === option2 ? "default" : "outline"}
-                          className="h-16 text-lg"
-                        >
-                          {option2}
-                        </Button>
-                      ];
-                    }
-                    return null;
-                  })()}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-2">
-                  {players.map(player => (
-                    <Button
-                      key={player.id}
-                      onClick={() => castVote(players[currentPlayerIndex].id, player.name)}
-                      variant={votes[players[currentPlayerIndex].id] === player.name ? "default" : "outline"}
-                      className="h-12"
-                    >
-                      {player.name}
-                    </Button>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-            <div className="text-sm text-muted-foreground">
-              {Object.keys(votes).length}/{players.length} haben abgestimmt
-            </div>
-            
-            {Object.keys(votes).length === players.length && (
-              <Button onClick={finishVoting} className="w-full" size="lg">
-                <ArrowRight className="w-4 h-4 mr-2" />
-                Ergebnis anzeigen
-              </Button>
-            )}
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {isThisOrThat ? "Abstimmung (IRL)" : "Abstimmung erforderlich"}
+          </h2>
+          
+          <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
+            <p className="text-lg text-white font-medium">{currentRule.text}</p>
           </div>
-        </Card>
+          
+          <div className="bg-yellow-500/20 rounded-lg p-4 mb-6 border border-yellow-400">
+            <p className="text-white text-sm">
+              {isThisOrThat ? 
+                "🗳️ Stimmt jetzt im echten Leben ab! Wer für die Minderheitsoption gestimmt hat, muss trinken." :
+                "🗳️ Stimmt jetzt im echten Leben ab! Der Gewählte muss trinken."
+              }
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="bg-white/10 rounded-lg p-4">
+              <h3 className="text-white font-medium mb-2">3-2-1 Countdown</h3>
+              <p className="text-white/80 text-sm">
+                Alle zeigen gleichzeitig auf ihre Wahl (bei Dies-oder-Das) oder auf die gewählte Person!
+              </p>
+            </div>
+            
+            <Button 
+              onClick={() => setGamePhase('playing')}
+              className="w-full bg-white text-primary hover:bg-white/90"
+              size="lg"
+            >
+              Abstimmung abgeschlossen - Weiter
+            </Button>
+          </div>
+        </div>
       </div>
     );
   };

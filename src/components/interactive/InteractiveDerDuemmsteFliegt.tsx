@@ -50,7 +50,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [currentRound, setCurrentRound] = useState(1);
   const [votingFor, setVotingFor] = useState<string[]>([]);
   const [usedQuestions, setUsedQuestions] = useState<number[]>([]);
-  const [playerQuestions, setPlayerQuestions] = useState<{[playerId: string]: number[]}>({});
+  const [availableQuestions, setAvailableQuestions] = useState<number[]>([]);
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
@@ -85,17 +85,27 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
     setCurrentPlayerIndex(1); // Start with first non-moderator player
     setCurrentQuestionIndex(0);
     setVotingFor([]);
+    // Reset available questions at start of each round
+    setAvailableQuestions(Array.from({length: questionsWithAnswers.length}, (_, i) => i));
     setGamePhase('question');
     getNewQuestion();
   };
 
   const getNewQuestion = () => {
-    if (currentQuestionIndex < questionsWithAnswers.length) {
-      setCurrentQuestion(questionsWithAnswers[currentQuestionIndex]);
+    // Get a random question from available questions
+    if (availableQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+      const questionIndex = availableQuestions[randomIndex];
+      setCurrentQuestion(questionsWithAnswers[questionIndex]);
+      // Remove this question from available questions
+      setAvailableQuestions(prev => prev.filter((_, i) => i !== randomIndex));
     } else {
-      // Reset if we've gone through all questions
-      setCurrentQuestionIndex(0);
-      setCurrentQuestion(questionsWithAnswers[0]);
+      // If no questions left, reset the pool
+      const newAvailable = Array.from({length: questionsWithAnswers.length}, (_, i) => i);
+      setAvailableQuestions(newAvailable);
+      const questionIndex = newAvailable[0];
+      setCurrentQuestion(questionsWithAnswers[questionIndex]);
+      setAvailableQuestions(prev => prev.slice(1));
     }
   };
 
@@ -106,8 +116,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
       return;
     } else {
       setCurrentPlayerIndex(nextIndex);
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      getNewQuestion();
+      getNewQuestion(); // Get a new unique question for next player
     }
   };
 
@@ -153,6 +162,18 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                 />
               </div>
               
+              
+              <div>
+                <label className="block text-white mb-2">Fragen pro Person pro Runde</label>
+                <Input
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={questionsPerRound}
+                  onChange={(e) => setQuestionsPerRound(parseInt(e.target.value) || 1)}
+                  className="bg-white/20 border-white/30 text-white"
+                />
+              </div>
               
               <div>
                 <label className="block text-white mb-2">Maximale Runden</label>
