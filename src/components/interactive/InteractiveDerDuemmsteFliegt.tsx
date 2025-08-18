@@ -51,6 +51,7 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [votingFor, setVotingFor] = useState<string[]>([]);
   const [usedQuestions, setUsedQuestions] = useState<number[]>([]);
   const [availableQuestions, setAvailableQuestions] = useState<number[]>([]);
+  const [askedCounts, setAskedCounts] = useState<Record<string, number>>({});
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
@@ -87,6 +88,11 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
     setVotingFor([]);
     // Reset available questions at start of each round
     setAvailableQuestions(Array.from({length: questionsWithAnswers.length}, (_, i) => i));
+    // Initialize asked counts for non-moderator active players
+    const nonModeratorActive = players.filter(p => p.lives > 0 && p.id !== moderator?.id);
+    const initialCounts: Record<string, number> = {};
+    nonModeratorActive.forEach(p => { initialCounts[p.id] = 0; });
+    setAskedCounts(initialCounts);
     setGamePhase('question');
     getNewQuestion();
   };
@@ -110,16 +116,46 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   };
 
   const nextPlayer = () => {
-    const nextIndex = currentPlayerIndex + 1;
-    if (nextIndex >= activePlayers.length) {
+    const answeringPlayer = activePlayers[currentPlayerIndex];
+    if (!answeringPlayer || answeringPlayer.id === moderator?.id) {
+      // Safety: move to first non-moderator
+      setCurrentPlayerIndex(1);
+      getNewQuestion();
+      return;
+    }
+
+    // Increment asked count for current answering player
+    const newCounts: Record<string, number> = {
+      ...askedCounts,
+      [answeringPlayer.id]: (askedCounts[answeringPlayer.id] || 0) + 1,
+    };
+    setAskedCounts(newCounts);
+
+    // Check if all non-moderator active players reached their quota
+    const allDone = activePlayers
+      .filter(p => p.id !== moderator?.id)
+      .every(p => (newCounts[p.id] || 0) >= questionsPerRound);
+
+    if (allDone) {
       setGamePhase('voting');
       return;
-    } else {
-      setCurrentPlayerIndex(nextIndex);
-      getNewQuestion(); // Get a new unique question for next player
     }
-  };
 
+    // Find next eligible player (not moderator, not finished quota)
+    let idx = currentPlayerIndex;
+    const countActive = activePlayers.length;
+    let attempts = 0;
+    do {
+      idx = (idx + 1) % countActive;
+      attempts++;
+    } while (
+      (activePlayers[idx].id === moderator?.id || (newCounts[activePlayers[idx].id] || 0) >= questionsPerRound) &&
+      attempts <= countActive + 1
+    );
+
+    setCurrentPlayerIndex(idx);
+    getNewQuestion(); // Always get a new unique question for the next player
+  };
   const eliminatePlayer = (playerId: string) => {
     const updatedPlayers = players.map(p => 
       p.id === playerId ? { ...p, lives: p.lives - 1 } : p

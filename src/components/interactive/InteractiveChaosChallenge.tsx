@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
-import { GameCountdown } from '../GameCountdown';
+
 import { AlertTriangle, Users, ArrowRight, RotateCcw } from 'lucide-react';
 
 interface Player {
@@ -161,7 +161,8 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
 
   const startGame = () => {
     if (players.length >= 3) {
-      setGamePhase('countdown');
+      setGamePhase('playing');
+      drawNewRule();
     }
   };
 
@@ -380,29 +381,17 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           
           <div className="bg-yellow-500/20 rounded-lg p-4 mb-6 border border-yellow-400">
             <p className="text-white text-sm">
-              {isThisOrThat ? 
-                "🗳️ Stimmt jetzt im echten Leben ab! Wer für die Minderheitsoption gestimmt hat, muss trinken." :
-                "🗳️ Stimmt jetzt im echten Leben ab! Der Gewählte muss trinken."
-              }
+              🗳️ Stimmt jetzt im echten Leben ab! Der Gewählte muss trinken.
             </p>
           </div>
           
-          <div className="space-y-4">
-            <div className="bg-white/10 rounded-lg p-4">
-              <h3 className="text-white font-medium mb-2">3-2-1 Countdown</h3>
-              <p className="text-white/80 text-sm">
-                Alle zeigen gleichzeitig auf ihre Wahl (bei Dies-oder-Das) oder auf die gewählte Person!
-              </p>
-            </div>
-            
-            <Button 
-              onClick={() => setGamePhase('playing')}
-              className="w-full bg-white text-primary hover:bg-white/90"
-              size="lg"
-            >
-              Abstimmung abgeschlossen - Weiter
-            </Button>
-          </div>
+          <Button 
+            onClick={() => setGamePhase('playing')}
+            className="w-full bg-white text-primary hover:bg-white/90"
+            size="lg"
+          >
+            Abstimmung abgeschlossen - Weiter
+          </Button>
         </div>
       </div>
     );
@@ -435,7 +424,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           {(currentRule?.category === 'wer-würde-eher' || currentRule?.category === 'fragen-über-andere' || currentRule?.category === 'dies-oder-das') && (
             <div className="p-4 bg-orange-500/20 rounded-lg border border-orange-500">
               <div className="text-orange-900 font-semibold">
-                👥 WICHTIG: Abstimmung! Die Minderheit muss trinken!
+                👥 IRL abstimmen! Der Gewählte trinkt.
               </div>
             </div>
           )}
@@ -495,7 +484,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     <InteractiveGameContainer onExit={onExit} title="Chaos-Challenge">
       {gamePhase === 'warning' && renderWarning()}
       {gamePhase === 'setup' && renderSetup()}
-      {gamePhase === 'countdown' && <GameCountdown onCountdownComplete={onCountdownComplete} />}
+      
       {gamePhase === 'voting' && renderVoting()}
       {gamePhase === 'playing' && renderPlaying()}
       {gamePhase === 'rule-end' && renderRuleEnd()}
