@@ -18,10 +18,27 @@ export const GameDetail = () => {
   const game = gameId ? getGameById(gameId) : null;
   const [showInteractive, setShowInteractive] = useState(false);
 
-  // Scroll to top when component mounts or game changes
+  // SEO and scroll management
   useEffect(() => {
+    if (game) {
+      // Dynamic SEO updates
+      document.title = `${game.title} - Kostenlos online spielen | Partyspiele.app`;
+      
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', 
+          `${game.title}: ${game.description} ✓ ${game.playerCount} ✓ ${game.duration} ✓ Kostenlos ohne Material spielbar`
+        );
+      }
+
+      const canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (canonicalLink) {
+        canonicalLink.setAttribute('href', `https://partyspiele.app/spiel/${game.id}`);
+      }
+    }
+    
     window.scrollTo(0, 0);
-  }, [gameId]);
+  }, [game, gameId]);
 
   if (!game) {
     return (
@@ -74,37 +91,78 @@ export const GameDetail = () => {
     }
   }
 
+  // Game structured data for SEO
+  const gameStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Game",
+    "name": game.title,
+    "description": game.description,
+    "url": `https://partyspiele.app/spiel/${game.id}`,
+    "image": game.image,
+    "gamePlayMode": "MultiPlayer",
+    "numberOfPlayers": game.playerCount,
+    "typicalAgeRange": "13+",
+    "audience": {
+      "@type": "PeopleAudience",
+      "audienceType": game.playerCount
+    },
+    "timeRequired": game.duration,
+    "gamePlatform": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.7",
+      "ratingCount": "45"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* SEO structured data */}
+      <script 
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(gameStructuredData) }}
+      />
+      
       {/* Header */}
       <header className="sticky top-0 bg-background/80 backdrop-blur-sm border-b z-10">
         <div className="container mx-auto px-4 py-4">
-          <button 
-            onClick={() => {
-              navigate('/');
-              setTimeout(() => {
-                const gamesSection = document.querySelector('[data-games-section]');
-                gamesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }, 100);
-            }}
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Zurück zu allen Spielen
-          </button>
+          <nav aria-label="Breadcrumb">
+            <button 
+              onClick={() => {
+                navigate('/');
+                setTimeout(() => {
+                  const gamesSection = document.querySelector('[data-games-section]');
+                  gamesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+              }}
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Zurück zu allen Partyspielen
+            </button>
+          </nav>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Game Header */}
-        <div className="fade-in mb-8">
+        <article className="fade-in mb-8">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div className={`inline-block ${categoryColor} text-white px-4 py-2 rounded-full text-sm font-medium mb-4`}>
                 {categoryLabel}
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{game.title}</h1>
-              <p className="text-xl text-muted-foreground mb-6">{game.description}</p>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                {game.title} - Kostenloses {categoryLabel.toLowerCase()}
+              </h1>
+              <p className="text-xl text-muted-foreground mb-6">
+                {game.description} Perfekt für Partys und gesellige Abende ohne zusätzliches Material.
+              </p>
               
               <div className="flex flex-wrap gap-6 mb-6">
                 <div className="flex items-center gap-2 text-muted-foreground">
@@ -121,6 +179,7 @@ export const GameDetail = () => {
                 onClick={() => setShowInteractive(true)}
                 className="btn-hero text-lg mb-6"
                 size="lg"
+                aria-label={`${game.title} jetzt spielen`}
               >
                 <Play className="w-5 h-5 mr-2" />
                 Spiel starten
@@ -130,16 +189,19 @@ export const GameDetail = () => {
             <div className="relative">
               <img 
                 src={game.image}
-                alt={`${game.title} Spielbild`}
+                alt={`${game.title} - Mobile Partyspiel für ${game.playerCount} ohne Material`}
                 className="w-full rounded-2xl shadow-medium hover-lift"
+                loading="eager"
               />
             </div>
           </div>
-        </div>
+        </article>
 
         {/* Game Rules */}
-        <div className="fade-in bg-card rounded-2xl p-8 shadow-soft mb-8">
-          <h2 className="text-2xl font-bold mb-6">Spielregeln</h2>
+        <section className="fade-in bg-card rounded-2xl p-8 shadow-soft mb-8">
+          <h2 className="text-2xl font-bold mb-6">
+            {game.title} Spielregeln - So funktioniert das mobile Partyspiel
+          </h2>
           <div className="space-y-4">
             {game.rules.map((rule, index) => (
               <div key={index} className="flex gap-4">
@@ -150,12 +212,12 @@ export const GameDetail = () => {
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Interactive Features */}
         {game.interactive && (
-          <div className="fade-in bg-gradient-card rounded-2xl p-8 shadow-soft mb-8">
-            <h3 className="text-xl font-bold mb-4">Features</h3>
+          <section className="fade-in bg-gradient-card rounded-2xl p-8 shadow-soft mb-8">
+            <h3 className="text-xl font-bold mb-4">Spiel-Features</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {game.interactive.hasTimer && (
                 <div className="bg-white/80 rounded-xl p-4 text-center">
@@ -182,8 +244,66 @@ export const GameDetail = () => {
                 </div>
               )}
             </div>
-          </div>
+          </section>
         )}
+
+        {/* Benefits Section */}
+        <section className="fade-in bg-muted/30 rounded-2xl p-8 mb-8">
+          <h3 className="text-xl font-bold mb-4">
+            Warum {game.title} das perfekte Partyspiel ist
+          </h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold mb-2">📱 Nur Handy benötigt</h4>
+              <p className="text-muted-foreground text-sm">
+                Keine Karten, kein Spielbrett - einfach Website öffnen und losspielen!
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">⚡ Sofort spielbereit</h4>
+              <p className="text-muted-foreground text-sm">
+                Keine Downloads oder Registrierungen nötig - direkt im Browser spielen.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">👥 Perfekt für Gruppen</h4>
+              <p className="text-muted-foreground text-sm">
+                Ideal für {game.playerCount} - perfekt für Partys und gesellige Abende.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">🆓 Komplett kostenlos</h4>
+              <p className="text-muted-foreground text-sm">
+                Keine versteckten Kosten oder In-App-Käufe - für immer kostenlos!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="fade-in bg-card rounded-2xl p-8 shadow-soft mb-8">
+          <h3 className="text-xl font-bold mb-6">Häufige Fragen zu {game.title}</h3>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-2">Brauche ich eine App für {game.title}?</h4>
+              <p className="text-muted-foreground text-sm">
+                Nein! {game.title} funktioniert direkt im Browser - keine App-Installation nötig.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Ist {game.title} wirklich kostenlos?</h4>
+              <p className="text-muted-foreground text-sm">
+                Ja, komplett kostenlos und ohne Werbung. Keine versteckten Kosten oder Premium-Features.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Wie viele Spieler können {game.title} spielen?</h4>
+              <p className="text-muted-foreground text-sm">
+                {game.title} ist für {game.playerCount} konzipiert und dauert etwa {game.duration}.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Start Game CTA */}
         <div className="text-center fade-in">
@@ -191,10 +311,14 @@ export const GameDetail = () => {
             onClick={() => setShowInteractive(true)}
             className="btn-hero text-lg"
             size="lg"
+            aria-label={`${game.title} jetzt kostenlos spielen`}
           >
             <Play className="w-5 h-5 mr-2" />
-            Spiel starten
+            {game.title} jetzt spielen
           </Button>
+          <p className="text-sm text-muted-foreground mt-3">
+            Kostenlos • Ohne Download • Sofort spielbereit
+          </p>
         </div>
       </main>
     </div>

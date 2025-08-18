@@ -17,8 +17,9 @@ export const GameCard = ({ game }: GameCardProps) => {
         <div className="relative mb-4 overflow-hidden rounded-xl">
           <img 
             src={game.image} 
-            alt={`${game.title} Spielbild`}
+            alt={`${game.title} - Kostenloses mobiles Partyspiel für ${game.playerCount} ohne Material`}
             className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
           />
           <div className={`absolute top-3 left-3 ${categoryColor} text-white px-3 py-1 rounded-full text-sm font-medium`}>
             {categoryLabel}
@@ -26,7 +27,9 @@ export const GameCard = ({ game }: GameCardProps) => {
         </div>
         
         <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
-        <p className="text-muted-foreground mb-4 line-clamp-2">{game.description}</p>
+        <p className="text-muted-foreground mb-4 line-clamp-2">
+          {game.description} Kostenlos spielbar ohne zusätzliches Material.
+        </p>
         
         <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
@@ -40,7 +43,7 @@ export const GameCard = ({ game }: GameCardProps) => {
         </div>
         
         <div className="btn-game w-full text-center py-2 px-4 rounded-lg">
-          Spiel ansehen
+          {game.title} spielen
         </div>
       </div>
     </Link>

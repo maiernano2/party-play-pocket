@@ -14,14 +14,14 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
           {/* Content */}
           <div className="space-y-4 md:space-y-8 fade-in">
             <div className="space-y-3 md:space-y-4">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="gradient-text">Partyspiele</span>
+              <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+                <span className="gradient-text">Mobile Partyspiele</span>
                 <br />
-                sofort spielen!
-              </h1>
+                kostenlos & sofort spielen!
+              </h2>
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
-                Mobile-first Partyspiele für Gruppen. Nur das Handy als Moderator - 
-                keine weiteren Materialien nötig. Perfekt für jeden Anlass!
+                Über 6 verschiedene Gruppenspiele ohne zusätzliches Material. 
+                Nur das Handy als Moderator - perfekt für Partys, Geburtstage und gesellige Abende!
               </p>
             </div>
 
@@ -68,7 +68,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 Spiele entdecken
               </Button>
               <p className="text-xs md:text-sm text-muted-foreground">
-                Über 6 verschiedene Spiele verfügbar
+                6+ kostenlose Spiele • Keine App nötig • Sofort spielbereit
               </p>
             </div>
           </div>
