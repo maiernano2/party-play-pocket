@@ -101,7 +101,7 @@ export const GameDetail = () => {
     "image": game.image,
     "gamePlayMode": "MultiPlayer",
     "numberOfPlayers": game.playerCount,
-    "typicalAgeRange": "13+",
+    "typicalAgeRange": game.id === 'chaos-challenge' ? "18+" : "13+",
     "audience": {
       "@type": "PeopleAudience",
       "audienceType": game.playerCount
@@ -294,8 +294,10 @@ export const GameDetail = () => {
             <div>
               <h4 className="font-semibold mb-2">Welche Altersgruppe kann {game.title} spielen?</h4>
               <p className="text-muted-foreground text-sm">
-                Das Spiel ist für Jugendliche und Erwachsene ab 13 Jahren geeignet - perfekt 
-                für gemischte Altersgruppen bei Familienfeiern.
+                {game.id === 'chaos-challenge' 
+                  ? 'Das Spiel ist ausschließlich für Erwachsene ab 18 Jahren geeignet - perfekt für ausgelassene Spielabende mit Freunden.'
+                  : 'Das Spiel ist für Jugendliche und Erwachsene ab 13 Jahren geeignet - perfekt für gemischte Altersgruppen bei Familienfeiern.'
+                }
               </p>
             </div>
             <div>
