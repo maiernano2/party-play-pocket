@@ -13,7 +13,7 @@ export const games: Game[] = [
     id: 'chaos-challenge',
     title: 'Chaos-Challenge',
     description: 'Interaktives Partyspiel mit Trinkregeln und überraschenden Aufgaben. Nur für Erwachsene ab 18 Jahren.',
-    category: 'einzelspiel',
+    category: 'teamspiel',
     playerCount: '3-12 Spieler',
     duration: '30-60 Minuten',
     image: chaosGameImage,
