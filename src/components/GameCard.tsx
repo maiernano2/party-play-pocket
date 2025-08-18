@@ -28,7 +28,7 @@ export const GameCard = ({ game }: GameCardProps) => {
         
         <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
         <p className="text-muted-foreground mb-4 line-clamp-2">
-          {game.description} Kostenlos spielbar ohne zusätzliches Material.
+          {game.description} Spannende Unterhaltung für die ganze Gruppe.
         </p>
         
         <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">

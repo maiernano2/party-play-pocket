@@ -100,21 +100,21 @@ const Index = () => {
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">🎯 Sofort spielbereit</h3>
+                <h3 className="font-semibold text-lg mb-3">🎯 Perfekt für jede Party</h3>
                 <p className="text-muted-foreground">
-                  Keine Downloads, keine Registrierung - einfach Website öffnen und losspielen!
+                  Von Geburtstagen bis Silvester - unsere Spiele bringen garantiert Stimmung in jede Runde!
                 </p>
               </div>
               <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">📱 Nur Handy benötigt</h3>
+                <h3 className="font-semibold text-lg mb-3">📱 Handy als Spielleiter</h3>
                 <p className="text-muted-foreground">
-                  Kein zusätzliches Material wie Karten oder Spielbrett - das Handy reicht völlig aus.
+                  Das Smartphone übernimmt die Moderation - alle können entspannt mitspielen.
                 </p>
               </div>
               <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">👥 Für alle Gruppengrößen</h3>
+                <h3 className="font-semibold text-lg mb-3">👥 Verschiedene Spielmodi</h3>
                 <p className="text-muted-foreground">
-                  Von 3 bis 12 Spielern - für jede Party die richtige Spieleranzahl.
+                  Einzelwettkämpfe oder Teamspiele - für jeden Geschmack das richtige Format.
                 </p>
               </div>
             </div>
@@ -129,13 +129,14 @@ const Index = () => {
             <div>
               <h3 className="font-bold text-lg mb-4 gradient-text">Partyspiele.app</h3>
               <p className="text-muted-foreground mb-4">
-                Die ultimative Sammlung kostenloser mobiler Partyspiele für unvergessliche 
-                Momente mit Freunden und Familie. Über 6 verschiedene Spiele sofort verfügbar.
+                Die ultimative Sammlung mobiler Partyspiele für unvergessliche 
+                Momente mit Freunden und Familie. Über 6 verschiedene Spiele mit 
+                einzigartigen Spielmechaniken für jeden Anlass.
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>✓ Kostenlos und werbefrei</p>
-                <p>✓ Keine App-Installation nötig</p>
-                <p>✓ Funktioniert auf allen Geräten</p>
+                <p>✓ Interaktive Timer und Punktesysteme</p>
+                <p>✓ Automatische Fragengenerierung</p>
+                <p>✓ Anpassbare Schwierigkeitsgrade</p>
               </div>
             </div>
             <div>

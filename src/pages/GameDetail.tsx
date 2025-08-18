@@ -254,27 +254,27 @@ export const GameDetail = () => {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-2">📱 Nur Handy benötigt</h4>
+              <h4 className="font-semibold mb-2">🎮 Innovative Spielmechanik</h4>
               <p className="text-muted-foreground text-sm">
-                Keine Karten, kein Spielbrett - einfach Website öffnen und losspielen!
+                Durchdachte Regeln und spannende Wendungen sorgen für maximalen Spielspaß.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">⚡ Sofort spielbereit</h4>
+              <h4 className="font-semibold mb-2">⚡ Dynamische Spielverläufe</h4>
               <p className="text-muted-foreground text-sm">
-                Keine Downloads oder Registrierungen nötig - direkt im Browser spielen.
+                Jede Runde bringt neue Überraschungen und unvorhersehbare Momente.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">👥 Perfekt für Gruppen</h4>
+              <h4 className="font-semibold mb-2">🏆 Faire Wettkämpfe</h4>
               <p className="text-muted-foreground text-sm">
-                Ideal für {game.playerCount} - perfekt für Partys und gesellige Abende.
+                Ausgewogene Spielbalance gibt allen Teilnehmern echte Gewinnchancen.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">🆓 Komplett kostenlos</h4>
+              <h4 className="font-semibold mb-2">🎭 Verschiedene Kategorien</h4>
               <p className="text-muted-foreground text-sm">
-                Keine versteckten Kosten oder In-App-Käufe - für immer kostenlos!
+                Vielfältige Themen und Aufgaben halten das Spiel immer interessant.
               </p>
             </div>
           </div>
@@ -285,21 +285,24 @@ export const GameDetail = () => {
           <h3 className="text-xl font-bold mb-6">Häufige Fragen zu {game.title}</h3>
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold mb-2">Brauche ich eine App für {game.title}?</h4>
+              <h4 className="font-semibold mb-2">Wie funktioniert die Spielmechanik?</h4>
               <p className="text-muted-foreground text-sm">
-                Nein! {game.title} funktioniert direkt im Browser - keine App-Installation nötig.
+                {game.title} nutzt intelligente Algorithmen für faire Aufgabenverteilung und 
+                spannende Spielverläufe ohne Wiederholungen.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Ist {game.title} wirklich kostenlos?</h4>
+              <h4 className="font-semibold mb-2">Welche Altersgruppe kann {game.title} spielen?</h4>
               <p className="text-muted-foreground text-sm">
-                Ja, komplett kostenlos und ohne Werbung. Keine versteckten Kosten oder Premium-Features.
+                Das Spiel ist für Jugendliche und Erwachsene ab 13 Jahren geeignet - perfekt 
+                für gemischte Altersgruppen bei Familienfeiern.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Wie viele Spieler können {game.title} spielen?</h4>
+              <h4 className="font-semibold mb-2">Wie lange dauert eine typische Spielrunde?</h4>
               <p className="text-muted-foreground text-sm">
-                {game.title} ist für {game.playerCount} konzipiert und dauert etwa {game.duration}.
+                Eine Runde {game.title} dauert etwa {game.duration} - ideal als Aufwärmspiel 
+                oder Hauptattraktion des Abends.
               </p>
             </div>
           </div>
@@ -317,7 +320,7 @@ export const GameDetail = () => {
             {game.title} jetzt spielen
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
-            Kostenlos • Ohne Download • Sofort spielbereit
+            Für {game.playerCount} • {game.duration} Spielzeit • Maximaler Spaßfaktor
           </p>
         </div>
       </main>

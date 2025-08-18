@@ -68,7 +68,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 Spiele entdecken
               </Button>
               <p className="text-xs md:text-sm text-muted-foreground">
-                6+ kostenlose Spiele • Keine App nötig • Sofort spielbereit
+                Quiz • Chaos Challenge • Pantomime • Teamspiele & mehr
               </p>
             </div>
           </div>
