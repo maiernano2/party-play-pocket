@@ -30,46 +30,34 @@ interface InteractiveChaosChallengeProps {
   { id: '16', text: 'Wer würde eher... nackt durch die Stadt laufen für 1000€?', category: 'wer-würde-eher', requiresVoting: true },
   { id: '17', text: 'Wer würde eher... einen Monat ohne Internet überleben?', category: 'wer-würde-eher', requiresVoting: true },
   { id: '18', text: 'Wer würde eher... ihren Ex zurück nehmen?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '19', text: 'Wer würde eher... beim ersten Date zu viel trinken?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '20', text: 'Wer würde eher... auf einem Konzert auf die Bühne klettern?', category: 'wer-würde-eher', requiresVoting: true },
   { id: '40', text: 'Wer würde eher... einen Dreier haben?', category: 'wer-würde-eher', requiresVoting: true },
   { id: '41', text: 'Wer würde eher... beim Sex stöhnen wie ein Pornostar?', category: 'wer-würde-eher', requiresVoting: true },
   { id: '42', text: 'Wer würde eher... heimlich Sexspielzeug kaufen?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '43', text: 'Wer würde eher... einen Striptease machen für Geld?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '44', text: 'Wer würde eher... eine Affäre haben?', category: 'wer-würde-eher', requiresVoting: true },
   
-  // Dies oder Das
-  { id: '71', text: 'Abstimmung: Netflix oder YouTube?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '72', text: 'Abstimmung: Pizza oder Burger?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '73', text: 'Abstimmung: Meer oder Berge?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '74', text: 'Abstimmung: Kaffee oder Tee?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '75', text: 'Abstimmung: Hund oder Katze?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '76', text: 'Abstimmung: Sommer oder Winter?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '77', text: 'Abstimmung: Android oder iPhone?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '78', text: 'Abstimmung: Früh aufstehen oder lange wach bleiben?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '79', text: 'Abstimmung: Lesen oder Filme schauen?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '80', text: 'Abstimmung: Auto oder Fahrrad?', category: 'dies-oder-das', requiresVoting: true },
+  // Dies oder Das (weniger Abstimmungen)
+  { id: '71', text: 'Netflix oder YouTube?', category: 'dies-oder-das', requiresVoting: true },
+  { id: '72', text: 'Pizza oder Burger?', category: 'dies-oder-das', requiresVoting: true },
+  { id: '73', text: 'Meer oder Berge?', category: 'dies-oder-das', requiresVoting: true },
   
-  // Fragen über andere
+  // Fragen über andere (weniger Abstimmungen)
   { id: '3', text: 'Wer ist am zuverlässigsten in der Gruppe?', category: 'fragen-über-andere', requiresVoting: true },
   { id: '4', text: 'Wer hat die beste Ausrede, wenn er zu spät kommt?', category: 'fragen-über-andere', requiresVoting: true },
   { id: '21', text: 'Wer würde am ehesten heimlich das Handy des Partners checken?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '22', text: 'Wer hat schon mal gelogen, um nicht zu einem Date zu müssen?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '23', text: 'Wer würde am ehesten einen One-Night-Stand haben?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '24', text: 'Wer schläft am wahrscheinlichsten nackt?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '45', text: 'Wer hat die meisten Sexpartner gehabt?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '46', text: 'Wer würde am ehesten fremdgehen?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '47', text: 'Wer ist heimlich am perversesten?', category: 'fragen-über-andere', requiresVoting: true },
   
-  // Gruppenchallenges
+  // Gruppenchallenges (mehr Aufgaben)
   { id: '5', text: 'Alle müssen stumm den Song "Happy Birthday" singen', category: 'group-challenge' },
   { id: '25', text: 'Alle müssen gleichzeitig ihren peinlichsten Moment erzählen', category: 'group-challenge' },
   { id: '26', text: 'Macht eine Minute lang einen Gruppentanz zu imaginärer Musik', category: 'group-challenge' },
   { id: '27', text: 'Alle müssen ihre schlimmste Dating-Story erzählen', category: 'group-challenge' },
   { id: '48', text: 'Alle erzählen gleichzeitig ihr peinlichstes Sexerlebnis', category: 'group-challenge' },
   { id: '49', text: 'Alle müssen einen sexy Tanz für 30 Sekunden machen', category: 'group-challenge' },
+  { id: '81', text: 'Alle müssen ihre erste große Liebe beschreiben', category: 'group-challenge' },
+  { id: '82', text: 'Alle erzählen ihre verrückteste Partynacht', category: 'group-challenge' },
+  { id: '83', text: 'Alle müssen ihre größte Angst gestehen', category: 'group-challenge' },
+  { id: '84', text: 'Alle machen gleichzeitig Yoga-Posen', category: 'group-challenge' },
+  { id: '85', text: 'Alle müssen ihr Lieblings-Kindheitslied summen', category: 'group-challenge' },
   
-  // Individuelle Regeln
+  // Individuelle Regeln (mehr Aufgaben)
   { id: '6', text: 'Fingerspitzen müssen sich berühren, bis du wieder dran bist', category: 'individual-rule' },
   { id: '7', text: 'Du darfst nicht "Ja" oder "Nein" sagen', category: 'individual-rule' },
   { id: '13', text: 'Du musst jede Antwort mit "Meiner Meinung nach..." beginnen', category: 'speaking-rule' },
@@ -80,8 +68,13 @@ interface InteractiveChaosChallengeProps {
   { id: '50', text: 'Du musst jedes Mal zwinkern wenn du sprichst', category: 'individual-rule' },
   { id: '51', text: 'Du darfst nicht das Wort "und" sagen', category: 'speaking-rule' },
   { id: '52', text: 'Du musst bei jedem Satz "wie geil" am Ende sagen', category: 'speaking-rule' },
+  { id: '86', text: 'Du musst auf einem Bein stehen wenn du sprichst', category: 'individual-rule' },
+  { id: '87', text: 'Du darfst nur mit tiefer Stimme sprechen', category: 'speaking-rule' },
+  { id: '88', text: 'Du musst bei jedem Satz in die Hände klatschen', category: 'individual-rule' },
+  { id: '89', text: 'Du darfst keine Namen aussprechen', category: 'speaking-rule' },
+  { id: '90', text: 'Du musst jeden Satz mit "Übrigens..." beginnen', category: 'speaking-rule' },
   
-  // Challenges
+  // Challenges (viel mehr Aufgaben)
   { id: '8', text: 'Zeichne in 30 Sekunden einen Elefanten mit geschlossenen Augen', category: 'challenge' },
   { id: '9', text: 'Imitiere 30 Sekunden lang einen berühmten Politiker', category: 'challenge' },
   { id: '10', text: 'Sage einen Zungenbrecher 5x hintereinander fehlerfrei', category: 'challenge' },
@@ -105,6 +98,26 @@ interface InteractiveChaosChallengeProps {
   { id: '68', text: 'Erzähle von deinem ersten Kuss in allen Details', category: 'challenge' },
   { id: '69', text: 'Mache 30 Sekunden lang sexy Gesichtsausdrücke', category: 'challenge' },
   { id: '70', text: 'Imitiere, wie du jemanden verführen würdest', category: 'challenge' },
+  { id: '91', text: 'Erkläre das Kama Sutra ohne Hände zu benutzen', category: 'challenge' },
+  { id: '92', text: 'Imitiere 5 verschiedene Tiergeräusche', category: 'challenge' },
+  { id: '93', text: 'Singe dein Lieblingslied mit vollem Mund Wasser', category: 'challenge' },
+  { id: '94', text: 'Mache einen Handstand für 10 Sekunden', category: 'challenge' },
+  { id: '95', text: 'Erzähle einen Witz, der niemanden zum Lachen bringt', category: 'challenge' },
+  { id: '96', text: 'Balanciere ein Glas auf dem Kopf für 30 Sekunden', category: 'challenge' },
+  { id: '97', text: 'Sprich 1 Minute lang nur in Reimen', category: 'challenge' },
+  { id: '98', text: 'Imitiere einen Superhelden deiner Wahl', category: 'challenge' },
+  { id: '99', text: 'Erzähle eine Gutenacht-Geschichte für Erwachsene', category: 'challenge' },
+  { id: '100', text: 'Mache 20 Sekunden lang den Roboter-Tanz', category: 'challenge' },
+  { id: '101', text: 'Beschreibe dein Lieblings-Sexstellungen pantomimisch', category: 'challenge' },
+  { id: '102', text: 'Erzähle von deinem peinlichsten Arztbesuch', category: 'challenge' },
+  { id: '103', text: 'Imitiere deinen Lieblings-Pornostar (jugendfreie Version)', category: 'challenge' },
+  { id: '104', text: 'Erkläre Quantenphysik in 30 Sekunden', category: 'challenge' },
+  { id: '105', text: 'Erzähle deine Traumhochzeit in allen Details', category: 'challenge' },
+  { id: '106', text: 'Imitiere einen Telefonverkäufer der Kondome verkauft', category: 'challenge' },
+  { id: '107', text: 'Beschreibe deinen schlimmsten One-Night-Stand', category: 'challenge' },
+  { id: '108', text: 'Mache eine Sportreporter-Kommentar über das aktuelle Geschehen', category: 'challenge' },
+  { id: '109', text: 'Erzähle was in deiner Suchwerlauf stehen würde', category: 'challenge' },
+  { id: '110', text: 'Führe ein Verkaufsgespräch für Sexspielzeug', category: 'challenge' },
   
   // Trinkregeln
   { id: '11', text: 'TRINKRUNDE: Alle trinken 2 Schlucke!', category: 'drink' },
@@ -366,13 +379,11 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const renderVoting = () => {
     if (!currentRule) return null;
     
-    const isThisOrThat = currentRule.category === 'dies-oder-das';
-    
     return (
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">
-            {isThisOrThat ? "Abstimmung (IRL)" : "Abstimmung erforderlich"}
+            {ruleGiver}s Aufgabe: Abstimmung vorlesen
           </h2>
           
           <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
@@ -381,7 +392,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           
           <div className="bg-yellow-500/20 rounded-lg p-4 mb-6 border border-yellow-400">
             <p className="text-white text-sm">
-              🗳️ Stimmt jetzt im echten Leben ab! Der Gewählte muss trinken.
+              🗳️ Stimmt ab und der Gewählte muss trinken!
             </p>
           </div>
           
@@ -424,7 +435,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           {(currentRule?.category === 'wer-würde-eher' || currentRule?.category === 'fragen-über-andere' || currentRule?.category === 'dies-oder-das') && (
             <div className="p-4 bg-orange-500/20 rounded-lg border border-orange-500">
               <div className="text-orange-900 font-semibold">
-                👥 IRL abstimmen! Der Gewählte trinkt.
+                👥 Stimmt ab und der Gewählte trinkt!
               </div>
             </div>
           )}
