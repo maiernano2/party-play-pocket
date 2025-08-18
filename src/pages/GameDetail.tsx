@@ -280,7 +280,6 @@ export const GameDetail = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <section className="fade-in bg-card rounded-2xl p-8 shadow-soft mb-8">
           <h3 className="text-xl font-bold mb-6">Häufige Fragen zu {game.title}</h3>
           <div className="space-y-4">
@@ -295,8 +294,8 @@ export const GameDetail = () => {
               <h4 className="font-semibold mb-2">Welche Altersgruppe kann {game.title} spielen?</h4>
               <p className="text-muted-foreground text-sm">
                 {game.id === 'chaos-challenge' 
-                  ? 'Das Spiel ist ausschließlich für Erwachsene ab 18 Jahren geeignet - perfekt für ausgelassene Spielabende mit Freunden.'
-                  : 'Das Spiel ist für Jugendliche und Erwachsene ab 13 Jahren geeignet - perfekt für gemischte Altersgruppen bei Familienfeiern.'
+                  ? 'Das Spiel ist ausschließlich für Erwachsene ab 18 Jahren und Spielabende mit Freunden geeignet - die Fragen können durchaus spicy werden!'
+                  : 'Das Spiel ist für Jugendliche und Erwachsene ab 13 Jahren geeignet - perfekt für Familienabende und Spielabende mit Freunden.'
                 }
               </p>
             </div>
@@ -305,6 +304,17 @@ export const GameDetail = () => {
               <p className="text-muted-foreground text-sm">
                 Eine Runde {game.title} dauert etwa {game.duration} - ideal als Aufwärmspiel 
                 oder Hauptattraktion des Abends.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Welche besonderen Features bietet {game.title}?</h4>
+              <p className="text-muted-foreground text-sm">
+                {game.interactive?.hasTimer && 'Eingebauter Timer für perfektes Timing, '}
+                {game.interactive?.hasTeams && 'Teamaufteilung und Punkteverwaltung, '}
+                {game.interactive?.hasScoring && 'Automatische Punktezählung, '}
+                {game.interactive?.roundBased && 'Rundenbasiertes Spiel mit klaren Phasen, '}
+                {game.id === 'chaos-challenge' && 'Zufällige Trinkregeln und überraschende Wendungen, '}
+                sowie anpassbare Schwierigkeitsgrade für maximalen Spielspaß.
               </p>
             </div>
           </div>
