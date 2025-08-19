@@ -386,7 +386,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
                 onClick={drawNewRule}
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
-                Neue Aufgabe
+                🥤 Neue Aufgabe (trinken)
               </Button>
               {/* Add drink option for questions */}
               {(currentRule.category === 'personal-question' || currentRule.category === 'social-interaction') && (
