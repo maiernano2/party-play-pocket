@@ -35,6 +35,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentRule, setCurrentRule] = useState<ChaosRule | null>(null);
+  const [isPreloading, setIsPreloading] = useState(false);
   const [round, setRound] = useState(1);
   const [usedRules, setUsedRules] = useState<string[]>([]);
   const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
@@ -53,7 +54,12 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   }, [gamePhase, players.length]);
 
   const acceptWarning = () => {
-    setGamePhase('setup');
+    setIsPreloading(true);
+    // Preload chaos rules in background
+    setTimeout(() => {
+      setGamePhase('setup');
+      setIsPreloading(false);
+    }, 300); // Short delay to show the transition without showing loading text
   };
 
   const addPlayer = () => {
@@ -97,7 +103,10 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const startGame = () => {
     assignTeams();
     setGamePhase('playing');
-    drawNewRule();
+    // Immediate transition to playing phase with first rule
+    setTimeout(() => {
+      drawNewRule();
+    }, 0);
   };
 
   const drawNewRule = () => {
