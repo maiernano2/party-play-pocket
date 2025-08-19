@@ -374,13 +374,6 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
         {/* Current Rule */}
         <Card className="p-6">
           <div className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Badge variant="outline">{currentRule.category}</Badge>
-              {currentRule.duration && (
-                <Badge variant="secondary">{currentRule.duration}</Badge>
-              )}
-            </div>
-            
             <h2 className="text-2xl font-bold">{currentRule.text}</h2>
             
             <div className="flex justify-center gap-3 mt-6">
@@ -395,6 +388,15 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Neue Aufgabe
               </Button>
+              {/* Add drink option for questions */}
+              {(currentRule.category === 'personal-question' || currentRule.category === 'social-interaction') && (
+                <Button 
+                  variant="secondary"
+                  onClick={nextPlayer}
+                >
+                  🥤 Lieber trinken
+                </Button>
+              )}
             </div>
           </div>
         </Card>
