@@ -121,13 +121,13 @@ interface InteractiveChaosChallengeProps {
   
   // Trinkregeln
   { id: '11', text: 'TRINKRUNDE: Alle trinken 2 Schlucke!', category: 'drink' },
-  { id: '12', text: 'TRINKREGEL: Wer lacht, muss trinken (gilt diese Runde)', category: 'drink-rule' },
-  { id: '35', text: 'TRINKREGEL: Wer "ich" sagt, muss trinken (gilt diese Runde)', category: 'drink-rule' },
+  { id: '12', text: 'TRINKREGEL: Wer lacht, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
+  { id: '35', text: 'TRINKREGEL: Wer "ich" sagt, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
   { id: '36', text: 'TRINKRUNDE: Jeder trinkt so viele Schlucke wie sein Alter geteilt durch 10', category: 'drink' },
-  { id: '37', text: 'TRINKREGEL: Wer sein Handy berührt, muss trinken (gilt diese Runde)', category: 'drink-rule' },
+  { id: '37', text: 'TRINKREGEL: Wer sein Handy berührt, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
   { id: '38', text: 'TRINKRUNDE: Wer Single ist, trinkt 3 Schlucke', category: 'drink' },
   { id: '39', text: 'TRINKREGEL: Bei Regelbruch oder nicht geschaffter Aufgabe: Trinken!', category: 'drink-rule' },
-  { id: '58', text: 'TRINKREGEL: Wer flucht, muss trinken (gilt diese Runde)', category: 'drink-rule' },
+  { id: '58', text: 'TRINKREGEL: Wer flucht, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
   { id: '59', text: 'TRINKRUNDE: Alle die schon mal betrunken Sex hatten trinken 2 Schlucke', category: 'drink' }
 ];
 
@@ -137,7 +137,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentRule, setCurrentRule] = useState<ChaosRule | null>(null);
-  const [ruleGiver, setRuleGiver] = useState<string>('');
+  // Rule giver state removed
   const [round, setRound] = useState(1);
   const [usedRules, setUsedRules] = useState<string[]>([]);
   const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
@@ -215,12 +215,12 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       [currentPlayerId]: [...playerUsedTasks, randomRule.id]
     }));
     
-    setRuleGiver(players[currentPlayerIndex].name);
+    // No rule giver tracking needed
     
-    // If rule requires voting, go to voting phase
+    // If rule requires voting, directly handle the voting logic
     if (randomRule.requiresVoting) {
-      setGamePhase('voting');
-      setVotes({});
+      // Skip the separate voting phase, stay in playing phase
+      setGamePhase('playing');
     }
   };
 
@@ -266,16 +266,11 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       setLastUsedRule(null); // Reset last used rule for new round
     }
     
-    // Check if we're back to the rule giver
-    if (players[nextIndex].name === ruleGiver) {
-      setGamePhase('rule-end');
-    } else {
-      setCurrentPlayerIndex(nextIndex);
-      // Draw a new rule for the next player immediately
-      setTimeout(() => {
-        drawNewRule();
-      }, 0);
-    }
+    setCurrentPlayerIndex(nextIndex);
+    // Draw a new rule for the next player immediately
+    setTimeout(() => {
+      drawNewRule();
+    }, 0);
   };
 
   const endRule = () => {
@@ -383,7 +378,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">
-            {ruleGiver}s Aufgabe: Abstimmung vorlesen
+            {players[currentPlayerIndex].name}s Aufgabe: Abstimmung vorlesen
           </h2>
           
           <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
@@ -448,9 +443,6 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
             </div>
           )}
           
-          <div className="text-sm text-muted-foreground">
-            Regelgeber: <strong>{ruleGiver}</strong>
-          </div>
           
           <div className="space-y-3">
             <div className="text-sm">
@@ -475,7 +467,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           <div className="space-y-2">
             <h3 className="text-xl font-bold">Regel beendet!</h3>
             <div className="text-base">
-              <strong>{ruleGiver}</strong>, du kannst nun aufhören mit:
+              Du kannst nun aufhören mit:
             </div>
             <div className="text-lg font-semibold p-4 bg-secondary rounded-lg">
               {currentRule?.text}

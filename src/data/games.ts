@@ -22,13 +22,16 @@ export const games: Game[] = [
       'Es wird ausschließlich Wasser oder alkoholfreie Getränke getrunken',
       'Jeder Spieler ist der Reihe nach am Zug',
       'Beim Zug zieht der Spieler eine Aufgabe/Regel für die gesamte Runde',
-      'Regel gilt bis der ursprüngliche Regelgeber wieder dran ist',
+      'Regeln gelten bis der ursprüngliche Regelgeber wieder dran ist (eine komplette Runde)',
       'Trink-Regeln werden zufällig eingebaut',
       'Spieler bestimmen das Tempo selbst',
       'Verantwortungsvoller Umgang mit Getränken'
     ],
     interactive: {
-      roundBased: true
+      roundBased: true,
+      hasTimer: true,
+      hasTeams: false,
+      hasScoring: false
     }
   },
   {
