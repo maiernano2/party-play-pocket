@@ -5,7 +5,7 @@
 /* Partyspiele Design System - Fröhliche, einladende Farben für Spielspaß */
 
 @layer base {
-  :root {
+:root {
     /* Base colors - warme, helle Basis */
     --background: 210 30% 98%;
     --foreground: 225 15% 15%;
@@ -82,17 +82,20 @@
   }
 
   .dark {
+    /* Dark mode - dunkle, elegante Farben */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 217.2 32.6% 17.5%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 217.2 32.6% 17.5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Primary - angepasst für dark mode */
+    --primary: 25 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 25 95% 65%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -100,15 +103,36 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent - angepasst für dark mode */
+    --accent: 145 60% 55%;
+    --accent-foreground: 0 0% 100%;
 
+    /* Team colors - etwas gedämpft für dark mode */
+    --team-blue: 215 85% 60%;
+    --team-red: 0 75% 60%;
+    --team-green: 145 65% 50%;
+    --team-purple: 265 70% 65%;
+
+    /* Status colors */
+    --success: 145 60% 50%;
+    --warning: 45 90% 60%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 25 90% 55%;
+
+    /* Gradients angepasst für dark mode */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-game: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-team: linear-gradient(135deg, hsl(var(--team-blue)), hsl(var(--team-purple)));
+    --gradient-card: linear-gradient(180deg, hsl(var(--card)), hsl(var(--muted)));
+
+    /* Schatten für dark mode */
+    --shadow-soft: 0 4px 12px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 8px 24px hsl(0 0% 0% / 0.4);
+    --shadow-strong: 0 12px 32px hsl(0 0% 0% / 0.5);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

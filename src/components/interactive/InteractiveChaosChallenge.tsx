@@ -2,148 +2,47 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
+import { chaosRules, getRandomRule } from '@/data/chaos-rules';
 
-import { AlertTriangle, Users, ArrowRight, RotateCcw } from 'lucide-react';
+import { AlertTriangle, Users, ArrowRight, RotateCcw, Shuffle } from 'lucide-react';
 
 interface Player {
   id: string;
   name: string;
+  team?: 'A' | 'B';
 }
 
 interface ChaosRule {
   id: string;
   text: string;
   category: string;
+  intensity: 'zahm' | 'mittel' | 'wild';
   requiresVoting?: boolean;
+  isTeamGame?: boolean;
+  duration?: string;
 }
 
 interface InteractiveChaosChallengeProps {
   onExit: () => void;
 }
 
-  const chaosRules: ChaosRule[] = [
-  // Wer würde eher...
-  { id: '1', text: 'Wer würde eher... einen ganzen Tag lang schweigen?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '2', text: 'Wer würde eher... bei einer Zombie-Apokalypse überleben?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '15', text: 'Wer würde eher... heimlich Schokolade vor dem Fernseher essen?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '16', text: 'Wer würde eher... nackt durch die Stadt laufen für 1000€?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '17', text: 'Wer würde eher... einen Monat ohne Internet überleben?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '18', text: 'Wer würde eher... ihren Ex zurück nehmen?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '40', text: 'Wer würde eher... einen Dreier haben?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '41', text: 'Wer würde eher... beim Sex stöhnen wie ein Pornostar?', category: 'wer-würde-eher', requiresVoting: true },
-  { id: '42', text: 'Wer würde eher... heimlich Sexspielzeug kaufen?', category: 'wer-würde-eher', requiresVoting: true },
-  
-  // Dies oder Das (weniger Abstimmungen)
-  { id: '71', text: 'Netflix oder YouTube?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '72', text: 'Pizza oder Burger?', category: 'dies-oder-das', requiresVoting: true },
-  { id: '73', text: 'Meer oder Berge?', category: 'dies-oder-das', requiresVoting: true },
-  
-  // Fragen über andere (weniger Abstimmungen)
-  { id: '3', text: 'Wer ist am zuverlässigsten in der Gruppe?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '4', text: 'Wer hat die beste Ausrede, wenn er zu spät kommt?', category: 'fragen-über-andere', requiresVoting: true },
-  { id: '21', text: 'Wer würde am ehesten heimlich das Handy des Partners checken?', category: 'fragen-über-andere', requiresVoting: true },
-  
-  // Gruppenchallenges (mehr Aufgaben)
-  { id: '5', text: 'Alle müssen stumm den Song "Happy Birthday" singen', category: 'group-challenge' },
-  { id: '25', text: 'Alle müssen gleichzeitig ihren peinlichsten Moment erzählen', category: 'group-challenge' },
-  { id: '26', text: 'Macht eine Minute lang einen Gruppentanz zu imaginärer Musik', category: 'group-challenge' },
-  { id: '27', text: 'Alle müssen ihre schlimmste Dating-Story erzählen', category: 'group-challenge' },
-  { id: '48', text: 'Alle erzählen gleichzeitig ihr peinlichstes Sexerlebnis', category: 'group-challenge' },
-  { id: '49', text: 'Alle müssen einen sexy Tanz für 30 Sekunden machen', category: 'group-challenge' },
-  { id: '81', text: 'Alle müssen ihre erste große Liebe beschreiben', category: 'group-challenge' },
-  { id: '82', text: 'Alle erzählen ihre verrückteste Partynacht', category: 'group-challenge' },
-  { id: '83', text: 'Alle müssen ihre größte Angst gestehen', category: 'group-challenge' },
-  { id: '84', text: 'Alle machen gleichzeitig Yoga-Posen', category: 'group-challenge' },
-  { id: '85', text: 'Alle müssen ihr Lieblings-Kindheitslied summen', category: 'group-challenge' },
-  
-  // Individuelle Regeln (mehr Aufgaben)
-  { id: '6', text: 'Fingerspitzen müssen sich berühren, bis du wieder dran bist', category: 'individual-rule' },
-  { id: '7', text: 'Du darfst nicht "Ja" oder "Nein" sagen', category: 'individual-rule' },
-  { id: '13', text: 'Du musst jede Antwort mit "Meiner Meinung nach..." beginnen', category: 'speaking-rule' },
-  { id: '14', text: 'Sprich nur in Fragen, bis du wieder dran bist', category: 'speaking-rule' },
-  { id: '28', text: 'Du musst bei jedem Satz mit den Händen gestikulieren', category: 'individual-rule' },
-  { id: '29', text: 'Du darfst nur flüstern, bis du wieder dran bist', category: 'speaking-rule' },
-  { id: '30', text: 'Du musst jeden Satz mit "Ehm..." beginnen', category: 'speaking-rule' },
-  { id: '50', text: 'Du musst jedes Mal zwinkern wenn du sprichst', category: 'individual-rule' },
-  { id: '51', text: 'Du darfst nicht das Wort "und" sagen', category: 'speaking-rule' },
-  { id: '52', text: 'Du musst bei jedem Satz "wie geil" am Ende sagen', category: 'speaking-rule' },
-  { id: '86', text: 'Du musst auf einem Bein stehen wenn du sprichst', category: 'individual-rule' },
-  { id: '87', text: 'Du darfst nur mit tiefer Stimme sprechen', category: 'speaking-rule' },
-  { id: '88', text: 'Du musst bei jedem Satz in die Hände klatschen', category: 'individual-rule' },
-  { id: '89', text: 'Du darfst keine Namen aussprechen', category: 'speaking-rule' },
-  { id: '90', text: 'Du musst jeden Satz mit "Übrigens..." beginnen', category: 'speaking-rule' },
-  
-  // Challenges (viel mehr Aufgaben)
-  { id: '8', text: 'Zeichne in 30 Sekunden einen Elefanten mit geschlossenen Augen', category: 'challenge' },
-  { id: '9', text: 'Imitiere 30 Sekunden lang einen berühmten Politiker', category: 'challenge' },
-  { id: '10', text: 'Sage einen Zungenbrecher 5x hintereinander fehlerfrei', category: 'challenge' },
-  { id: '31', text: 'Erzähle eine erfundene Geschichte über dein erstes Mal', category: 'challenge' },
-  { id: '32', text: 'Tanze 30 Sekunden zu imaginärer Musik als wärst du allein', category: 'challenge' },
-  { id: '33', text: 'Imitiere einen Orgasmus (jugendfreie Version)', category: 'challenge' },
-  { id: '34', text: 'Erzähle dein peinlichstes Sex-Erlebnis (oder erfinde eins)', category: 'challenge' },
-  { id: '53', text: 'Mache 10 sexy Kniebeugen', category: 'challenge' },
-  { id: '54', text: 'Erzähle deine wildeste Sexfantasie (oder erfinde eine)', category: 'challenge' },
-  { id: '55', text: 'Imitiere deinen letzten Orgasmus mit Geräuschen', category: 'challenge' },
-  { id: '56', text: 'Lecke deinen Ellbogen für 10 Sekunden', category: 'challenge' },
-  { id: '57', text: 'Massiere die Schultern der Person links von dir für 30 Sekunden', category: 'challenge' },
-  { id: '60', text: 'Küsse die Hand der Person rechts von dir leidenschaftlich', category: 'challenge' },
-  { id: '61', text: 'Flüstere der Person links von dir etwas Verführerisches ins Ohr', category: 'challenge' },
-  { id: '62', text: 'Tanze einen langsamen, sinnlichen Tanz für 20 Sekunden', category: 'challenge' },
-  { id: '63', text: 'Erzähle von deinem verrücktesten Kuss', category: 'challenge' },
-  { id: '64', text: 'Mache Liegestütze und gib dabei verführerische Geräusche von dir', category: 'challenge' },
-  { id: '65', text: 'Beschreibe deinen Traumpartner im Bett (ohne Namen zu nennen)', category: 'challenge' },
-  { id: '66', text: 'Führe einen 15-sekündigen Strip-Tease auf (nur Oberteil)', category: 'challenge' },
-  { id: '67', text: 'Gib jemandem in der Runde ein Kompliment über sein Aussehen', category: 'challenge' },
-  { id: '68', text: 'Erzähle von deinem ersten Kuss in allen Details', category: 'challenge' },
-  { id: '69', text: 'Mache 30 Sekunden lang sexy Gesichtsausdrücke', category: 'challenge' },
-  { id: '70', text: 'Imitiere, wie du jemanden verführen würdest', category: 'challenge' },
-  { id: '91', text: 'Erkläre das Kama Sutra ohne Hände zu benutzen', category: 'challenge' },
-  { id: '92', text: 'Imitiere 5 verschiedene Tiergeräusche', category: 'challenge' },
-  { id: '93', text: 'Singe dein Lieblingslied mit vollem Mund Wasser', category: 'challenge' },
-  { id: '94', text: 'Mache einen Handstand für 10 Sekunden', category: 'challenge' },
-  { id: '95', text: 'Erzähle einen Witz, der niemanden zum Lachen bringt', category: 'challenge' },
-  { id: '96', text: 'Balanciere ein Glas auf dem Kopf für 30 Sekunden', category: 'challenge' },
-  { id: '97', text: 'Sprich 1 Minute lang nur in Reimen', category: 'challenge' },
-  { id: '98', text: 'Imitiere einen Superhelden deiner Wahl', category: 'challenge' },
-  { id: '99', text: 'Erzähle eine Gutenacht-Geschichte für Erwachsene', category: 'challenge' },
-  { id: '100', text: 'Mache 20 Sekunden lang den Roboter-Tanz', category: 'challenge' },
-  { id: '101', text: 'Beschreibe dein Lieblings-Sexstellungen pantomimisch', category: 'challenge' },
-  { id: '102', text: 'Erzähle von deinem peinlichsten Arztbesuch', category: 'challenge' },
-  { id: '103', text: 'Imitiere deinen Lieblings-Pornostar (jugendfreie Version)', category: 'challenge' },
-  { id: '104', text: 'Erkläre Quantenphysik in 30 Sekunden', category: 'challenge' },
-  { id: '105', text: 'Erzähle deine Traumhochzeit in allen Details', category: 'challenge' },
-  { id: '106', text: 'Imitiere einen Telefonverkäufer der Kondome verkauft', category: 'challenge' },
-  { id: '107', text: 'Beschreibe deinen schlimmsten One-Night-Stand', category: 'challenge' },
-  { id: '108', text: 'Mache eine Sportreporter-Kommentar über das aktuelle Geschehen', category: 'challenge' },
-  { id: '109', text: 'Erzähle was in deiner Suchwerlauf stehen würde', category: 'challenge' },
-  { id: '110', text: 'Führe ein Verkaufsgespräch für Sexspielzeug', category: 'challenge' },
-  
-  // Trinkregeln
-  { id: '11', text: 'TRINKRUNDE: Alle trinken 2 Schlucke!', category: 'drink' },
-  { id: '12', text: 'TRINKREGEL: Wer lacht, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
-  { id: '35', text: 'TRINKREGEL: Wer "ich" sagt, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
-  { id: '36', text: 'TRINKRUNDE: Jeder trinkt so viele Schlucke wie sein Alter geteilt durch 10', category: 'drink' },
-  { id: '37', text: 'TRINKREGEL: Wer sein Handy berührt, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
-  { id: '38', text: 'TRINKRUNDE: Wer Single ist, trinkt 3 Schlucke', category: 'drink' },
-  { id: '39', text: 'TRINKREGEL: Bei Regelbruch oder nicht geschaffter Aufgabe: Trinken!', category: 'drink-rule' },
-  { id: '58', text: 'TRINKREGEL: Wer flucht, muss trinken (gilt bis Ende der Runde)', category: 'drink-rule' },
-  { id: '59', text: 'TRINKRUNDE: Alle die schon mal betrunken Sex hatten trinken 2 Schlucke', category: 'drink' }
-];
-
 export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeProps) => {
-  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'countdown' | 'playing' | 'rule-end' | 'voting'>('warning');
+  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'intensity-select' | 'playing' | 'voting'>('warning');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentRule, setCurrentRule] = useState<ChaosRule | null>(null);
-  // Rule giver state removed
   const [round, setRound] = useState(1);
   const [usedRules, setUsedRules] = useState<string[]>([]);
   const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
   const [playerTasksThisRound, setPlayerTasksThisRound] = useState<{[playerId: string]: string[]}>({});
   const [lastUsedRule, setLastUsedRule] = useState<string | null>(null);
   const [votes, setVotes] = useState<{[playerId: string]: string}>({});
+  const [intensity, setIntensity] = useState<'zahm' | 'mittel' | 'wild'>('zahm');
+  const [teams, setTeams] = useState<{A: Player[], B: Player[]}>({A: [], B: []});
   
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -172,38 +71,49 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     setPlayers(players.filter(p => p.id !== playerId));
   };
 
-  const startGame = () => {
+  const proceedToIntensitySelect = () => {
     if (players.length >= 3) {
-      setGamePhase('playing');
-      drawNewRule();
+      setGamePhase('intensity-select');
     }
   };
 
-  const onCountdownComplete = () => {
+  const assignTeams = () => {
+    const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+    const teamA: Player[] = [];
+    const teamB: Player[] = [];
+    
+    shuffledPlayers.forEach((player, index) => {
+      if (index % 2 === 0) {
+        teamA.push({...player, team: 'A'});
+      } else {
+        teamB.push({...player, team: 'B'});
+      }
+    });
+    
+    setTeams({A: teamA, B: teamB});
+    setPlayers([...teamA, ...teamB]);
+  };
+
+  const startGame = () => {
+    assignTeams();
     setGamePhase('playing');
     drawNewRule();
   };
 
   const drawNewRule = () => {
-    const currentPlayerId = players[currentPlayerIndex].id;
+    const currentPlayerId = players[currentPlayerIndex]?.id;
+    if (!currentPlayerId) return;
+    
     const playerUsedTasks = playerTasksThisRound[currentPlayerId] || [];
     
-    // Filter rules that this player hasn't used in this round AND is not the last used rule
-    let availableRules = chaosRules.filter(rule => 
-      !playerUsedTasks.includes(rule.id) && rule.id !== lastUsedRule
-    );
+    // Get appropriate intensity level (gets wilder as rounds progress)
+    let currentIntensity = intensity;
+    if (round > 3 && intensity === 'zahm') currentIntensity = 'mittel';
+    if (round > 6 && intensity === 'mittel') currentIntensity = 'wild';
     
-    // If no rules available, allow any rule except the last used one
-    if (availableRules.length === 0) {
-      availableRules = chaosRules.filter(rule => rule.id !== lastUsedRule);
-    }
+    const excludeIds = [...playerUsedTasks, lastUsedRule].filter(Boolean);
+    const randomRule = getRandomRule(currentIntensity, excludeIds);
     
-    // If still no rules (shouldn't happen with 60+ rules), use all rules
-    if (availableRules.length === 0) {
-      availableRules = chaosRules;
-    }
-    
-    const randomRule = availableRules[Math.floor(Math.random() * availableRules.length)];
     setCurrentRule(randomRule);
     setUsedRules([...usedRules, randomRule.id]);
     setUsedRulesThisRound([...usedRulesThisRound, randomRule.id]);
@@ -215,12 +125,10 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       [currentPlayerId]: [...playerUsedTasks, randomRule.id]
     }));
     
-    // No rule giver tracking needed
-    
-    // If rule requires voting, directly handle the voting logic
+    // Handle voting if required
     if (randomRule.requiresVoting) {
-      // Skip the separate voting phase, stay in playing phase
-      setGamePhase('playing');
+      setVotes({});
+      setGamePhase('voting');
     }
   };
 
@@ -232,27 +140,6 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   };
 
   const finishVoting = () => {
-    const voteCount: {[option: string]: string[]} = {};
-    
-    // Count votes
-    Object.entries(votes).forEach(([playerId, vote]) => {
-      if (!voteCount[vote]) voteCount[vote] = [];
-      voteCount[vote].push(playerId);
-    });
-    
-    // Find minority group(s)
-    const voteCounts = Object.entries(voteCount).map(([option, voters]) => ({
-      option,
-      voters,
-      count: voters.length
-    }));
-    
-    if (voteCounts.length > 0) {
-      const minCount = Math.min(...voteCounts.map(v => v.count));
-      const minorities = voteCounts.filter(v => v.count === minCount);
-      // Show result and continue to normal game flow
-    }
-    
     setGamePhase('playing');
   };
 
@@ -261,22 +148,15 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     
     if (nextIndex === 0) {
       setRound(round + 1);
-      setUsedRulesThisRound([]); // Reset used rules for new round
-      setPlayerTasksThisRound({}); // Reset player tasks for new round
-      setLastUsedRule(null); // Reset last used rule for new round
+      setUsedRulesThisRound([]);
+      setPlayerTasksThisRound({});
+      setLastUsedRule(null);
     }
     
     setCurrentPlayerIndex(nextIndex);
-    // Draw a new rule for the next player immediately
     setTimeout(() => {
       drawNewRule();
     }, 0);
-  };
-
-  const endRule = () => {
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
-    setGamePhase('playing');
-    drawNewRule();
   };
 
   const renderWarning = () => (
@@ -349,7 +229,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
                   variant="ghost"
                   size="sm"
                   onClick={() => removePlayer(player.id)}
-                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  className="text-destructive hover:text-destructive"
                 >
                   Entfernen
                 </Button>
@@ -359,138 +239,239 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
         )}
 
         <Button 
-          onClick={startGame}
+          onClick={proceedToIntensitySelect}
           disabled={players.length < 3}
           className="w-full"
           size="lg"
         >
-          <Users className="w-4 h-4 mr-2" />
-          Spiel starten
+          <ArrowRight className="w-4 h-4 mr-2" />
+          Weiter zur Intensitätsauswahl
         </Button>
       </Card>
     </div>
   );
 
-  const renderVoting = () => {
-    if (!currentRule) return null;
-    
-    return (
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            {players[currentPlayerIndex].name}s Aufgabe: Abstimmung vorlesen
-          </h2>
-          
-          <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
-            <p className="text-lg text-white font-medium">{currentRule.text}</p>
+  const renderIntensitySelect = () => (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <Card className="p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">Intensitätslevel wählen</h2>
+        
+        <div className="space-y-4 mb-8">
+          <div className="grid gap-4">
+            <Card 
+              className={`p-4 cursor-pointer border-2 transition-all ${
+                intensity === 'zahm' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
+              }`}
+              onClick={() => setIntensity('zahm')}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-lg text-success">🐰 Zahm</h3>
+                  <p className="text-sm text-muted-foreground">Harmlose Fragen und einfache Aufgaben</p>
+                </div>
+                <Badge variant="secondary">Familie & Freunde</Badge>
+              </div>
+            </Card>
+
+            <Card 
+              className={`p-4 cursor-pointer border-2 transition-all ${
+                intensity === 'mittel' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
+              }`}
+              onClick={() => setIntensity('mittel')}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-lg text-warning">🔥 Mittel</h3>
+                  <p className="text-sm text-muted-foreground">Etwas persönlichere Fragen und Challenges</p>
+                </div>
+                <Badge variant="secondary">Gute Freunde</Badge>
+              </div>
+            </Card>
+
+            <Card 
+              className={`p-4 cursor-pointer border-2 transition-all ${
+                intensity === 'wild' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
+              }`}
+              onClick={() => setIntensity('wild')}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-lg text-destructive">💥 Wild</h3>
+                  <p className="text-sm text-muted-foreground">Sehr persönliche und aufregende Aufgaben</p>
+                </div>
+                <Badge variant="destructive">Beste Freunde</Badge>
+              </div>
+            </Card>
           </div>
-          
-          <div className="bg-yellow-500/20 rounded-lg p-4 mb-6 border border-yellow-400">
-            <p className="text-white text-sm">
-              🗳️ Stimmt ab und der Gewählte muss trinken!
-            </p>
-          </div>
-          
+        </div>
+
+        <div className="text-center space-y-4">
+          <p className="text-sm text-muted-foreground">
+            <strong>Hinweis:</strong> Das Spiel wird automatisch intensiver, je länger es dauert.
+          </p>
           <Button 
-            onClick={() => setGamePhase('playing')}
-            className="w-full bg-white text-primary hover:bg-white/90"
+            onClick={startGame}
+            className="w-full"
             size="lg"
           >
-            Abstimmung abgeschlossen - Weiter
+            <Shuffle className="w-4 h-4 mr-2" />
+            Spiel starten ({intensity} gewählt)
           </Button>
         </div>
+      </Card>
+    </div>
+  );
+
+  const renderVoting = () => {
+    if (!currentRule?.requiresVoting) return null;
+
+    const voteOptions = currentRule.category === 'dies-oder-das' 
+      ? currentRule.text.split(' oder ')
+      : players.map(p => p.name);
+
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <Card className="p-6">
+          <h3 className="text-xl font-bold mb-4 text-center">Abstimmung</h3>
+          <div className="text-center mb-6">
+            <p className="text-lg">{currentRule.text}</p>
+            {currentRule.duration && (
+              <Badge variant="outline" className="mt-2">
+                {currentRule.duration}
+              </Badge>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            {voteOptions.map((option, index) => (
+              <div key={index} className="space-y-2">
+                <h4 className="font-medium">{option}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {players.map(player => (
+                    <Button
+                      key={player.id}
+                      variant={votes[player.id] === option ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => castVote(player.id, option)}
+                    >
+                      {player.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <Button
+              onClick={finishVoting}
+              disabled={Object.keys(votes).length < players.length}
+            >
+              Abstimmung beenden
+            </Button>
+          </div>
+        </Card>
       </div>
     );
   };
 
-  const renderPlaying = () => (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center md:text-center">
-        <div className="text-sm text-muted-foreground mb-2">Runde {round}</div>
-        <div className="text-lg font-semibold">
-          {players[currentPlayerIndex].name} ist dran
-        </div>
-      </div>
+  const renderPlaying = () => {
+    if (!currentRule) return null;
 
-      <Card className="p-8">
-        <div className="text-center space-y-6">
-          <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">Deine Aufgabe:</div>
-            <div className="text-xl font-bold p-4 bg-primary/10 rounded-lg border-2 border-primary">
-              {currentRule?.text}
+    const currentPlayer = players[currentPlayerIndex];
+
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Current Player & Round Info */}
+        <Card className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                {currentPlayer?.name?.charAt(0)}
+              </div>
+              <div>
+                <h3 className="font-bold">{currentPlayer?.name}</h3>
+                {currentPlayer?.team && (
+                  <Badge variant={currentPlayer.team === 'A' ? 'default' : 'secondary'}>
+                    Team {currentPlayer.team}
+                  </Badge>
+                )}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-sm text-muted-foreground">Runde {round}</div>
+              <Badge variant="outline">{intensity.toUpperCase()}</Badge>
             </div>
           </div>
-          
-          {(currentRule?.category === 'drink' || currentRule?.category === 'drink-rule') && (
-            <div className="p-4 bg-accent/20 rounded-lg border border-accent">
-              <div className="text-accent font-semibold">🍺 Trinkregel aktiviert!</div>
-            </div>
-          )}
-          
-          {(currentRule?.category === 'wer-würde-eher' || currentRule?.category === 'fragen-über-andere' || currentRule?.category === 'dies-oder-das') && (
-            <div className="p-4 bg-orange-500/20 rounded-lg border border-orange-500">
-              <div className="text-orange-900 font-semibold">
-                👥 Stimmt ab und der Gewählte trinkt!
+        </Card>
+
+        {/* Teams Display for Team Games */}
+        {currentRule.isTeamGame && (
+          <Card className="p-4">
+            <h3 className="font-bold mb-3 text-center">Team-Aufteilung</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium mb-2">Team A</h4>
+                <div className="space-y-1">
+                  {teams.A.map(player => (
+                    <div key={player.id} className="text-sm p-2 bg-primary/10 rounded">
+                      {player.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-medium mb-2">Team B</h4>
+                <div className="space-y-1">
+                  {teams.B.map(player => (
+                    <div key={player.id} className="text-sm p-2 bg-secondary/10 rounded">
+                      {player.name}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          )}
-          
-          {(currentRule?.category === 'challenge' || currentRule?.category === 'individual-rule' || currentRule?.category === 'speaking-rule') && (
-            <div className="p-4 bg-red-500/20 rounded-lg border border-red-500">
-              <div className="text-red-900 font-semibold">
-                ⚠️ WICHTIG: Aufgabe nicht geschafft oder Regel gebrochen? Trinken!
-              </div>
-            </div>
-          )}
-          
-          
-          <div className="space-y-3">
-            <div className="text-sm">
-              Gib das Handy weiter an: <strong>{players[(currentPlayerIndex + 1) % players.length].name}</strong>
+          </Card>
+        )}
+
+        {/* Current Rule */}
+        <Card className="p-6">
+          <div className="text-center space-y-4">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Badge variant="outline">{currentRule.category}</Badge>
+              {currentRule.duration && (
+                <Badge variant="secondary">{currentRule.duration}</Badge>
+              )}
             </div>
             
-            <Button onClick={nextPlayer} className="w-full" size="lg">
-              <ArrowRight className="w-4 h-4 mr-2" />
-              Weiter zum nächsten Spieler
-            </Button>
-          </div>
-        </div>
-      </Card>
-    </div>
-  );
-
-  const renderRuleEnd = () => (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <Card className="p-8">
-        <div className="text-center space-y-6">
-          <RotateCcw className="w-16 h-16 text-primary mx-auto" />
-          <div className="space-y-2">
-            <h3 className="text-xl font-bold">Regel beendet!</h3>
-            <div className="text-base">
-              Du kannst nun aufhören mit:
-            </div>
-            <div className="text-lg font-semibold p-4 bg-secondary rounded-lg">
-              {currentRule?.text}
+            <h2 className="text-2xl font-bold">{currentRule.text}</h2>
+            
+            <div className="flex justify-center gap-3 mt-6">
+              <Button onClick={nextPlayer}>
+                <ArrowRight className="w-4 h-4 mr-2" />
+                Nächster Spieler
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={drawNewRule}
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Neue Aufgabe
+              </Button>
             </div>
           </div>
-          
-          <Button onClick={endRule} className="w-full" size="lg">
-            <ArrowRight className="w-4 h-4 mr-2" />
-            Neue Regel ziehen
-          </Button>
-        </div>
-      </Card>
-    </div>
-  );
+        </Card>
+      </div>
+    );
+  };
 
   return (
-    <InteractiveGameContainer onExit={onExit} title="Chaos-Challenge">
+    <InteractiveGameContainer onExit={onExit} title="Chaos Challenge">
       {gamePhase === 'warning' && renderWarning()}
       {gamePhase === 'setup' && renderSetup()}
-      
+      {gamePhase === 'intensity-select' && renderIntensitySelect()}
       {gamePhase === 'voting' && renderVoting()}
       {gamePhase === 'playing' && renderPlaying()}
-      {gamePhase === 'rule-end' && renderRuleEnd()}
     </InteractiveGameContainer>
   );
 };

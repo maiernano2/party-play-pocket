@@ -3,6 +3,7 @@ import { Hero } from '@/components/Hero';
 import { GameCard } from '@/components/GameCard';
 import { GameFilter } from '@/components/GameFilter';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { games, getGamesByCategory } from '@/data/games';
 
 const Index = () => {
@@ -45,6 +46,11 @@ const Index = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       
       {/* Hero Section */}
       <Hero onDiscoverGames={scrollToGames} />
