@@ -132,7 +132,7 @@ const Index = () => {
       <footer className="bg-card border-t py-12 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="p-8 bg-card/50 backdrop-blur-sm border border-border/50 dark:border-border/30 rounded-xl">
+            <div className="p-8 bg-card border border-border rounded-xl shadow-sm">
               <h3 className="font-bold text-lg mb-4 gradient-text">Partyspiele.app</h3>
               <p className="text-muted-foreground mb-4">
                 Die ultimative Sammlung mobiler Partyspiele für unvergessliche 
@@ -145,7 +145,7 @@ const Index = () => {
                 <p>✓ Anpassbare Schwierigkeitsgrade</p>
               </div>
             </div>
-            <div className="p-8 bg-card/50 backdrop-blur-sm border border-border/50 dark:border-border/30 rounded-xl">
+            <div className="p-8 bg-card border border-border rounded-xl shadow-sm">
               <h4 className="font-semibold mb-4">Feedback & Support</h4>
               <p className="text-muted-foreground text-sm mb-4">
                 Haben Sie Verbesserungsvorschläge oder Fehler gefunden? Wir freuen uns über Ihr Feedback!
@@ -162,14 +162,14 @@ const Index = () => {
                   type="text"
                   placeholder="Betreff"
                   required
-                  className="w-full px-4 py-2 rounded-lg bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
                 <textarea
                   name="message"
                   placeholder="Ihre Nachricht"
                   required
                   rows={3}
-                  className="w-full px-4 py-2 rounded-lg bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                  className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
                 ></textarea>
                 <Button type="submit" className="w-full">
                   Nachricht senden
