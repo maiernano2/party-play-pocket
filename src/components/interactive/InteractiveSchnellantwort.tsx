@@ -79,12 +79,12 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
   const startGame = () => {
     if (players.length >= 3) {
-      setGamePhase('category-countdown');
+      startNewRound();
     }
   };
 
   const onCountdownComplete = () => {
-    startNewRound();
+    // No longer needed since we skip countdown
   };
 
   const startNewRound = () => {
@@ -255,14 +255,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     );
   }
 
-  if (gamePhase === 'category-countdown') {
-    return (
-      <GameCountdown 
-        onCountdownComplete={onCountdownComplete}
-        onSkip={onCountdownComplete}
-      />
-    );
-  }
+  // Remove countdown phase completely - go directly to waiting
 
   if (gamePhase === 'waiting') {
     return (
