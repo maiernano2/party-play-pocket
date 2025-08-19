@@ -30,12 +30,6 @@ export const chaosRules: ChaosRule[] = [
   { id: '19', text: 'Erzähle von deiner ersten Haustier-Erinnerung', category: 'personal-question', intensity: 'zahm' },
   { id: '20', text: 'Beschreibe deine größte irrationale Angst', category: 'personal-question', intensity: 'zahm' },
 
-  // Team Spiele - Zahm (nur sinnvolle)
-  { id: '220', text: 'TEAMSPIEL: Ein Team erklärt Begriffe, das andere rät für 3 Minuten', category: 'team-game', intensity: 'zahm', isTeamGame: true },
-  { id: '221', text: 'TEAMSPIEL: Teams zählen abwechselnd Länder auf, ohne Wiederholung für 2 Minuten', category: 'team-game', intensity: 'zahm', isTeamGame: true },
-  { id: '222', text: 'TEAMSPIEL: Stadt-Land-Fluss Battle zwischen den Teams für 5 Minuten', category: 'team-game', intensity: 'zahm', isTeamGame: true },
-  { id: '223', text: 'TEAMSPIEL: Wer nennt mehr Disney-Charaktere? für 2 Minuten', category: 'team-game', intensity: 'zahm', isTeamGame: true },
-  { id: '224', text: 'TEAMSPIEL: Teams bilden abwechselnd Reimwörter für 3 Minuten', category: 'team-game', intensity: 'zahm', isTeamGame: true },
 
   // Gruppenchallenges - Zahm
   { id: '225', text: 'Alle müssen stumm "Happy Birthday" singen für 30 Sekunden', category: 'group-challenge', intensity: 'zahm' },
@@ -70,10 +64,6 @@ export const chaosRules: ChaosRule[] = [
   { id: '326', text: 'Verrate, wer in der Runde am besten küssen könnte', category: 'social-interaction', intensity: 'mittel' },
   { id: '327', text: 'Mit wem in der Runde würdest du gerne einen Abend verbringen?', category: 'social-interaction', intensity: 'mittel' },
 
-  // Team Spiele - Mittel  
-  { id: '330', text: 'TEAMSPIEL: Pantomime-Battle - Teams stellen abwechselnd Begriffe dar für 5 Minuten', category: 'team-game', intensity: 'mittel', isTeamGame: true },
-  { id: '331', text: 'TEAMSPIEL: Wahrheit oder Pflicht zwischen den Teams für 10 Minuten', category: 'team-game', intensity: 'mittel', isTeamGame: true },
-  { id: '332', text: 'TEAMSPIEL: Teams erfinden abwechselnd peinliche Geschichten übereinander für 5 Minuten', category: 'team-game', intensity: 'mittel', isTeamGame: true },
 
   // Challenges - Mittel
   { id: '340', text: 'Tanze zu imaginärer Musik als wärst du allein für 30 Sekunden', category: 'challenge', intensity: 'mittel' },
@@ -106,9 +96,6 @@ export const chaosRules: ChaosRule[] = [
   { id: '425', text: 'Mit wem in der Runde würdest du gerne eine Nacht verbringen?', category: 'social-interaction', intensity: 'wild' },
   { id: '426', text: 'Wer in der Runde ist am verführerischsten?', category: 'social-interaction', intensity: 'wild' },
 
-  // Team Spiele - Wild
-  { id: '430', text: 'TEAMSPIEL: Teams spielen verführerische Rollenspiele gegeneinander für 5 Minuten', category: 'team-game', intensity: 'wild', isTeamGame: true },
-  { id: '431', text: 'TEAMSPIEL: Welches Team kann verführerischer sprechen? für 3 Minuten', category: 'team-game', intensity: 'wild', isTeamGame: true },
 
   // Challenges - Wild
   { id: '440', text: 'Führe einen Strip-Tease auf (nur Oberteil) für 30 Sekunden', category: 'challenge', intensity: 'wild' },

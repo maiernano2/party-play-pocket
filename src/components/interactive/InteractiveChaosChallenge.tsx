@@ -111,23 +111,13 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     if (round > 3 && intensity === 'zahm') currentIntensity = 'mittel';
     if (round > 6 && intensity === 'mittel') currentIntensity = 'wild';
     
-    const excludeIds = [...playerUsedTasks, lastUsedRule].filter(Boolean);
+    const excludeIds = [...usedRules, lastUsedRule].filter(Boolean);
     const randomRule = getRandomRule(currentIntensity, excludeIds);
     
     setCurrentRule(randomRule);
     setUsedRules([...usedRules, randomRule.id]);
     setUsedRulesThisRound([...usedRulesThisRound, randomRule.id]);
     setLastUsedRule(randomRule.id);
-    
-    // Check if this is a team game
-    setCurrentTeamGame(!!randomRule.isTeamGame);
-
-    
-    // Track that this player used this task in this round
-    setPlayerTasksThisRound(prev => ({
-      ...prev,
-      [currentPlayerId]: [...playerUsedTasks, randomRule.id]
-    }));
   };
 
   const nextPlayer = () => {
@@ -388,15 +378,6 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
                 <RotateCcw className="w-4 h-4 mr-2" />
                 🥤 Neue Aufgabe (trinken)
               </Button>
-              {/* Add drink option for questions */}
-              {(currentRule.category === 'personal-question' || currentRule.category === 'social-interaction') && (
-                <Button 
-                  variant="secondary"
-                  onClick={nextPlayer}
-                >
-                  🥤 Lieber trinken
-                </Button>
-              )}
             </div>
           </div>
         </Card>
