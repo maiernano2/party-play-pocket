@@ -132,7 +132,7 @@ const Index = () => {
       <footer className="bg-card border-t py-12 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="grid md:grid-cols-2 gap-8">
-            <div>
+            <div className="p-8 bg-card/50 backdrop-blur-sm border border-border/50 dark:border-border/30 rounded-xl">
               <h3 className="font-bold text-lg mb-4 gradient-text">Partyspiele.app</h3>
               <p className="text-muted-foreground mb-4">
                 Die ultimative Sammlung mobiler Partyspiele für unvergessliche 
@@ -145,7 +145,7 @@ const Index = () => {
                 <p>✓ Anpassbare Schwierigkeitsgrade</p>
               </div>
             </div>
-            <div>
+            <div className="p-8 bg-card/50 backdrop-blur-sm border border-border/50 dark:border-border/30 rounded-xl">
               <h4 className="font-semibold mb-4">Feedback & Support</h4>
               <p className="text-muted-foreground text-sm mb-4">
                 Haben Sie Verbesserungsvorschläge oder Fehler gefunden? Wir freuen uns über Ihr Feedback!

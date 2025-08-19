@@ -4,9 +4,9 @@ import { getGameById } from '@/data/games';
 import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { InteractiveDerDuemmsteFliegt } from '@/components/interactive/InteractiveDerDuemmsteFliegt';
 import { InteractiveSchnellantwort } from '@/components/interactive/InteractiveSchnellantwort';
-
 import { InteractiveTeamQuiz } from '@/components/interactive/InteractiveTeamQuiz';
 import { InteractiveBegriffBeschreiben } from '@/components/interactive/InteractiveBegriffBeschreiben';
 import { InteractivePantomimeRaten } from '@/components/interactive/InteractivePantomimeRaten';
@@ -131,21 +131,24 @@ export const GameDetail = () => {
       {/* Header */}
       <header className="sticky top-0 bg-background/80 backdrop-blur-sm border-b z-10">
         <div className="container mx-auto px-4 py-4">
-          <nav aria-label="Breadcrumb">
-            <button 
-              onClick={() => {
-                navigate('/');
-                setTimeout(() => {
-                  const gamesSection = document.querySelector('[data-games-section]');
-                  gamesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-              }}
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Zurück zu allen Partyspielen
-            </button>
-          </nav>
+          <div className="flex items-center justify-between">
+            <nav aria-label="Breadcrumb">
+              <button 
+                onClick={() => {
+                  navigate('/');
+                  setTimeout(() => {
+                    const gamesSection = document.querySelector('[data-games-section]');
+                    gamesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 100);
+                }}
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                Zurück zu allen Partyspielen
+              </button>
+            </nav>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -220,25 +223,25 @@ export const GameDetail = () => {
             <h3 className="text-xl font-bold mb-4">Spiel-Features</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {game.interactive.hasTimer && (
-                <div className="bg-white/80 rounded-xl p-4 text-center">
+                <div className="bg-card/80 dark:bg-card/50 backdrop-blur-sm rounded-xl p-4 text-center border border-border/20 dark:border-border/10">
                   <Clock className="w-6 h-6 text-primary mx-auto mb-2" />
                   <div className="text-sm font-medium">Timer</div>
                 </div>
               )}
               {game.interactive.hasTeams && (
-                <div className="bg-white/80 rounded-xl p-4 text-center">
+                <div className="bg-card/80 dark:bg-card/50 backdrop-blur-sm rounded-xl p-4 text-center border border-border/20 dark:border-border/10">
                   <Users className="w-6 h-6 text-team-blue mx-auto mb-2" />
                   <div className="text-sm font-medium">Teams</div>
                 </div>
               )}
               {game.interactive.hasScoring && (
-                <div className="bg-white/80 rounded-xl p-4 text-center">
+                <div className="bg-card/80 dark:bg-card/50 backdrop-blur-sm rounded-xl p-4 text-center border border-border/20 dark:border-border/10">
                   <span className="text-2xl mb-2 block">🏆</span>
                   <div className="text-sm font-medium">Punkte</div>
                 </div>
               )}
               {game.interactive.roundBased && (
-                <div className="bg-white/80 rounded-xl p-4 text-center">
+                <div className="bg-card/80 dark:bg-card/50 backdrop-blur-sm rounded-xl p-4 text-center border border-border/20 dark:border-border/10">
                   <span className="text-2xl mb-2 block">🔄</span>
                   <div className="text-sm font-medium">Runden</div>
                 </div>

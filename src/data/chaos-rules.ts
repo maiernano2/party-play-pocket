@@ -54,6 +54,18 @@ export const chaosRules: ChaosRule[] = [
   { id: '313', text: 'Erzähle von deinem größten Regelbruch', category: 'personal-question', intensity: 'mittel' },
   { id: '314', text: 'Beschreibe deine verrückteste Spontanaktion', category: 'personal-question', intensity: 'mittel' },
 
+  // Normale Fragen - Mittel 
+  { id: '350', text: 'Was war dein schönster Moment in diesem Jahr?', category: 'normal-question', intensity: 'mittel' },
+  { id: '351', text: 'Welche Eigenschaft bewunderst du am meisten an anderen?', category: 'normal-question', intensity: 'mittel' },
+  { id: '352', text: 'Was würdest du anders machen, wenn du nochmal 16 wärst?', category: 'normal-question', intensity: 'mittel' },
+  { id: '353', text: 'Welcher Ort auf der Welt fasziniert dich am meisten?', category: 'normal-question', intensity: 'mittel' },
+  { id: '354', text: 'Was ist das Mutigste, was du je getan hast?', category: 'normal-question', intensity: 'mittel' },
+  { id: '355', text: 'Welche Lebenserfahrung hat dich am meisten geprägt?', category: 'normal-question', intensity: 'mittel' },
+  { id: '356', text: 'Was machst du, wenn du richtig gestresst bist?', category: 'normal-question', intensity: 'mittel' },
+  { id: '357', text: 'Welche drei Werte sind dir im Leben am wichtigsten?', category: 'normal-question', intensity: 'mittel' },
+  { id: '358', text: 'Was war dein größter Lernmoment im letzten Jahr?', category: 'normal-question', intensity: 'mittel' },
+  { id: '359', text: 'Welche Tradition findest du besonders wertvoll?', category: 'normal-question', intensity: 'mittel' },
+
   // Fragen über andere - Mittel
   { id: '320', text: 'Sage jemandem in der Runde ein ehrliches Kompliment über sein Aussehen', category: 'social-interaction', intensity: 'mittel' },
   { id: '321', text: 'Verrate, wen in der Runde du am attraktivsten findest und warum', category: 'social-interaction', intensity: 'mittel' },
