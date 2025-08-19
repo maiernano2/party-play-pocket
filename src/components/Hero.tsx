@@ -1,6 +1,6 @@
 import { Button } from './ui/button';
 import { Gamepad2, Smartphone, Users } from 'lucide-react';
-import heroImage from '@/assets/hero-image.jpg';
+import heroImage from '@/assets/hero-image.webp';
 
 interface HeroProps {
   onDiscoverGames: () => void;

@@ -1,11 +1,11 @@
 import { Game } from '@/types/game';
-import quizGameImage from '@/assets/quiz-thinking-new.jpg';
-import charadesGameImage from '@/assets/charades-game.jpg';
-import teamGameImage from '@/assets/team-collaboration.jpg';
-import chaosGameImage from '@/assets/chaos-game.jpg';
-import drawingGameImage from '@/assets/word-description-new.jpg';
-import triviaGameImage from '@/assets/trivia-game.jpg';
-import speedGameImage from '@/assets/speed-game.jpg';
+import quizGameImage from '@/assets/quiz-game.webp';
+import charadesGameImage from '@/assets/charades-game.webp';
+import teamGameImage from '@/assets/team-game.webp';
+import chaosGameImage from '@/assets/chaos-game.webp';
+import drawingGameImage from '@/assets/drawing-game.webp';
+import triviaGameImage from '@/assets/trivia-game.webp';
+import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 
 export const games: Game[] = [

@@ -5,12 +5,15 @@ import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { InteractiveDerDuemmsteFliegt } from '@/components/interactive/InteractiveDerDuemmsteFliegt';
-import { InteractiveSchnellantwort } from '@/components/interactive/InteractiveSchnellantwort';
-import { InteractiveTeamQuiz } from '@/components/interactive/InteractiveTeamQuiz';
-import { InteractiveBegriffBeschreiben } from '@/components/interactive/InteractiveBegriffBeschreiben';
-import { InteractivePantomimeRaten } from '@/components/interactive/InteractivePantomimeRaten';
-import { InteractiveChaosChallenge } from '@/components/interactive/InteractiveChaosChallenge';
+import { Suspense } from 'react';
+import { 
+  InteractiveDerDuemmsteFliegt,
+  InteractiveSchnellantwort,
+  InteractiveTeamQuiz,
+  InteractiveBegriffBeschreiben,
+  InteractivePantomimeRaten,
+  InteractiveChaosChallenge
+} from '@/utils/dynamicImports';
 
 export const GameDetail = () => {
   const { gameId } = useParams();
@@ -59,36 +62,53 @@ export const GameDetail = () => {
   if (showInteractive) {
     const handleExitInteractive = () => setShowInteractive(false);
     
-    switch (game.id) {
-      case 'der-duemmste-fliegt':
-        return <InteractiveDerDuemmsteFliegt onExit={handleExitInteractive} />;
-      case 'schnellantwort':
-        return <InteractiveSchnellantwort onExit={handleExitInteractive} />;
-      case 'team-quiz':
-        return <InteractiveTeamQuiz onExit={handleExitInteractive} />;
-      case 'begriff-beschreiben':
-        return <InteractiveBegriffBeschreiben onExit={handleExitInteractive} />;
-      case 'pantomime-raten':
-        return <InteractivePantomimeRaten onExit={handleExitInteractive} />;
-      case 'chaos-challenge':
-        return <InteractiveChaosChallenge onExit={handleExitInteractive} />;
-      default:
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-            <div className="text-center text-white p-8">
-              <h2 className="text-3xl font-bold mb-4">Interaktiver Modus</h2>
-              <p className="text-xl mb-8">Dieses Spiel hat noch keinen interaktiven Modus.</p>
-              <Button 
-                onClick={handleExitInteractive}
-                variant="secondary"
-                className="mr-4"
-              >
-                Zurück zu den Regeln
-              </Button>
+    const LoadingFallback = () => (
+      <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+        <div className="text-center text-white p-8">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <h2 className="text-2xl font-bold">Spiel wird geladen...</h2>
+        </div>
+      </div>
+    );
+    
+    const renderInteractiveGame = () => {
+      switch (game.id) {
+        case 'der-duemmste-fliegt':
+          return <InteractiveDerDuemmsteFliegt onExit={handleExitInteractive} />;
+        case 'schnellantwort':
+          return <InteractiveSchnellantwort onExit={handleExitInteractive} />;
+        case 'team-quiz':
+          return <InteractiveTeamQuiz onExit={handleExitInteractive} />;
+        case 'begriff-beschreiben':
+          return <InteractiveBegriffBeschreiben onExit={handleExitInteractive} />;
+        case 'pantomime-raten':
+          return <InteractivePantomimeRaten onExit={handleExitInteractive} />;
+        case 'chaos-challenge':
+          return <InteractiveChaosChallenge onExit={handleExitInteractive} />;
+        default:
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <div className="text-center text-white p-8">
+                <h2 className="text-3xl font-bold mb-4">Interaktiver Modus</h2>
+                <p className="text-xl mb-8">Dieses Spiel hat noch keinen interaktiven Modus.</p>
+                <Button 
+                  onClick={handleExitInteractive}
+                  variant="secondary"
+                  className="mr-4"
+                >
+                  Zurück zu den Regeln
+                </Button>
+              </div>
             </div>
-          </div>
-        );
-    }
+          );
+      }
+    };
+
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        {renderInteractiveGame()}
+      </Suspense>
+    );
   }
 
   // Game structured data for SEO

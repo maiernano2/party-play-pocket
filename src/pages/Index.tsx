@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { Hero } from '@/components/Hero';
 import { GameCard } from '@/components/GameCard';
 import { GameFilter } from '@/components/GameFilter';
@@ -10,7 +10,7 @@ const Index = () => {
   const [activeFilter, setActiveFilter] = useState<'alle' | 'einzelspiel' | 'teamspiel'>('alle');
   const gamesRef = useRef<HTMLElement>(null);
 
-  const filteredGames = getGamesByCategory(activeFilter);
+  const filteredGames = useMemo(() => getGamesByCategory(activeFilter), [activeFilter]);
 
   const scrollToGames = () => {
     gamesRef.current?.scrollIntoView({ 

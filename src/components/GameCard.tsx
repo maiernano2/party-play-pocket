@@ -2,12 +2,13 @@ import { Game } from '@/types/game';
 import { Button } from './ui/button';
 import { Users, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 
 interface GameCardProps {
   game: Game;
 }
 
-export const GameCard = ({ game }: GameCardProps) => {
+export const GameCard = memo(({ game }: GameCardProps) => {
   const categoryLabel = game.category === 'einzelspiel' ? 'Einzelspiel' : 'Teamspiel';
   const categoryColor = game.category === 'einzelspiel' ? 'bg-accent' : 'bg-team-blue';
 
@@ -48,4 +49,4 @@ export const GameCard = ({ game }: GameCardProps) => {
       </div>
     </Link>
   );
-};
+});
