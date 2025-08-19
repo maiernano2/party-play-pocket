@@ -30,7 +30,7 @@ interface InteractiveChaosChallengeProps {
 }
 
 export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeProps) => {
-  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'intensity-select' | 'playing' | 'voting'>('warning');
+  const [gamePhase, setGamePhase] = useState<'warning' | 'setup' | 'intensity-select' | 'playing'>('warning');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -40,9 +40,9 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
   const [usedRulesThisRound, setUsedRulesThisRound] = useState<string[]>([]);
   const [playerTasksThisRound, setPlayerTasksThisRound] = useState<{[playerId: string]: string[]}>({});
   const [lastUsedRule, setLastUsedRule] = useState<string | null>(null);
-  const [votes, setVotes] = useState<{[playerId: string]: string}>({});
   const [intensity, setIntensity] = useState<'zahm' | 'mittel' | 'wild'>('zahm');
   const [teams, setTeams] = useState<{A: Player[], B: Player[]}>({A: [], B: []});
+  const [currentTeamGame, setCurrentTeamGame] = useState<boolean>(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -119,28 +119,15 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     setUsedRulesThisRound([...usedRulesThisRound, randomRule.id]);
     setLastUsedRule(randomRule.id);
     
+    // Check if this is a team game
+    setCurrentTeamGame(!!randomRule.isTeamGame);
+
+    
     // Track that this player used this task in this round
     setPlayerTasksThisRound(prev => ({
       ...prev,
       [currentPlayerId]: [...playerUsedTasks, randomRule.id]
     }));
-    
-    // Handle voting if required
-    if (randomRule.requiresVoting) {
-      setVotes({});
-      setGamePhase('voting');
-    }
-  };
-
-  const castVote = (playerId: string, vote: string) => {
-    setVotes(prev => ({
-      ...prev,
-      [playerId]: vote
-    }));
-  };
-
-  const finishVoting = () => {
-    setGamePhase('playing');
   };
 
   const nextPlayer = () => {
@@ -154,6 +141,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     }
     
     setCurrentPlayerIndex(nextIndex);
+    setCurrentTeamGame(false); // Reset team game display
     setTimeout(() => {
       drawNewRule();
     }, 0);
@@ -322,58 +310,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
     </div>
   );
 
-  const renderVoting = () => {
-    if (!currentRule?.requiresVoting) return null;
-
-    const voteOptions = currentRule.category === 'dies-oder-das' 
-      ? currentRule.text.split(' oder ')
-      : players.map(p => p.name);
-
-    return (
-      <div className="max-w-2xl mx-auto space-y-6">
-        <Card className="p-6">
-          <h3 className="text-xl font-bold mb-4 text-center">Abstimmung</h3>
-          <div className="text-center mb-6">
-            <p className="text-lg">{currentRule.text}</p>
-            {currentRule.duration && (
-              <Badge variant="outline" className="mt-2">
-                {currentRule.duration}
-              </Badge>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            {voteOptions.map((option, index) => (
-              <div key={index} className="space-y-2">
-                <h4 className="font-medium">{option}</h4>
-                <div className="flex flex-wrap gap-2">
-                  {players.map(player => (
-                    <Button
-                      key={player.id}
-                      variant={votes[player.id] === option ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => castVote(player.id, option)}
-                    >
-                      {player.name}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 flex justify-center">
-            <Button
-              onClick={finishVoting}
-              disabled={Object.keys(votes).length < players.length}
-            >
-              Abstimmung beenden
-            </Button>
-          </div>
-        </Card>
-      </div>
-    );
-  };
+  const renderVoting = () => null; // Removed voting system
 
   const renderPlaying = () => {
     if (!currentRule) return null;
@@ -391,7 +328,7 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
               </div>
               <div>
                 <h3 className="font-bold">{currentPlayer?.name}</h3>
-                {currentPlayer?.team && (
+                {currentTeamGame && currentPlayer?.team && (
                   <Badge variant={currentPlayer.team === 'A' ? 'default' : 'secondary'}>
                     Team {currentPlayer.team}
                   </Badge>
@@ -405,10 +342,10 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
           </div>
         </Card>
 
-        {/* Teams Display for Team Games */}
-        {currentRule.isTeamGame && (
+        {/* Teams Display only for Team Games */}
+        {currentTeamGame && (
           <Card className="p-4">
-            <h3 className="font-bold mb-3 text-center">Team-Aufteilung</h3>
+            <h3 className="font-bold mb-3 text-center">Team-Aufteilung für diese Aufgabe</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <h4 className="font-medium mb-2">Team A</h4>
@@ -470,7 +407,6 @@ export const InteractiveChaosChallenge = ({ onExit }: InteractiveChaosChallengeP
       {gamePhase === 'warning' && renderWarning()}
       {gamePhase === 'setup' && renderSetup()}
       {gamePhase === 'intensity-select' && renderIntensitySelect()}
-      {gamePhase === 'voting' && renderVoting()}
       {gamePhase === 'playing' && renderPlaying()}
     </InteractiveGameContainer>
   );

@@ -21,7 +21,10 @@ export const useTheme = () => {
 export const useThemeProvider = () => {
   const [theme, setTheme] = useState<Theme>(() => {
     const stored = localStorage.getItem('theme');
-    return (stored as Theme) || 'light';
+    if (stored) return stored as Theme;
+    
+    // Auto-detect system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   useEffect(() => {
