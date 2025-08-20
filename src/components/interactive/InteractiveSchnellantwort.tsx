@@ -290,64 +290,20 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     );
   }
 
-  // Remove countdown phase completely - go directly to waiting
-
   if (gamePhase === 'waiting') {
     return (
       <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
-        <div className="max-w-2xl mx-auto space-y-6">
-          <div className="text-center">
-            <div className="bg-white/20 rounded-full px-4 py-2 inline-block mb-4">
-              <span className="text-white font-bold">Runde {roundNumber}</span>
-            </div>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
-            <h2 className="text-xl font-bold text-white mb-4">Kategorie</h2>
-            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
-              <p className="text-2xl font-bold text-white">{currentCategory}</p>
-            </div>
-            
-            <div className="mb-6">
-              <h3 className="text-lg font-medium text-white mb-2">Aktuelle Spieler:</h3>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {activePlayers.map((player, index) => (
-                  <div 
-                    key={player.id} 
-                    className={`px-3 py-1 rounded-full flex items-center gap-2 ${
-                      index === currentPlayerIndex 
-                        ? 'bg-white text-primary font-bold' 
-                        : 'bg-white/20 text-white'
-                    }`}
-                  >
-                    <span>{player.name}</span>
-                    <div className="flex gap-1">
-                      {Array.from({ length: player.lives }).map((_, i) => (
-                        <Heart key={i} className="w-3 h-3 text-red-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="text-lg font-medium text-white mb-2">Fortschritt:</h3>
-                <div className="text-white/80 text-sm">
-                  <div>Benötigte Antworten: {requiredAnswers}</div>
-                  <div>Zeit: {gameTime} Sekunden</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div className="max-w-md mx-auto space-y-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
             <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">
               {currentPlayer?.name} ist dran!
             </h3>
-            <p className="text-white/80 mb-6">Bereit für die {gameTime}-Sekunden-Herausforderung?</p>
+            <p className="text-white/80 mb-4">Bereit für die {gameTime}-Sekunden-Herausforderung?</p>
+            
+            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-6">
+              <p className="text-lg font-bold text-white">{currentCategory}</p>
+            </div>
             
             <Button 
               onClick={startPlayerTurn}
@@ -404,14 +360,23 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   }
 
   if (gamePhase === 'success-confirmation') {
+    const nextPlayerIndex = (currentPlayerIndex + 1) % activePlayers.length;
+    const nextPlayer = activePlayers[nextPlayerIndex];
+    
     return (
       <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
         <div className="max-w-md mx-auto space-y-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
             <h2 className="text-xl font-bold text-white mb-4">Zeit abgelaufen!</h2>
-            <p className="text-white/80 mb-6">
+            <p className="text-white/80 mb-4">
               Hat {currentPlayer?.name} es geschafft, {requiredAnswers} gültige Begriffe zu nennen?
             </p>
+            
+            <div className="bg-white/20 rounded-lg p-4 mb-6">
+              <p className="text-white/80 text-sm mb-2">Als nächstes ist dran:</p>
+              <p className="text-xl font-bold text-white">{nextPlayer?.name}</p>
+              <p className="text-white/80 text-sm">📱 Handy weitergeben!</p>
+            </div>
             
             <div className="grid grid-cols-2 gap-4">
               <Button 
@@ -436,11 +401,18 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   }
 
   if (gamePhase === 'success-countdown') {
+    const nextPlayerIndex = (currentPlayerIndex + 1) % activePlayers.length;
+    const nextPlayer = activePlayers[nextPlayerIndex];
+    
     return (
       <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
         <div className="max-w-md mx-auto space-y-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
-            <h2 className="text-xl font-bold text-white mb-4">Nächster Spieler bereit machen!</h2>
+            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-4">
+              <h2 className="text-2xl font-bold text-white">{nextPlayer?.name}</h2>
+              <p className="text-white/90">ist als nächstes dran!</p>
+            </div>
+            
             <div className="text-6xl font-bold text-white mb-4 animate-pulse">
               {successCountdown}
             </div>
