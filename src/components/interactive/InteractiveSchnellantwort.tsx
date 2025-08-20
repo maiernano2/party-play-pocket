@@ -34,7 +34,7 @@ const categories = [
 ];
 
 export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'category-countdown' | 'playing' | 'waiting' | 'finished' | 'success-confirmation' | 'success-countdown'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'start-countdown' | 'category-countdown' | 'playing' | 'waiting' | 'finished' | 'success-confirmation' | 'success-countdown'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
@@ -48,6 +48,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   const [roundNumber, setRoundNumber] = useState(1);
   const [usedCategories, setUsedCategories] = useState<string[]>([]);
   const [successCountdown, setSuccessCountdown] = useState(3);
+  const [startCountdown, setStartCountdown] = useState(3);
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
@@ -73,6 +74,16 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     }
   }, [successCountdown, gamePhase]);
 
+  useEffect(() => {
+    if (gamePhase === 'start-countdown' && startCountdown > 0) {
+      const timer = setTimeout(() => setStartCountdown(startCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (startCountdown === 0 && gamePhase === 'start-countdown') {
+      // Start countdown beendet - Spiel beginnen
+      startNewRound();
+    }
+  }, [startCountdown, gamePhase]);
+
   const addPlayer = () => {
     if (newPlayerName.trim()) {
       const newPlayer: Player = {
@@ -91,7 +102,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
   const startGame = () => {
     if (players.length >= 3) {
-      startNewRound();
+      setStartCountdown(3);
+      setGamePhase('start-countdown');
     }
   };
 
@@ -287,6 +299,42 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
               )}
             </div>
           )}
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'start-countdown') {
+    return (
+      <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
+        <div className="max-w-md mx-auto space-y-6">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">Spiel startet gleich...</h2>
+            
+            {/* Spieler mit Leben anzeigen */}
+            <div className="bg-white/10 rounded-lg p-4 mb-6">
+              <h3 className="text-white font-medium mb-3">Spieler & Leben</h3>
+              <div className="space-y-2">
+                {players.map(player => (
+                  <div key={player.id} className="flex items-center justify-between p-2 rounded bg-white/5">
+                    <span className="text-white font-medium">{player.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="text-6xl font-bold text-white mb-4 animate-pulse">
+              {startCountdown === 0 ? 'LOS!' : startCountdown}
+            </div>
+            <p className="text-white/80">
+              {startCountdown === 0 ? 'Viel Spaß beim Spielen!' : 'Macht euch bereit...'}
+            </p>
+          </div>
         </div>
       </InteractiveGameContainer>
     );
