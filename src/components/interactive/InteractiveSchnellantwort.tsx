@@ -116,7 +116,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     setUsedAnswers([]);
     setCurrentAnswers(0);
     setCurrentPlayerIndex(0);
-    setGamePhase('waiting');
+    setTimeLeft(gameTime);
+    setGamePhase('playing');
   };
 
   const startPlayerTurn = () => {
@@ -134,7 +135,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     setCurrentCategory(`Nenne ${requiredAnswers} Begriffe: ${newCategory}`);
     setUsedCategories(prev => [...prev, newCategory]);
     
-    setGamePhase('waiting');
+    setTimeLeft(gameTime);
+    setGamePhase('playing');
   };
 
   const nextPlayer = () => {
@@ -336,18 +338,6 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
             <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-4">
               <h3 className="text-2xl font-bold text-white">{currentPlayer?.name}</h3>
               <p className="text-white/90">ist dran!</p>
-            </div>
-
-            <div className="bg-white/10 rounded-lg p-4">
-              <div className="text-white font-bold text-lg">
-                Fortschritt: {currentAnswers}/{requiredAnswers} Begriffe
-              </div>
-              <div className="w-full bg-white/20 rounded-full h-2 mt-2">
-                <div 
-                  className="bg-green-500 h-2 rounded-full transition-all duration-300" 
-                  style={{ width: `${(currentAnswers / requiredAnswers) * 100}%` }}
-                ></div>
-              </div>
             </div>
 
             <p className="text-white/80 text-sm">
