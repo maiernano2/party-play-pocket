@@ -40,7 +40,7 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
-  const [gameTime, setGameTime] = useState(5);
+  const [gameTime, setGameTime] = useState(6);
   const [requiredAnswers, setRequiredAnswers] = useState(3);
   const [startLives, setStartLives] = useState(3);
   const [currentAnswers, setCurrentAnswers] = useState(0);
@@ -311,12 +311,19 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
             <h2 className="text-2xl font-bold text-white mb-4">Spiel startet gleich...</h2>
             
+            {/* Erster Spieler hervorheben */}
+            <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-4">
+              <h3 className="text-white font-bold text-lg">{players[0]?.name}</h3>
+              <p className="text-white/90">startet als Erstes!</p>
+              <p className="text-white/80 text-sm">📱 Handy bereithalten!</p>
+            </div>
+
             {/* Spieler mit Leben anzeigen */}
             <div className="bg-white/10 rounded-lg p-4 mb-6">
               <h3 className="text-white font-medium mb-3">Spieler & Leben</h3>
               <div className="space-y-2">
-                {players.map(player => (
-                  <div key={player.id} className="flex items-center justify-between p-2 rounded bg-white/5">
+                {players.map((player, index) => (
+                  <div key={player.id} className={`flex items-center justify-between p-2 rounded ${index === 0 ? 'bg-primary/30' : 'bg-white/5'}`}>
                     <span className="text-white font-medium">{player.name}</span>
                     <div className="flex gap-1">
                       {Array.from({ length: player.lives }).map((_, i) => (
