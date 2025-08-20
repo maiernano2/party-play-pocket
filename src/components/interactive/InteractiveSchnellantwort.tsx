@@ -362,6 +362,23 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
               Hat {currentPlayer?.name} es geschafft, {requiredAnswers} gültige Begriffe zu nennen?
             </p>
             
+            {/* Spieler mit Leben anzeigen */}
+            <div className="bg-white/10 rounded-lg p-4 mb-4">
+              <h3 className="text-white font-medium mb-3">Spieler & Leben</h3>
+              <div className="space-y-2">
+                {activePlayers.map(player => (
+                  <div key={player.id} className={`flex items-center justify-between p-2 rounded ${player.id === currentPlayer?.id ? 'bg-primary/30' : 'bg-white/5'}`}>
+                    <span className="text-white font-medium">{player.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
             <div className="bg-white/20 rounded-lg p-4 mb-6">
               <p className="text-white/80 text-sm mb-2">Als nächstes ist dran:</p>
               <p className="text-xl font-bold text-white">{nextPlayer?.name}</p>
@@ -401,6 +418,23 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
             <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 mb-4">
               <h2 className="text-2xl font-bold text-white">{nextPlayer?.name}</h2>
               <p className="text-white/90">ist als nächstes dran!</p>
+            </div>
+            
+            {/* Spieler mit Leben anzeigen */}
+            <div className="bg-white/10 rounded-lg p-4 mb-4">
+              <h3 className="text-white font-medium mb-3">Spieler & Leben</h3>
+              <div className="space-y-2">
+                {activePlayers.map(player => (
+                  <div key={player.id} className={`flex items-center justify-between p-2 rounded ${player.id === nextPlayer?.id ? 'bg-primary/30' : 'bg-white/5'}`}>
+                    <span className="text-white font-medium">{player.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             
             <div className="text-6xl font-bold text-white mb-4 animate-pulse">
