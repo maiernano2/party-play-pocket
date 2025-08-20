@@ -30,6 +30,26 @@ export const chaosRules: ChaosRule[] = [
   { id: '19', text: 'Erzähle von deiner ersten Haustier-Erinnerung', category: 'personal-question', intensity: 'zahm' },
   { id: '20', text: 'Beschreibe deine größte irrationale Angst', category: 'personal-question', intensity: 'zahm' },
 
+  // Neue Zahm-Fragen
+  { id: '21', text: 'Was hat dich heute zum Lachen gebracht?', category: 'personal-question', intensity: 'zahm' },
+  { id: '22', text: 'Erzähle von einem besonderen Moment mit deiner Familie', category: 'personal-question', intensity: 'zahm' },
+  { id: '23', text: 'Was ist das Schönste, was dir jemand mal gesagt hat?', category: 'personal-question', intensity: 'zahm' },
+  { id: '24', text: 'Beschreibe dein Lieblings-Wohlfühlritual', category: 'personal-question', intensity: 'zahm' },
+  { id: '25', text: 'Was machst du, wenn du einen schlechten Tag hast?', category: 'personal-question', intensity: 'zahm' },
+  { id: '26', text: 'Erzähle von einem Moment, in dem du richtig stolz auf dich warst', category: 'personal-question', intensity: 'zahm' },
+  { id: '27', text: 'Was ist deine liebste Erinnerung an deine Kindheit?', category: 'personal-question', intensity: 'zahm' },
+  { id: '28', text: 'Welches Kompliment würdest du gerne öfter hören?', category: 'personal-question', intensity: 'zahm' },
+  { id: '29', text: 'Was ist das Süßeste, was dein Haustier (oder ein Tier) mal gemacht hat?', category: 'personal-question', intensity: 'zahm' },
+  { id: '30', text: 'Beschreibe einen perfekten Sonntagmorgen', category: 'personal-question', intensity: 'zahm' },
+
+  // Neue Zahm-Challenges
+  { id: '31', text: 'Führe einen 30-sekündigen Freudentanz auf', category: 'challenge', intensity: 'zahm' },
+  { id: '32', text: 'Erzähle ein Märchen nach, aber als Rapper für 1 Minute', category: 'challenge', intensity: 'zahm' },
+  { id: '33', text: 'Mache Komplimente an 3 Personen in der Runde', category: 'challenge', intensity: 'zahm' },
+  { id: '34', text: 'Führe eine Zaubershow mit imaginären Gegenständen für 1 Minute auf', category: 'challenge', intensity: 'zahm' },
+  { id: '35', text: 'Imitiere einen Fernsehkoch beim Kochen für 45 Sekunden', category: 'challenge', intensity: 'zahm' },
+  { id: '36', text: 'Erkläre wie man Zähne putzt, als wärst du ein Wissenschaftler', category: 'challenge', intensity: 'zahm' },
+
 
   // Gruppenchallenges - Zahm
   { id: '225', text: 'Alle müssen stumm "Happy Birthday" singen für 30 Sekunden', category: 'group-challenge', intensity: 'zahm' },
@@ -99,6 +119,23 @@ export const chaosRules: ChaosRule[] = [
   { id: '413', text: 'Erzähle von deinem wildesten Dreier-Erlebnis (oder Fantasie)', category: 'personal-question', intensity: 'wild' },
   { id: '414', text: 'Was ist dein größter Turn-On?', category: 'personal-question', intensity: 'wild' },
 
+  // Neue Wild-Fragen (tiefgründiger)
+  { id: '415', text: 'Was ist deine dunkelste Erinnerung, die dich bis heute verfolgt?', category: 'deep-question', intensity: 'wild' },
+  { id: '416', text: 'Wofür schämst du dich am meisten in deinem Leben?', category: 'deep-question', intensity: 'wild' },
+  { id: '417', text: 'Was ist das Schlimmste, was du jemandem angetan hast?', category: 'deep-question', intensity: 'wild' },
+  { id: '418', text: 'Welche deiner Handlungen bereust du am meisten?', category: 'deep-question', intensity: 'wild' },
+  { id: '419', text: 'Was ist dein größtes Versagen im Leben?', category: 'deep-question', intensity: 'wild' },
+  { id: '420', text: 'Vor welcher Wahrheit über dich selbst hast du am meisten Angst?', category: 'deep-question', intensity: 'wild' },
+  { id: '421', text: 'Was würdest du niemals deinen Eltern gestehen?', category: 'deep-question', intensity: 'wild' },
+  { id: '422', text: 'Welche deiner Eigenschaften hasst du am meisten?', category: 'deep-question', intensity: 'wild' },
+  { id: '423', text: 'Was ist der schmerzhafteste Verlust in deinem Leben?', category: 'deep-question', intensity: 'wild' },
+  { id: '424', text: 'Welche Lüge erzählst du dir selbst jeden Tag?', category: 'deep-question', intensity: 'wild' },
+  { id: '425', text: 'Was ist das Egoistischste, was du je getan hast?', category: 'deep-question', intensity: 'wild' },
+  { id: '426', text: 'Welchen Teil deiner Vergangenheit würdest du am liebsten löschen?', category: 'deep-question', intensity: 'wild' },
+  { id: '427', text: 'Wann hast du das letzte Mal wirklich geweint und warum?', category: 'deep-question', intensity: 'wild' },
+  { id: '428', text: 'Was ist deine größte irrationale Angst vor der Zukunft?', category: 'deep-question', intensity: 'wild' },
+  { id: '429', text: 'Welche Person hast du am meisten verletzt und wie?', category: 'deep-question', intensity: 'wild' },
+
   // Fragen über andere - Wild
   { id: '420', text: 'Wen in der Runde findest du am sexiesten?', category: 'social-interaction', intensity: 'wild' },
   { id: '421', text: 'Verrate, mit wem in der Runde du gerne knutschen würdest', category: 'social-interaction', intensity: 'wild' },
@@ -114,6 +151,14 @@ export const chaosRules: ChaosRule[] = [
   { id: '441', text: 'Imitiere einen Orgasmus (jugendfreie Version) für 30 Sekunden', category: 'challenge', intensity: 'wild' },
   { id: '442', text: 'Mache 10 sexy Kniebeugen mit Geräuschen für 1 Minute', category: 'challenge', intensity: 'wild' },
   { id: '443', text: 'Tanze einen langsamen, sinnlichen Tanz für 30 Sekunden', category: 'challenge', intensity: 'wild' },
+  
+  // Neue Wild-Challenges
+  { id: '444', text: 'Gestehe eine Fantasie über jemanden in der Runde', category: 'challenge', intensity: 'wild' },
+  { id: '445', text: 'Mache eine Meditation über deine tiefsten Ängste für 2 Minuten', category: 'challenge', intensity: 'wild' },
+  { id: '446', text: 'Erzähle deine peinlichste sexuelle Erfahrung im Detail', category: 'challenge', intensity: 'wild' },
+  { id: '447', text: 'Beschreibe deinen idealen Dreier mit 2 Personen aus der Runde', category: 'challenge', intensity: 'wild' },
+  { id: '448', text: 'Führe einen Tanz auf, der deine sexuelle Energie zeigt', category: 'challenge', intensity: 'wild' },
+  { id: '449', text: 'Erzähle von einem Moment, wo du emotional komplett zusammengebrochen bist', category: 'challenge', intensity: 'wild' },
 
   // Speaking Rules - Alle Intensitäten
   { id: '500', text: 'Du darfst nicht "Ja" oder "Nein" sagen (bis du wieder dran bist)', category: 'speaking-rule', intensity: 'zahm' },

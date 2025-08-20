@@ -34,7 +34,7 @@ const categories = [
 ];
 
 export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'category-countdown' | 'playing' | 'waiting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'category-countdown' | 'playing' | 'waiting' | 'finished' | 'success-confirmation' | 'success-countdown'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
@@ -46,6 +46,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   const [currentAnswers, setCurrentAnswers] = useState(0);
   const [usedAnswers, setUsedAnswers] = useState<string[]>([]);
   const [roundNumber, setRoundNumber] = useState(1);
+  const [usedCategories, setUsedCategories] = useState<string[]>([]);
+  const [successCountdown, setSuccessCountdown] = useState(3);
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
@@ -56,10 +58,20 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && gamePhase === 'playing') {
-      // Zeit abgelaufen - Show decision buttons
-      setGamePhase('waiting');
+      // Zeit abgelaufen - Show success confirmation
+      setGamePhase('success-confirmation');
     }
   }, [timeLeft, gamePhase]);
+
+  useEffect(() => {
+    if (gamePhase === 'success-countdown' && successCountdown > 0) {
+      const timer = setTimeout(() => setSuccessCountdown(successCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (successCountdown === 0 && gamePhase === 'success-countdown') {
+      // Countdown beendet - neue Kategorie für nächsten Spieler
+      prepareNextPlayer();
+    }
+  }, [successCountdown, gamePhase]);
 
   const addPlayer = () => {
     if (newPlayerName.trim()) {
@@ -87,8 +99,20 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     // No longer needed since we skip countdown
   };
 
+  const getNextCategory = () => {
+    const availableCategories = categories.filter(cat => !usedCategories.includes(cat));
+    if (availableCategories.length === 0) {
+      // Alle Kategorien verwendet, zurücksetzen
+      setUsedCategories([]);
+      return categories[Math.floor(Math.random() * categories.length)];
+    }
+    return availableCategories[Math.floor(Math.random() * availableCategories.length)];
+  };
+
   const startNewRound = () => {
-    setCurrentCategory(`Nenne ${requiredAnswers} Begriffe: ${categories[Math.floor(Math.random() * categories.length)]}`);
+    const newCategory = getNextCategory();
+    setCurrentCategory(`Nenne ${requiredAnswers} Begriffe: ${newCategory}`);
+    setUsedCategories([newCategory]);
     setUsedAnswers([]);
     setCurrentAnswers(0);
     setCurrentPlayerIndex(0);
@@ -101,10 +125,20 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
     setGamePhase('playing');
   };
 
-  const nextPlayer = () => {
+  const prepareNextPlayer = () => {
     const nextIndex = (currentPlayerIndex + 1) % activePlayers.length;
     setCurrentPlayerIndex(nextIndex);
+    
+    // Neue Kategorie für nächsten Spieler
+    const newCategory = getNextCategory();
+    setCurrentCategory(`Nenne ${requiredAnswers} Begriffe: ${newCategory}`);
+    setUsedCategories(prev => [...prev, newCategory]);
+    
     setGamePhase('waiting');
+  };
+
+  const nextPlayer = () => {
+    prepareNextPlayer();
   };
 
   const eliminateCurrentPlayer = () => {
@@ -123,7 +157,8 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
   };
 
   const playerSucceeded = () => {
-    nextPlayer();
+    setSuccessCountdown(3);
+    setGamePhase('success-countdown');
   };
 
   const submitAnswer = (answer: string) => {
@@ -314,39 +349,13 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
             </h3>
             <p className="text-white/80 mb-6">Bereit für die {gameTime}-Sekunden-Herausforderung?</p>
             
-            {timeLeft === 0 && (
-              <div className="bg-red-500/20 border border-red-500/40 rounded-lg p-4 mb-4">
-                <h4 className="text-white font-bold mb-2">Zeit abgelaufen!</h4>
-                <p className="text-white/80 text-sm mb-4">
-                  Hat {currentPlayer?.name} {requiredAnswers} gültige Begriffe genannt?
-                </p>
-                <div className="grid grid-cols-2 gap-3">
-                  <Button 
-                    onClick={playerSucceeded}
-                    className="bg-green-500 hover:bg-green-600 text-white"
-                    size="lg"
-                  >
-                    ✓ Geschafft
-                  </Button>
-                  <Button 
-                    onClick={eliminateCurrentPlayer}
-                    className="bg-red-500 hover:bg-red-600 text-white"
-                    size="lg"
-                  >
-                    ✗ Nicht geschafft
-                  </Button>
-                </div>
-              </div>
-            )}
-            {timeLeft > 0 && (
-              <Button 
-                onClick={startPlayerTurn}
-                className="bg-white text-primary hover:bg-white/90 font-bold"
-                size="lg"
-              >
-                Timer starten
-              </Button>
-            )}
+            <Button 
+              onClick={startPlayerTurn}
+              className="bg-white text-primary hover:bg-white/90 font-bold"
+              size="lg"
+            >
+              Timer starten
+            </Button>
           </div>
         </div>
       </InteractiveGameContainer>
@@ -387,6 +396,56 @@ export const InteractiveSchnellantwort = ({ onExit }: InteractiveSchnellantwortP
 
             <p className="text-white/80 text-sm">
               Schnell {requiredAnswers} Begriffe nennen! Zeit läuft!
+            </p>
+          </div>
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'success-confirmation') {
+    return (
+      <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
+        <div className="max-w-md mx-auto space-y-6">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
+            <h2 className="text-xl font-bold text-white mb-4">Zeit abgelaufen!</h2>
+            <p className="text-white/80 mb-6">
+              Hat {currentPlayer?.name} es geschafft, {requiredAnswers} gültige Begriffe zu nennen?
+            </p>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Button 
+                onClick={playerSucceeded}
+                className="bg-green-500 hover:bg-green-600 text-white"
+                size="lg"
+              >
+                ✓ Geschafft
+              </Button>
+              <Button 
+                onClick={eliminateCurrentPlayer}
+                className="bg-red-500 hover:bg-red-600 text-white"
+                size="lg"
+              >
+                ✗ Nicht geschafft
+              </Button>
+            </div>
+          </div>
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'success-countdown') {
+    return (
+      <InteractiveGameContainer onExit={onExit} title="Schnellantwort">
+        <div className="max-w-md mx-auto space-y-6">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center">
+            <h2 className="text-xl font-bold text-white mb-4">Nächster Spieler bereit machen!</h2>
+            <div className="text-6xl font-bold text-white mb-4 animate-pulse">
+              {successCountdown}
+            </div>
+            <p className="text-white/80">
+              Neue Kategorie kommt gleich...
             </p>
           </div>
         </div>
