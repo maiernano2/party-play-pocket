@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { InteractiveGameContainer } from './InteractiveGameContainer';
 import { Users, Trophy, Clock, Heart, AlertCircle } from 'lucide-react';
+import { getRandomTiebreakerQuestion } from '@/data/tiebreaker-questions';
 
 interface Player {
   id: string;
@@ -38,7 +39,7 @@ const questionsWithAnswers = [
 ];
 
 export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteFliegtProps) => {
-  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'question' | 'voting' | 'finished'>('setup');
+  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'question' | 'voting' | 'tiebreaker' | 'winner' | 'finished'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -52,6 +53,10 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   const [usedQuestions, setUsedQuestions] = useState<number[]>([]);
   const [availableQuestions, setAvailableQuestions] = useState<number[]>([]);
   const [askedCounts, setAskedCounts] = useState<Record<string, number>>({});
+  const [tiebreakerQuestion, setTiebreakerQuestion] = useState<{question: string, answer: string} | null>(null);
+  const [tiebreakerPlayers, setTiebreakerPlayers] = useState<Player[]>([]);
+  const [tiebreakerGuesses, setTiebreakerGuesses] = useState<Record<string, string>>({});
+  const [savedPlayerNames, setSavedPlayerNames] = useState<string[]>([]);
 
   const activePlayers = players.filter(p => p.lives > 0);
   const currentPlayer = activePlayers[currentPlayerIndex];
@@ -77,9 +82,40 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
 
   const startGame = () => {
     if (players.length >= 3) {
+      // Save player names for potential restart
+      setSavedPlayerNames(players.map(p => p.name));
       setGamePhase('playing');
       startNewRound();
     }
+  };
+
+  const resetGameKeepNames = () => {
+    // Reset players with saved names but full lives
+    const resetPlayers = savedPlayerNames.map((name, index) => ({
+      id: Date.now().toString() + index,
+      name,
+      lives: startLives
+    }));
+    setPlayers(resetPlayers);
+    setGamePhase('setup');
+    setCurrentRound(1);
+    setCurrentPlayerIndex(0);
+    setCurrentQuestion(null);
+    setVotingFor([]);
+    setUsedQuestions([]);
+    setAvailableQuestions([]);
+    setAskedCounts({});
+    setTiebreakerQuestion(null);
+    setTiebreakerPlayers([]);
+    setTiebreakerGuesses({});
+  };
+
+  const startTiebreaker = () => {
+    const question = getRandomTiebreakerQuestion();
+    setTiebreakerQuestion(question);
+    setTiebreakerPlayers(activePlayers.filter(p => p.id !== moderator?.id));
+    setTiebreakerGuesses({});
+    setGamePhase('tiebreaker');
   };
 
   const startNewRound = () => {
@@ -165,17 +201,17 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
     const remainingActive = updatedPlayers.filter(p => p.lives > 0);
     
     if (remainingActive.length === 1) {
+      setGamePhase('winner');
+    } else if (currentRound >= maxRounds) {
       setGamePhase('finished');
-            } else if (currentRound >= maxRounds) {
-              setGamePhase('finished');
-            } else {
-              setCurrentRound(currentRound + 1);
-              // Keep scrolled position after voting
-              setTimeout(() => {
-                startNewRound();
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-              }, 100);
-            }
+    } else {
+      setCurrentRound(currentRound + 1);
+      // Keep scrolled position after voting
+      setTimeout(() => {
+        startNewRound();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 100);
+    }
   };
 
   if (gamePhase === 'setup') {
@@ -410,6 +446,17 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
                 </Button>
               ))}
             </div>
+
+            <div className="bg-white/10 rounded-lg p-4 mb-6">
+              <p className="text-white/80 text-center mb-4">Oder stellt eine Schätzfrage:</p>
+              <Button
+                onClick={startTiebreaker}
+                className="w-full bg-yellow-500/80 hover:bg-yellow-500 text-white"
+                size="lg"
+              >
+                🎯 Schätzfrage stellen
+              </Button>
+            </div>
             
             <p className="text-white/60 text-xs">
               Klickt auf den Spieler, der ein Leben verlieren soll
@@ -420,38 +467,188 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
     );
   }
 
-  if (gamePhase === 'finished') {
+  if (gamePhase === 'winner') {
+    const winnerPlayer = activePlayers[0];
     return (
       <InteractiveGameContainer onExit={onExit} title="Der Dümmste fliegt">
-        <div className="max-w-md mx-auto text-center space-y-6">
+        <div className="max-w-md mx-auto text-center">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-            <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white mb-2">🎉 Spiel beendet!</h2>
-            {winner && (
-              <div>
-                <p className="text-xl text-white mb-4">Gewinner: {winner.name}</p>
-                <div className="flex gap-1 justify-center mb-6">
-                  {Array.from({ length: winner.lives }).map((_, i) => (
-                    <Heart key={i} className="w-6 h-6 text-red-400 fill-current" />
+            <Trophy className="w-20 h-20 text-yellow-400 mx-auto mb-6" />
+            <h2 className="text-4xl font-bold text-white mb-6">🎉 GEWONNEN! 🎉</h2>
+            
+            <div className="bg-gradient-to-r from-yellow-500/30 to-orange-500/30 rounded-lg p-8 mb-6 border-2 border-yellow-400">
+              <h3 className="text-2xl font-bold text-white mb-4">🏆 SIEGER:</h3>
+              <p className="text-4xl font-bold text-yellow-300 mb-4">{winnerPlayer?.name}</p>
+              <div className="flex justify-center gap-1">
+                {Array.from({ length: winnerPlayer?.lives || 0 }).map((_, i) => (
+                  <Heart key={i} className="w-8 h-8 text-red-400 fill-current" />
+                ))}
+              </div>
+            </div>
+            
+            <Button
+              onClick={resetGameKeepNames}
+              className="w-full mb-4 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              size="lg"
+            >
+              Nochmal spielen
+            </Button>
+            
+            <Button
+              onClick={onExit}
+              className="w-full bg-white text-primary hover:bg-white/90"
+              size="lg"
+            >
+              Zurück zum Menü
+            </Button>
+          </div>
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'tiebreaker') {
+    const currentGuessCount = Object.keys(tiebreakerGuesses).length;
+    const allGuessed = currentGuessCount === tiebreakerPlayers.length;
+
+    return (
+      <InteractiveGameContainer onExit={onExit} title="Der Dümmste fliegt - Schätzfrage">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-white mb-4">🎯 Schätzfrage</h2>
+              <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
+                <p className="text-xl font-bold text-white">{tiebreakerQuestion?.question}</p>
+              </div>
+              <div className="bg-green-500/20 rounded-lg p-4 border border-green-400">
+                <p className="text-green-300 font-semibold">💡 Richtige Antwort: {tiebreakerQuestion?.answer}</p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              {tiebreakerPlayers.map((player) => (
+                <div key={player.id} className="bg-white/10 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-white font-bold">{player.name}</h3>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  {!tiebreakerGuesses[player.id] ? (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Schätzung eingeben..."
+                        className="bg-white/20 border-white/30 text-white"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            const value = (e.target as HTMLInputElement).value;
+                            if (value.trim()) {
+                              setTiebreakerGuesses(prev => ({
+                                ...prev,
+                                [player.id]: value.trim()
+                              }));
+                            }
+                          }
+                        }}
+                      />
+                      <Button
+                        onClick={(e) => {
+                          const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement;
+                          const value = input?.value;
+                          if (value?.trim()) {
+                            setTiebreakerGuesses(prev => ({
+                              ...prev,
+                              [player.id]: value.trim()
+                            }));
+                            input.value = '';
+                          }
+                        }}
+                        variant="secondary"
+                      >
+                        Bestätigen
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="bg-blue-500/20 rounded p-3 border border-blue-400">
+                      <p className="text-blue-300 font-medium">Schätzung: {tiebreakerGuesses[player.id]}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {allGuessed && (
+              <div className="bg-red-500/20 rounded-lg p-6 border border-red-400">
+                <h3 className="text-white font-bold mb-4">📊 Alle Schätzungen abgegeben!</h3>
+                <p className="text-white/80 mb-4">Moderator entscheidet, wer weiter weg ist:</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {tiebreakerPlayers.map((player) => (
+                    <Button
+                      key={player.id}
+                      onClick={() => {
+                        eliminatePlayer(player.id);
+                        setGamePhase('voting'); // Go back to voting phase
+                      }}
+                      className="bg-red-500/80 hover:bg-red-500 text-white p-4"
+                      size="lg"
+                    >
+                      <div className="text-center">
+                        <div className="font-bold">{player.name}</div>
+                        <div className="text-sm">"{tiebreakerGuesses[player.id]}"</div>
+                        <div className="text-xs">verliert Leben</div>
+                      </div>
+                    </Button>
                   ))}
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'finished') {
+    return (
+      <InteractiveGameContainer onExit={onExit} title="Der Dümmste fliegt">
+        <div className="max-w-md mx-auto text-center">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+            <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-white mb-4">Spiel beendet!</h2>
             
-            <div className="space-y-4">
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="text-white font-medium mb-2">Spiel-Statistiken</h3>
-                <div className="text-white/80 text-sm space-y-1">
-                  <div>Gespielte Runden: {currentRound}</div>
-                  <div>Teilnehmer: {players.length}</div>
-                  <div>Überlebende: {activePlayers.length}</div>
-                </div>
+            <div className="bg-white/20 rounded-lg p-6 mb-6">
+              <h3 className="text-xl text-white mb-4">Überlebende Spieler:</h3>
+              <div className="space-y-2">
+                {activePlayers.map((player) => (
+                  <div key={player.id} className="flex items-center justify-between p-2 rounded bg-white/10">
+                    <span className="text-white font-medium">{player.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: player.lives }).map((_, i) => (
+                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-              
-              <Button onClick={onExit} className="w-full bg-white text-primary hover:bg-white/90" size="lg">
-                Zurück zu den Regeln
-              </Button>
             </div>
+            
+            <Button
+              onClick={resetGameKeepNames}
+              className="w-full mb-4 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              size="lg"
+            >
+              Nochmal spielen
+            </Button>
+            
+            <Button
+              onClick={onExit}
+              className="w-full bg-white text-primary hover:bg-white/90"
+              size="lg"
+            >
+              Zurück zum Menü
+            </Button>
           </div>
         </div>
       </InteractiveGameContainer>
