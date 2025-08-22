@@ -508,102 +508,50 @@ export const InteractiveDerDuemmsteFliegt = ({ onExit }: InteractiveDerDuemmsteF
   }
 
   if (gamePhase === 'tiebreaker') {
-    const currentGuessCount = Object.keys(tiebreakerGuesses).length;
-    const allGuessed = currentGuessCount === tiebreakerPlayers.length;
-
     return (
       <InteractiveGameContainer onExit={onExit} title="Der Dümmste fliegt - Schätzfrage">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-white mb-4">🎯 Schätzfrage</h2>
-              <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-6 mb-6">
-                <p className="text-xl font-bold text-white">{tiebreakerQuestion?.question}</p>
+              <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-8 mb-6">
+                <p className="text-2xl font-bold text-white mb-4">{tiebreakerQuestion?.question}</p>
               </div>
-              <div className="bg-green-500/20 rounded-lg p-4 border border-green-400">
-                <p className="text-green-300 font-semibold">💡 Richtige Antwort: {tiebreakerQuestion?.answer}</p>
+              <div className="bg-green-500/20 rounded-lg p-6 border border-green-400 mb-6">
+                <p className="text-xl text-green-300 font-semibold">💡 Richtige Antwort: {tiebreakerQuestion?.answer}</p>
               </div>
             </div>
 
-            <div className="space-y-4 mb-6">
+            <div className="bg-blue-500/20 rounded-lg p-6 mb-6 border border-blue-400">
+              <h3 className="text-xl font-bold text-white mb-4 text-center">🎯 MODERATOR</h3>
+              <p className="text-white/90 text-center mb-4">
+                Die Spieler haben ihre Schätzungen abgegeben. Wähle aus, wer am weitesten daneben lag:
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {tiebreakerPlayers.map((player) => (
-                <div key={player.id} className="bg-white/10 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-white font-bold">{player.name}</h3>
-                    <div className="flex gap-1">
+                <Button
+                  key={player.id}
+                  onClick={() => {
+                    eliminatePlayer(player.id);
+                    setGamePhase('voting');
+                  }}
+                  className="bg-red-500/80 hover:bg-red-500 text-white p-6"
+                  size="lg"
+                >
+                  <div className="text-center">
+                    <div className="text-xl font-bold mb-2">{player.name}</div>
+                    <div className="flex justify-center gap-1 mb-2">
                       {Array.from({ length: player.lives }).map((_, i) => (
-                        <Heart key={i} className="w-4 h-4 text-red-400 fill-current" />
+                        <Heart key={i} className="w-5 h-5 text-red-200 fill-current" />
                       ))}
                     </div>
+                    <div className="text-sm">war am weitesten weg</div>
                   </div>
-                  {!tiebreakerGuesses[player.id] ? (
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="Schätzung eingeben..."
-                        className="bg-white/20 border-white/30 text-white"
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            const value = (e.target as HTMLInputElement).value;
-                            if (value.trim()) {
-                              setTiebreakerGuesses(prev => ({
-                                ...prev,
-                                [player.id]: value.trim()
-                              }));
-                            }
-                          }
-                        }}
-                      />
-                      <Button
-                        onClick={(e) => {
-                          const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement;
-                          const value = input?.value;
-                          if (value?.trim()) {
-                            setTiebreakerGuesses(prev => ({
-                              ...prev,
-                              [player.id]: value.trim()
-                            }));
-                            input.value = '';
-                          }
-                        }}
-                        variant="secondary"
-                      >
-                        Bestätigen
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="bg-blue-500/20 rounded p-3 border border-blue-400">
-                      <p className="text-blue-300 font-medium">Schätzung: {tiebreakerGuesses[player.id]}</p>
-                    </div>
-                  )}
-                </div>
+                </Button>
               ))}
             </div>
-
-            {allGuessed && (
-              <div className="bg-red-500/20 rounded-lg p-6 border border-red-400">
-                <h3 className="text-white font-bold mb-4">📊 Alle Schätzungen abgegeben!</h3>
-                <p className="text-white/80 mb-4">Moderator entscheidet, wer weiter weg ist:</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {tiebreakerPlayers.map((player) => (
-                    <Button
-                      key={player.id}
-                      onClick={() => {
-                        eliminatePlayer(player.id);
-                        setGamePhase('voting'); // Go back to voting phase
-                      }}
-                      className="bg-red-500/80 hover:bg-red-500 text-white p-4"
-                      size="lg"
-                    >
-                      <div className="text-center">
-                        <div className="font-bold">{player.name}</div>
-                        <div className="text-sm">"{tiebreakerGuesses[player.id]}"</div>
-                        <div className="text-xs">verliert Leben</div>
-                      </div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </InteractiveGameContainer>
