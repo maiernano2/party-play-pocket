@@ -7,6 +7,7 @@ import drawingGameImage from '@/assets/drawing-game.webp';
 import triviaGameImage from '@/assets/trivia-game.webp';
 import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
+import truthOrDareImage from '@/assets/truth-or-dare.webp';
 
 export const games: Game[] = [
   {
@@ -149,6 +150,31 @@ export const games: Game[] = [
       hasTeams: true,
       hasScoring: true,
       roundBased: true
+    }
+  },
+  {
+    id: 'wahrheit-oder-pflicht',
+    title: 'Wahrheit oder Pflicht',
+    description: 'Das klassische Partyspiel mit prickelnden Wahrheitsfragen und mutigen Pflichtaufgaben.',
+    category: 'teamspiel',
+    playerCount: '2-12 Spieler',
+    duration: '20-45 Minuten',
+    image: truthOrDareImage,
+    rules: [
+      'Jeder Spieler ist abwechselnd am Zug',
+      'Der Spieler am Zug wählt zwischen Wahrheit oder Pflicht',
+      'Bei Wahrheit muss eine persönliche Frage ehrlich beantwortet werden',
+      'Bei Pflicht muss eine Aufgabe erfüllt werden',
+      'Die Intensität kann am Anfang gewählt werden (zahm, mittel, wild)',
+      'Spielmodus wählbar: nur Wahrheit, nur Pflicht oder gemischt',
+      'Wer die Aufgabe verweigert, kann eine alternative Strafe bekommen',
+      'Respektvoller Umgang ist wichtig - niemand soll sich unwohl fühlen'
+    ],
+    interactive: {
+      roundBased: true,
+      hasTeams: false,
+      hasScoring: false,
+      hasTimer: false
     }
   },
 ];

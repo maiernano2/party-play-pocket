@@ -36,3 +36,9 @@ export const InteractivePantomimeRaten = lazy(() =>
     default: module.InteractivePantomimeRaten
   }))
 );
+
+export const InteractiveTruthOrDare = lazy(() => 
+  import('@/components/interactive/InteractiveTruthOrDare').then(module => ({
+    default: module.InteractiveTruthOrDare
+  }))
+);
