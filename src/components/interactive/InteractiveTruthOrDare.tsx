@@ -124,7 +124,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
         </p>
       </div>
 
-      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8">
+      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mx-4 mb-8">
         <div className="flex gap-3 mb-6">
           <Input
             ref={inputRef}
@@ -334,7 +334,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8">
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mx-4 mb-8">
           <div className="text-xl leading-relaxed">
             {currentTask}
           </div>

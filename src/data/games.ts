@@ -7,7 +7,7 @@ import drawingGameImage from '@/assets/drawing-game.webp';
 import triviaGameImage from '@/assets/trivia-game.webp';
 import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
-import truthOrDareImage from '@/assets/truth-or-dare.webp';
+import truthOrDareImage from '@/assets/truth-or-dare-new.webp';
 
 export const games: Game[] = [
   {
@@ -16,7 +16,7 @@ export const games: Game[] = [
     description: 'Interaktives Partyspiel mit Trinkregeln und überraschenden Aufgaben. Nur für Erwachsene ab 18 Jahren.',
     category: 'teamspiel',
     playerCount: '3-12 Spieler',
-    duration: '30-60 Minuten',
+    duration: '15-30 Minuten',
     image: chaosGameImage,
     rules: [
       'Nur für Personen ab 18 Jahren',
@@ -41,7 +41,7 @@ export const games: Game[] = [
     description: 'Das klassische Partyspiel mit prickelnden Wahrheitsfragen und mutigen Pflichtaufgaben.',
     category: 'teamspiel',
     playerCount: '2-12 Spieler',
-    duration: '20-45 Minuten',
+    duration: '10-20 Minuten',
     image: truthOrDareImage,
     rules: [
       'Jeder Spieler ist abwechselnd am Zug',
@@ -51,7 +51,8 @@ export const games: Game[] = [
       'Die Intensität kann am Anfang gewählt werden (zahm, mittel, wild)',
       'Spielmodus wählbar: nur Wahrheit, nur Pflicht oder gemischt',
       'Wer die Aufgabe verweigert, kann eine alternative Strafe bekommen',
-      'Respektvoller Umgang ist wichtig - niemand soll sich unwohl fühlen'
+      'Respektvoller Umgang ist wichtig - niemand soll sich unwohl fühlen',
+      'Das Spiel kann jederzeit beendet werden'
     ],
     interactive: {
       roundBased: true,
@@ -66,7 +67,7 @@ export const games: Game[] = [
     description: 'Moderator stellt Wissensfragen - Spieler antworten mündlich. Schlechteste Antwort verliert ein Leben.',
     category: 'einzelspiel',
     playerCount: '3-10 Spieler',
-    duration: '15-30 Minuten',
+    duration: '10-20 Minuten',
     image: quizGameImage,
     rules: [
       'Jeder Spieler startet mit einer einstellbaren Anzahl Leben (Standard: 3)',
@@ -89,7 +90,7 @@ export const games: Game[] = [
     description: 'Kategorie wird gezeigt - jeder muss in 3 Sekunden etwas nennen. Wer wiederholt oder zu spät ist, fliegt raus.',
     category: 'einzelspiel',
     playerCount: '3-8 Spieler',
-    duration: '10-20 Minuten',
+    duration: '5-15 Minuten',
     image: speedGameImage,
     rules: [
       'Das Handy zeigt eine zufällige Kategorie (z.B. "Tiere mit 4 Buchstaben")',
@@ -111,7 +112,7 @@ export const games: Game[] = [
     description: 'Ein Moderator stellt seinem Team schnell Fragen - möglichst viele in der Zeit beantworten.',
     category: 'teamspiel',
     playerCount: '4-12 Spieler (2-4 Teams)',
-    duration: '20-40 Minuten',
+    duration: '15-25 Minuten',
     image: teamGameImage,
     rules: [
       'Teams werden gebildet (2-4 Teams)',
@@ -135,7 +136,7 @@ export const games: Game[] = [
     description: 'Ein Teamspieler beschreibt einen Begriff, ohne bestimmte Wörter zu verwenden.',
     category: 'teamspiel',
     playerCount: '4-10 Spieler (2-3 Teams)',
-    duration: '20-30 Minuten',
+    duration: '15-25 Minuten',
     image: drawingGameImage,
     rules: [
       'Ein Spieler aus dem Team bekommt einen Begriff gezeigt',
@@ -159,7 +160,7 @@ export const games: Game[] = [
     description: 'Ein Teamspieler stellt einen Begriff pantomimisch dar, das Team rät.',
     category: 'teamspiel',
     playerCount: '4-12 Spieler (2-4 Teams)',
-    duration: '15-30 Minuten',
+    duration: '10-20 Minuten',
     image: charadesGameImage,
     rules: [
       'Das Handy zeigt einem Teamspieler einen Begriff',

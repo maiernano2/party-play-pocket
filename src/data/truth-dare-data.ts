@@ -47,12 +47,12 @@ export const dareActions: TruthDareItem[] = [
   { text: "Sprich mit einem lustigen Akzent für die nächsten 3 Runden.", intensity: "zahm" },
   
   // Mittel
-  { text: "Ruf deine Mutter an und sag ihr, dass du sie liebst.", intensity: "mittel" },
-  { text: "Schick eine peinliche Nachricht an deinen Schwarm.", intensity: "mittel" },
-  { text: "Lass jemanden 5 Minuten durch dein Handy scrollen.", intensity: "mittel" },
-  { text: "Poste ein peinliches Foto von dir in deine Story.", intensity: "mittel" },
+  { text: "Sag allen hier, was du an ihnen schätzt.", intensity: "mittel" },
+  { text: "Schick eine süße Nachricht an jemanden aus deinen Kontakten.", intensity: "mittel" },
+  { text: "Lass jemanden 30 Sekunden durch dein Handy scrollen.", intensity: "mittel" },
+  { text: "Mach ein lustiges Foto von dir und zeig es der Gruppe.", intensity: "mittel" },
   { text: "Erzähle der Gruppe dein peinlichstes Erlebnis als Rap.", intensity: "mittel" },
-  { text: "Lass dir die Augen verbinden und errotte wer dich berührt.", intensity: "mittel" },
+  { text: "Lass dir die Augen verbinden und errate wer dich berührt.", intensity: "mittel" },
   { text: "Küsse jemanden auf die Wange (Person deiner Wahl).", intensity: "mittel" },
   { text: "Trinke etwas ohne deine Hände zu benutzen.", intensity: "mittel" },
   
