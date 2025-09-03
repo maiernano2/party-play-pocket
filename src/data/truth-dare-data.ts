@@ -173,6 +173,16 @@ export const truthQuestions: TruthDareItem[] = [
   { text: "Hast du schon mal bei einem Partner gelogen, um ihn zu bekommen?", intensity: "wild" },
   { text: "Was ist das Peinlichste, was du je beim Sex erlebt hast?", intensity: "wild" },
   { text: "Welche verbotene Beziehung hattest du schon mal?", intensity: "wild" },
+  { text: "Mit wem hier würdest du am ehesten rummachen?", intensity: "wild" },
+  { text: "Was ist das Peinlichste, das dir je beim Flirten passiert ist?", intensity: "wild" },
+  { text: "Hast du schon mal an jemanden gedacht, während du mit wem anders geknutscht hast?", intensity: "wild" },
+  { text: "Welche Fantasie würdest du gerne mal ausprobieren, hast dich aber nie getraut?", intensity: "wild" },
+  { text: "Hast du einen Crush, von dem niemand hier weiß?", intensity: "wild" },
+  { text: "Was war dein schlechtester Kuss und warum?", intensity: "wild" },
+  { text: "Wer war dein letztes Stalker-Opfer auf Instagram?", intensity: "wild" },
+  { text: "Mit wem würdest du am liebsten eine Nacht verbringen (Promi oder aus der Runde)?", intensity: "wild" },
+  { text: "Hast du schon mal jemandem bewusst falsche Signale gegeben?", intensity: "wild" },
+  { text: "Wann hattest du das letzte Mal Schmetterlinge im Bauch – und wegen wem?", intensity: "wild" },
 ];
 
 export const dareActions: TruthDareItem[] = [
@@ -332,6 +342,16 @@ export const dareActions: TruthDareItem[] = [
   { text: "Mach alles, was die wildeste Person hier von dir will.", intensity: "wild" },
   { text: "Erzähle allen deine verbotenen Träume.", intensity: "wild" },
   { text: "Lass jemanden dich so berühren, wie du es magst.", intensity: "wild" },
+  { text: "Flirte für 1 Minute mit der Person links von dir.", intensity: "wild" },
+  { text: "Flüstere der Person rechts von dir etwas Versautes ins Ohr.", intensity: "wild" },
+  { text: "Sende einem Kontakt deiner Wahl ein 'Hey Fremder 😉'.", intensity: "wild" },
+  { text: "Poste ein Feuer-Emoji in den Status/Story.", intensity: "wild" },
+  { text: "Mach jemandem hier ein ernst gemeintes Kompliment – aber richtig charmant.", intensity: "wild" },
+  { text: "Lass jemanden dein Handy durchsehen (nur 30 Sekunden!).", intensity: "wild" },
+  { text: "Umarme jemanden hier so, als würdet ihr euch nach einem Jahr wiedersehen.", intensity: "wild" },
+  { text: "Spiele 'Wahrheit oder Pflicht' eine Runde lang mit nur Pflicht.", intensity: "wild" },
+  { text: "Lies die letzten drei Emojis aus deinen Chats laut vor.", intensity: "wild" },
+  { text: "Tanze 30 Sekunden lang sexy zur Musik.", intensity: "wild" },
 ];
 
 export const getRandomTruth = (intensity: 'zahm' | 'mittel' | 'wild', usedTasks: Set<string> = new Set()): string | null => {
