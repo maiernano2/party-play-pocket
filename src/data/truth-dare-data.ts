@@ -67,12 +67,14 @@ export const dareActions: TruthDareItem[] = [
   { text: "Küsse die attraktivste Person im Raum.", intensity: "wild" },
 ];
 
-export const getRandomTruth = (intensity: 'zahm' | 'mittel' | 'wild'): string => {
-  const filtered = truthQuestions.filter(q => q.intensity === intensity);
+export const getRandomTruth = (intensity: 'zahm' | 'mittel' | 'wild', usedTasks: Set<string> = new Set()): string | null => {
+  const filtered = truthQuestions.filter(q => q.intensity === intensity && !usedTasks.has(q.text));
+  if (filtered.length === 0) return null;
   return filtered[Math.floor(Math.random() * filtered.length)].text;
 };
 
-export const getRandomDare = (intensity: 'zahm' | 'mittel' | 'wild'): string => {
-  const filtered = dareActions.filter(d => d.intensity === intensity);
+export const getRandomDare = (intensity: 'zahm' | 'mittel' | 'wild', usedTasks: Set<string> = new Set()): string | null => {
+  const filtered = dareActions.filter(d => d.intensity === intensity && !usedTasks.has(d.text));
+  if (filtered.length === 0) return null;
   return filtered[Math.floor(Math.random() * filtered.length)].text;
 };

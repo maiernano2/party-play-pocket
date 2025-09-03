@@ -27,6 +27,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
   const [currentTask, setCurrentTask] = useState<string>('');
   const [currentType, setCurrentType] = useState<'truth' | 'dare'>('truth');
   const [newPlayerName, setNewPlayerName] = useState('');
+  const [usedTasks, setUsedTasks] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
 
   const startGame = () => {
     setGamePhase('playing');
+    setUsedTasks(new Set()); // Reset used tasks when starting a new game
     generateTask();
   };
 
@@ -83,12 +85,28 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
       taskType = Math.random() > 0.5 ? 'truth' : 'dare';
     }
 
-    const task = taskType === 'truth' 
-      ? getRandomTruth(intensity)
-      : getRandomDare(intensity);
+    // Get available tasks (not yet used)
+    const allTasks = taskType === 'truth' 
+      ? getRandomTruth(intensity, usedTasks)
+      : getRandomDare(intensity, usedTasks);
 
-    setCurrentTask(task);
-    setCurrentType(taskType);
+    if (allTasks) {
+      setCurrentTask(allTasks);
+      setCurrentType(taskType);
+      setUsedTasks(prev => new Set([...prev, allTasks]));
+    } else {
+      // If no more unique tasks available, reset used tasks and start over
+      setUsedTasks(new Set());
+      const resetTask = taskType === 'truth' 
+        ? getRandomTruth(intensity, new Set())
+        : getRandomDare(intensity, new Set());
+      
+      if (resetTask) {
+        setCurrentTask(resetTask);
+        setCurrentType(taskType);
+        setUsedTasks(new Set([resetTask]));
+      }
+    }
   };
 
   const nextPlayer = () => {
