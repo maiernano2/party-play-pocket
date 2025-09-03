@@ -343,6 +343,12 @@ export const GameDetail = () => {
                 sowie anpassbare Schwierigkeitsgrade für maximalen Spielspaß.
               </p>
             </div>
+            <div>
+              <h4 className="font-semibold mb-2">Kann ich das Spiel jederzeit beenden?</h4>
+              <p className="text-muted-foreground text-sm">
+                Ja, du kannst jedes Spiel jederzeit beenden oder eine Pause einlegen – die App passt sich flexibel eurer Runde an.
+              </p>
+            </div>
           </div>
         </section>
 

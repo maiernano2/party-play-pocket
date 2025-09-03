@@ -1,5 +1,5 @@
 import { Button } from './ui/button';
-import { Gamepad2, Smartphone, Users } from 'lucide-react';
+import { Gamepad2, Users } from 'lucide-react';
 import heroImage from '@/assets/hero-image.webp';
 
 interface HeroProps {
@@ -26,17 +26,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
-              <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/50 rounded-xl">
-                <div className="bg-primary p-1.5 md:p-2 rounded-lg">
-                  <Smartphone className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                </div>
-                <div>
-                  <div className="font-semibold text-xs md:text-sm">Nur Handy</div>
-                  <div className="text-xs text-muted-foreground">Kein Material nötig</div>
-                </div>
-              </div>
-              
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-6">
               <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/50 rounded-xl">
                 <div className="bg-accent p-1.5 md:p-2 rounded-lg">
                   <Users className="w-4 h-4 md:w-5 md:h-5 text-white" />

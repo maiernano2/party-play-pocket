@@ -70,43 +70,51 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
 
   const startGame = () => {
     setGamePhase('playing');
-    setUsedTasks(new Set()); // Reset used tasks when starting a new game
-    generateTask();
+    // Initialisiere Aufgabenliste und ziehe erste Aufgabe ohne Wiederholungen
+    setUsedTasks(() => {
+      const initial = new Set<string>();
+      let taskType: 'truth' | 'dare';
+      if (gameMode === 'truth') taskType = 'truth';
+      else if (gameMode === 'dare') taskType = 'dare';
+      else taskType = Math.random() > 0.5 ? 'truth' : 'dare';
+
+      const firstTask = taskType === 'truth'
+        ? getRandomTruth(intensity, initial)
+        : getRandomDare(intensity, initial);
+
+      if (firstTask) {
+        setCurrentTask(firstTask);
+        setCurrentType(taskType);
+        return new Set([firstTask]);
+      }
+      return initial;
+    });
   };
 
   const generateTask = () => {
-    let taskType: 'truth' | 'dare';
-    
-    if (gameMode === 'truth') {
-      taskType = 'truth';
-    } else if (gameMode === 'dare') {
-      taskType = 'dare';
-    } else {
-      taskType = Math.random() > 0.5 ? 'truth' : 'dare';
-    }
+    setUsedTasks((prev) => {
+      let taskType: 'truth' | 'dare';
+      if (gameMode === 'truth') taskType = 'truth';
+      else if (gameMode === 'dare') taskType = 'dare';
+      else taskType = Math.random() > 0.5 ? 'truth' : 'dare';
 
-    // Get available tasks (not yet used)
-    const allTasks = taskType === 'truth' 
-      ? getRandomTruth(intensity, usedTasks)
-      : getRandomDare(intensity, usedTasks);
+      const next = taskType === 'truth'
+        ? getRandomTruth(intensity, prev)
+        : getRandomDare(intensity, prev);
 
-    if (allTasks) {
-      setCurrentTask(allTasks);
-      setCurrentType(taskType);
-      setUsedTasks(prev => new Set([...prev, allTasks]));
-    } else {
-      // If no more unique tasks available, reset used tasks and start over
-      setUsedTasks(new Set());
-      const resetTask = taskType === 'truth' 
-        ? getRandomTruth(intensity, new Set())
-        : getRandomDare(intensity, new Set());
-      
-      if (resetTask) {
-        setCurrentTask(resetTask);
+      if (next) {
+        setCurrentTask(next);
         setCurrentType(taskType);
-        setUsedTasks(new Set([resetTask]));
+        const nextSet = new Set(prev);
+        nextSet.add(next);
+        return nextSet;
+      } else {
+        // Keine Wiederholung im laufenden Spiel: nicht zurücksetzen
+        setCurrentTask('Keine neuen Aufgaben mehr in dieser Stufe. Ändere Intensität oder Spielmodus.');
+        setCurrentType(taskType);
+        return prev;
       }
-    }
+    });
   };
 
   const nextPlayer = () => {
@@ -115,7 +123,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
   };
 
   const renderSetup = () => (
-    <div className="max-w-2xl mx-auto text-center text-white">
+    <div className="max-w-3xl mx-auto text-center text-white">
       <div className="mb-8">
         <Heart className="w-16 h-16 mx-auto mb-4 text-red-300" />
         <h2 className="text-4xl font-bold mb-4">Wahrheit oder Pflicht</h2>
@@ -181,7 +189,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
   );
 
   const renderModeSelect = () => (
-    <div className="max-w-2xl mx-auto text-center text-white">
+    <div className="max-w-3xl mx-auto text-center text-white">
       <div className="mb-8">
         <Heart className="w-16 h-16 mx-auto mb-4 text-red-300" />
         <h2 className="text-4xl font-bold mb-4">Spielmodus wählen</h2>
@@ -247,7 +255,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
   );
 
   const renderIntensitySelect = () => (
-    <div className="max-w-2xl mx-auto text-center text-white">
+    <div className="max-w-3xl mx-auto text-center text-white">
       <div className="mb-8">
         <Zap className="w-16 h-16 mx-auto mb-4 text-yellow-300" />
         <h2 className="text-4xl font-bold mb-4">Intensität wählen</h2>
@@ -316,7 +324,7 @@ export const InteractiveTruthOrDare = ({ onExit }: InteractiveTruthOrDareProps) 
     const currentPlayer = players[currentPlayerIndex];
     
     return (
-      <div className="max-w-2xl mx-auto text-center text-white">
+      <div className="max-w-3xl mx-auto text-center text-white">
         <div className="mb-8">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
             <h3 className="text-xl font-semibold mb-2">Spieler am Zug</h3>
