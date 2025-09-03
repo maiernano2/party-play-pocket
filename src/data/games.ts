@@ -7,7 +7,7 @@ import drawingGameImage from '@/assets/drawing-game.webp';
 import triviaGameImage from '@/assets/trivia-game.webp';
 import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
-import truthOrDareImage from '@/assets/truth-or-dare-new.webp';
+import truthOrDareImage from '@/assets/truth-or-dare-illustration.webp';
 
 export const games: Game[] = [
   {
