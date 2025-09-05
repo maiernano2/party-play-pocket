@@ -13,8 +13,8 @@ export const GameCard = memo(({ game }: GameCardProps) => {
   const categoryColor = game.category === 'einzelspiel' ? 'bg-accent' : 'bg-team-blue';
 
   return (
-    <Link to={`/spiel/${game.id}`} className="block">
-      <div className="game-card p-6 group cursor-pointer">
+    <Link to={`/spiel/${game.id}`} className="block h-full">
+      <div className="game-card p-6 group cursor-pointer h-full flex flex-col">
         <div className="relative mb-4 overflow-hidden rounded-xl">
           <img 
             src={game.image} 
@@ -27,24 +27,26 @@ export const GameCard = memo(({ game }: GameCardProps) => {
           </div>
         </div>
         
-        <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
-        <p className="text-muted-foreground mb-4 line-clamp-2">
-          {game.description} Spannende Unterhaltung für die ganze Gruppe.
-        </p>
-        
-        <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <Users className="w-4 h-4" />
-            <span>{game.playerCount}</span>
+        <div className="flex flex-col flex-grow">
+          <h3 className="text-xl font-semibold mb-2 text-foreground">{game.title}</h3>
+          <p className="text-muted-foreground mb-4 line-clamp-3 flex-grow">
+            {game.description} Spannende Unterhaltung für die ganze Gruppe.
+          </p>
+          
+          <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Users className="w-4 h-4" />
+              <span>{game.playerCount}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>{game.duration}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock className="w-4 h-4" />
-            <span>{game.duration}</span>
+          
+          <div className="btn-game w-full text-center py-2 px-4 rounded-lg mt-auto">
+            {game.title} spielen
           </div>
-        </div>
-        
-        <div className="btn-game w-full text-center py-2 px-4 rounded-lg">
-          {game.title} spielen
         </div>
       </div>
     </Link>
