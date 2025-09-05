@@ -153,9 +153,11 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
     }
   }, [votes]);
 
-  const handleVoteResult = useCallback((wasImposter: boolean) => {
-    const eliminatedPlayerData = players.find(p => p.id === eliminatedPlayer);
-    
+  const handleVoteResult = useCallback((eliminatedId: string) => {
+    const eliminatedPlayerData = players.find(p => p.id === eliminatedId);
+    const imposterId = players[imposterIndex]?.id;
+    const wasImposter = eliminatedId === imposterId;
+
     if (wasImposter) {
       // Crew wins this round
       setPlayers(prev => prev.map(p => ({
@@ -174,7 +176,8 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
       setGamePhase('roundEnd');
     } else {
       // Wrong person eliminated, remove them from active players
-      const remainingPlayers = players.filter(p => p.id !== eliminatedPlayer);
+      const remainingPlayers = players.filter(p => p.id !== eliminatedId);
+      const newImposterIndex = remainingPlayers.findIndex(p => p.id === imposterId);
       
       // Check if only 2 players left - imposter wins
       if (remainingPlayers.length <= 2) {
@@ -195,6 +198,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
       } else {
         // Continue game with remaining players
         setPlayers(remainingPlayers);
+        setImposterIndex(newImposterIndex);
         setGamePhase('playing');
         toast({
           title: "Spiel geht weiter",
@@ -202,7 +206,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
         });
       }
     }
-  }, [eliminatedPlayer, players, currentRound, currentWord, imposterIndex, toast]);
+  }, [players, currentRound, currentWord, imposterIndex, toast]);
 
   const handleImposterClaim = useCallback(() => {
     setGamePhase('imposterClaim');
@@ -423,7 +427,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-2">
                 {players.map((p) => (
-                  <Button key={p.id} variant="outline" onClick={() => { setEliminatedPlayer(p.id); setGamePhase('voteResult'); }}>
+                  <Button key={p.id} variant="outline" onClick={() => handleVoteResult(p.id)}>
                     {p.name}
                   </Button>
                 ))}
@@ -435,50 +439,8 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
     );
   }
 
-  if (gamePhase === 'voteResult') {
-    const eliminatedPlayerData = players.find(p => p.id === eliminatedPlayer);
-    
-    return (
-      <InteractiveGameContainer onExit={onExit} title={`Runde ${currentRound} - Voting Ergebnis`}>
-        <div className="max-w-md mx-auto space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">Voting Ergebnis</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center space-y-4">
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <p className="text-white text-lg">
-                    <strong>{eliminatedPlayerData?.name}</strong> wurde eliminiert!
-                  </p>
-                </div>
-                <p className="text-white">
-                  War das der Imposter?
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <Button 
-                  onClick={() => handleVoteResult(true)}
-                  size="lg"
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  ✓ Ja, Imposter
-                </Button>
-                <Button 
-                  onClick={() => handleVoteResult(false)}
-                  size="lg"
-                  variant="destructive"
-                >
-                  ✗ Nein, Crew
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </InteractiveGameContainer>
-    );
-  }
+  // voteResult phase removed: outcome is determined automatically after selection
+
 
   if (gamePhase === 'imposterClaim') {
     return (
