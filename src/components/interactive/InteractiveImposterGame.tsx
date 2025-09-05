@@ -255,15 +255,15 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               
               <div className="grid grid-cols-2 gap-2">
                 {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between bg-white/10 p-2 rounded">
-                    <span className="text-white">{player.name}</span>
-                    <Button size="sm" variant="ghost" onClick={() => removePlayer(player.id)}>×</Button>
+                  <div key={player.id} className="flex items-center justify-between bg-white/20 p-2 rounded text-white">
+                    <span>{player.name}</span>
+                    <Button size="sm" variant="ghost" onClick={() => removePlayer(player.id)} className="text-white hover:bg-white/20">×</Button>
                   </div>
                 ))}
               </div>
               
-              <div className="flex items-center gap-2">
-                <label className="text-white">Runden:</label>
+              <div className="flex items-center gap-2 text-white">
+                <label>Runden:</label>
                 <Input
                   type="number"
                   min="1"
@@ -308,7 +308,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               ) : (
                 <div className="space-y-4">
                   <div className="text-center p-6 bg-white/10 rounded-lg">
-                    <div className="text-xl font-bold mb-2">
+                    <div className="text-xl font-bold mb-4 text-white">
                       {currentPlayer.isImposter ? (
                         <Badge variant="destructive" className="text-lg px-4 py-2">
                           IMPOSTER
@@ -319,15 +319,16 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                         </Badge>
                       )}
                     </div>
-                    {!currentPlayer.isImposter && (
-                      <div className="text-lg text-white">
-                        Wort: <strong>{currentWord}</strong>
-                      </div>
-                    )}
+                    <div className="text-lg text-white">
+                      Wort: <strong>{currentPlayer.isImposter ? '???' : currentWord}</strong>
+                    </div>
                   </div>
                   
                   <Button onClick={nextPlayer} className="w-full" size="lg">
-                    {currentPlayerIndex < players.length - 1 ? 'Handy weitergeben' : 'Spiel starten'}
+                    {currentPlayerIndex < players.length - 1 
+                      ? `Handy an ${players[currentPlayerIndex + 1]?.name} weitergeben`
+                      : 'Spiel starten'
+                    }
                   </Button>
                 </div>
               )}
@@ -427,31 +428,76 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               <CardTitle className="text-center">Imposter Claim</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-white text-center">
-                Der Imposter behauptet, das Wort zu kennen. Gib das geratene Wort ein:
-              </p>
-              
-              <Input
-                value={imposterGuess}
-                onChange={(e) => setImposterGuess(e.target.value)}
-                placeholder="Geratenes Wort eingeben"
-                className="text-center"
-              />
+              <div className="text-center space-y-4">
+                <p className="text-white">
+                  Der Imposter behauptet, das Wort zu kennen.
+                </p>
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <p className="text-white text-lg font-bold">
+                    Wort: {currentWord}
+                  </p>
+                </div>
+                <p className="text-white">
+                  Hat der Imposter das richtige Wort genannt?
+                </p>
+              </div>
               
               <div className="grid grid-cols-2 gap-2">
                 <Button 
-                  onClick={submitImposterGuess}
-                  disabled={!imposterGuess.trim()}
+                  onClick={() => {
+                    // Imposter wins immediately if correct
+                    setPlayers(prev => prev.map(p => ({
+                      ...p,
+                      score: p.isImposter ? p.score + 5 : p.score
+                    })));
+                    
+                    setRounds(prev => [...prev, {
+                      roundNumber: currentRound,
+                      word: currentWord,
+                      imposter: players[imposterIndex].name,
+                      imposterGuess: currentWord,
+                      winner: 'imposter'
+                    }]);
+                    
+                    setGamePhase('roundEnd');
+                  }}
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700"
                 >
-                  Prüfen
+                  ✓ Richtig
                 </Button>
                 <Button 
-                  variant="outline"
-                  onClick={() => setGamePhase('playing')}
+                  onClick={() => {
+                    // Imposter loses immediately if wrong
+                    setPlayers(prev => prev.map(p => ({
+                      ...p,
+                      score: p.isImposter ? p.score : p.score + 2
+                    })));
+                    
+                    setRounds(prev => [...prev, {
+                      roundNumber: currentRound,
+                      word: currentWord,
+                      imposter: players[imposterIndex].name,
+                      imposterGuess: 'Falsches Wort',
+                      winner: 'crew'
+                    }]);
+                    
+                    setGamePhase('roundEnd');
+                  }}
+                  size="lg"
+                  variant="destructive"
                 >
-                  Abbrechen
+                  ✗ Falsch
                 </Button>
               </div>
+              
+              <Button 
+                variant="outline"
+                onClick={() => setGamePhase('playing')}
+                className="w-full"
+              >
+                Abbrechen
+              </Button>
             </CardContent>
           </Card>
         </div>
