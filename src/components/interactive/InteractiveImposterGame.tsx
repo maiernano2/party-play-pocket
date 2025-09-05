@@ -283,14 +283,14 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               
               <div className="grid grid-cols-2 gap-2">
                 {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between bg-white/20 p-2 rounded text-white">
+                  <div key={player.id} className="flex items-center justify-between bg-card/80 dark:bg-white/10 border border-border/30 p-2 rounded text-foreground dark:text-white">
                     <span>{player.name}</span>
-                    <Button size="sm" variant="ghost" onClick={() => removePlayer(player.id)} className="text-white hover:bg-white/20">×</Button>
+                    <Button size="sm" variant="ghost" onClick={() => removePlayer(player.id)} className="hover:bg-white/10">×</Button>
                   </div>
                 ))}
               </div>
               
-              <div className="flex items-center gap-2 text-white">
+              <div className="flex items-center gap-2 text-foreground">
                 <label>Runden:</label>
                 <Input
                   type="number"
@@ -336,7 +336,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               ) : (
                 <div className="space-y-4">
                   <div className="text-center p-6 bg-white/10 rounded-lg space-y-4">
-                    <div className="text-xl font-bold text-white">
+                    <div className="text-xl font-bold text-foreground">
                       {currentPlayer.isImposter ? (
                         <Badge variant="destructive" className="text-lg px-4 py-2">
                           IMPOSTER
@@ -347,10 +347,10 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-lg text-white">
-                      Wort: <strong>{currentPlayer.isImposter ? '???' : currentWord}</strong>
+                    <div className="text-lg text-foreground">
+                      Wort: <strong>{currentPlayer.isImposter ? "???" : currentWord}</strong>
                     </div>
-                    <div className="text-sm text-white/80 bg-white/10 p-3 rounded">
+                    <div className="text-sm text-muted-foreground bg-white/10 p-3 rounded">
                       {currentPlayer.isImposter ? (
                         <p><strong>Deine Aufgabe:</strong> Verhalte dich unauffällig und versuche das geheime Wort zu erraten, ohne dass die anderen merken, dass du es nicht kennst!</p>
                       ) : (
@@ -380,7 +380,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
         <div className="max-w-2xl mx-auto space-y-6">
           <Card>
             <CardContent className="space-y-6 pt-6">
-              <div className="text-center text-white space-y-4">
+              <div className="text-center text-foreground space-y-4">
                 <h2 className="text-2xl font-bold">Hinweisrunde</h2>
                 <div className="bg-white/10 p-4 rounded-lg">
                   <p className="text-lg font-semibold text-orange-300">
@@ -413,45 +413,21 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
   }
 
   if (gamePhase === 'voting') {
-    const allVoted = players.every(p => votes[p.id]);
-    
     return (
       <InteractiveGameContainer onExit={onExit} title={`Runde ${currentRound} - Voting`}>
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-md mx-auto space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-center">Wer ist der Imposter?</CardTitle>
+              <CardTitle className="text-center">Wen habt ihr eliminiert?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {players.map((voter) => (
-                  <div key={voter.id} className="space-y-2">
-                    <h3 className="font-semibold text-white">{voter.name}</h3>
-                    <div className="grid grid-cols-1 gap-1">
-                      {players.map((target) => (
-                        <Button
-                          key={target.id}
-                          variant={votes[voter.id] === target.id ? 'default' : 'outline'}
-                          size="sm"
-                          onClick={() => castVote(voter.id, target.id)}
-                          disabled={target.id === voter.id}
-                        >
-                          {target.name}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 gap-2">
+                {players.map((p) => (
+                  <Button key={p.id} variant="outline" onClick={() => { setEliminatedPlayer(p.id); setGamePhase('voteResult'); }}>
+                    {p.name}
+                  </Button>
                 ))}
               </div>
-              
-              <Button 
-                onClick={finishVoting} 
-                disabled={!allVoted}
-                className="w-full"
-                size="lg"
-              >
-                Voting beenden
-              </Button>
             </CardContent>
           </Card>
         </div>
