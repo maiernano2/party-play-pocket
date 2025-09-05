@@ -25,7 +25,7 @@ interface GameRound {
   winner: 'crew' | 'imposter' | null;
 }
 
-type GamePhase = 'setup' | 'roleReveal' | 'playing' | 'voting' | 'imposterClaim' | 'roundEnd' | 'gameEnd';
+type GamePhase = 'setup' | 'roleReveal' | 'playing' | 'voting' | 'voteResult' | 'imposterClaim' | 'roundEnd' | 'gameEnd';
 
 export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
   const { toast } = useToast();
@@ -58,6 +58,11 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
         hasSeenRole: false
       }]);
       setNewPlayerName('');
+      // Keep focus on input for next player
+      setTimeout(() => {
+        const input = document.querySelector('input[placeholder="Spielername eingeben"]') as HTMLInputElement;
+        input?.focus();
+      }, 0);
     }
   }, [newPlayerName, players.length]);
 
@@ -144,24 +149,35 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
     
     if (eliminated) {
       setEliminatedPlayer(eliminated);
-      const eliminatedPlayerData = players.find(p => p.id === eliminated);
+      setGamePhase('voteResult');
+    }
+  }, [votes]);
+
+  const handleVoteResult = useCallback((wasImposter: boolean) => {
+    const eliminatedPlayerData = players.find(p => p.id === eliminatedPlayer);
+    
+    if (wasImposter) {
+      // Crew wins this round
+      setPlayers(prev => prev.map(p => ({
+        ...p,
+        score: p.isImposter ? p.score : p.score + 2
+      })));
       
-      if (eliminatedPlayerData?.isImposter) {
-        // Crew wins
-        setPlayers(prev => prev.map(p => ({
-          ...p,
-          score: p.isImposter ? p.score : p.score + 2
-        })));
-        
-        setRounds(prev => [...prev, {
-          roundNumber: currentRound,
-          word: currentWord,
-          imposter: players[imposterIndex].name,
-          eliminated: eliminatedPlayerData.name,
-          winner: 'crew'
-        }]);
-      } else {
-        // Imposter wins (wrong person eliminated)
+      setRounds(prev => [...prev, {
+        roundNumber: currentRound,
+        word: currentWord,
+        imposter: players[imposterIndex].name,
+        eliminated: eliminatedPlayerData?.name || '',
+        winner: 'crew'
+      }]);
+      
+      setGamePhase('roundEnd');
+    } else {
+      // Wrong person eliminated, remove them from active players
+      const remainingPlayers = players.filter(p => p.id !== eliminatedPlayer);
+      
+      // Check if only 2 players left - imposter wins
+      if (remainingPlayers.length <= 2) {
         setPlayers(prev => prev.map(p => ({
           ...p,
           score: p.isImposter ? p.score + 3 : p.score
@@ -171,14 +187,22 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
           roundNumber: currentRound,
           word: currentWord,
           imposter: players[imposterIndex].name,
-          eliminated: eliminatedPlayerData.name,
+          eliminated: eliminatedPlayerData?.name || '',
           winner: 'imposter'
         }]);
+        
+        setGamePhase('roundEnd');
+      } else {
+        // Continue game with remaining players
+        setPlayers(remainingPlayers);
+        setGamePhase('playing');
+        toast({
+          title: "Spiel geht weiter",
+          description: `${eliminatedPlayerData?.name} ist ausgeschieden. Der Imposter ist noch im Spiel!`,
+        });
       }
     }
-    
-    setGamePhase('roundEnd');
-  }, [votes, players, currentRound, currentWord, imposterIndex]);
+  }, [eliminatedPlayer, players, currentRound, currentWord, imposterIndex, toast]);
 
   const handleImposterClaim = useCallback(() => {
     setGamePhase('imposterClaim');
@@ -250,6 +274,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                   onChange={(e) => setNewPlayerName(e.target.value)}
                   placeholder="Spielername eingeben"
                   onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
+                  autoFocus
                 />
                 <Button onClick={addPlayer} disabled={!newPlayerName.trim() || players.length >= 12}>
                   Hinzufügen
@@ -427,6 +452,51 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               >
                 Voting beenden
               </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </InteractiveGameContainer>
+    );
+  }
+
+  if (gamePhase === 'voteResult') {
+    const eliminatedPlayerData = players.find(p => p.id === eliminatedPlayer);
+    
+    return (
+      <InteractiveGameContainer onExit={onExit} title={`Runde ${currentRound} - Voting Ergebnis`}>
+        <div className="max-w-md mx-auto space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center">Voting Ergebnis</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-center space-y-4">
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <p className="text-white text-lg">
+                    <strong>{eliminatedPlayerData?.name}</strong> wurde eliminiert!
+                  </p>
+                </div>
+                <p className="text-white">
+                  War das der Imposter?
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  onClick={() => handleVoteResult(true)}
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  ✓ Ja, Imposter
+                </Button>
+                <Button 
+                  onClick={() => handleVoteResult(false)}
+                  size="lg"
+                  variant="destructive"
+                >
+                  ✗ Nein, Crew
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
