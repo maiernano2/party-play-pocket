@@ -8,6 +8,8 @@ import { games, getGamesByCategory } from '@/data/games';
 
 const Index = () => {
   const [activeFilter, setActiveFilter] = useState<'alle' | 'einzelspiel' | 'teamspiel'>('alle');
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   const gamesRef = useRef<HTMLElement>(null);
 
   const filteredGames = useMemo(() => getGamesByCategory(activeFilter), [activeFilter]);
@@ -153,17 +155,35 @@ const Index = () => {
               <form className="space-y-4" onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target as HTMLFormElement);
-                const subject = formData.get('subject') as string;
                 const message = formData.get('message') as string;
+                const subject = `Feedback (${rating} Sterne) - Partyspiele.app`;
                 window.location.href = `mailto:feedback@partyspiele.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
               }}>
-                <input
-                  name="subject"
-                  type="text"
-                  placeholder="Betreff"
-                  required
-                  className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Bewertung</label>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        className="text-2xl transition-colors duration-200 focus:outline-none"
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                      >
+                        <span 
+                          className={`${
+                            star <= (hoverRating || rating) 
+                              ? 'text-yellow-400' 
+                              : 'text-gray-300 dark:text-gray-600'
+                          }`}
+                        >
+                          ★
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <textarea
                   name="message"
                   placeholder="Ihre Nachricht"
@@ -171,7 +191,7 @@ const Index = () => {
                   rows={3}
                   className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
                 ></textarea>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={rating === 0}>
                   Nachricht senden
                 </Button>
               </form>
