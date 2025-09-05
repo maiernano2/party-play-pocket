@@ -13,7 +13,8 @@ import {
   InteractiveBegriffBeschreiben,
   InteractivePantomimeRaten,
   InteractiveChaosChallenge,
-  InteractiveTruthOrDare
+  InteractiveTruthOrDare,
+  InteractiveImposterGame
 } from '@/utils/dynamicImports';
 
 export const GameDetail = () => {
@@ -88,6 +89,8 @@ export const GameDetail = () => {
           return <InteractiveChaosChallenge onExit={handleExitInteractive} />;
         case 'wahrheit-oder-pflicht':
           return <InteractiveTruthOrDare onExit={handleExitInteractive} />;
+        case 'imposter-game':
+          return <InteractiveImposterGame onExit={handleExitInteractive} />;
         default:
           return (
             <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">

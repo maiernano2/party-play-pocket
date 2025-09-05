@@ -8,6 +8,7 @@ import triviaGameImage from '@/assets/trivia-game.webp';
 import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 import truthOrDareImage from '@/assets/truth-or-dare-illustration.webp';
+import imposterGameImage from '@/assets/imposter-game.webp';
 
 export const games: Game[] = [
   {
@@ -174,6 +175,29 @@ export const games: Game[] = [
     interactive: {
       hasTimer: true,
       hasTeams: true,
+      hasScoring: true,
+      roundBased: true
+    }
+  },
+  {
+    id: 'imposter-game',
+    title: 'Imposter Game',
+    description: 'Ein Spieler ist der Imposter und kennt das geheime Wort nicht. Findet heraus, wer es ist!',
+    category: 'teamspiel',
+    playerCount: '3-12 Spieler',
+    duration: '15-30 Min',
+    image: imposterGameImage,
+    rules: [
+      'Ein Wort wird ausgewählt, das alle außer dem Imposter sehen',
+      'Jeder gibt genau ein Wort als Hinweis zum geheimen Wort',
+      'Nach der Hinweisrunde wird abgestimmt, wer der Imposter ist',
+      'Der Imposter kann jederzeit das Wort erraten und sofort gewinnen',
+      'Crew gewinnt +2 Punkte pro Person wenn Imposter eliminiert wird',
+      'Imposter gewinnt +3 Punkte wenn nicht eliminiert oder +5 Punkte für korrektes Erraten'
+    ],
+    interactive: {
+      hasTimer: false,
+      hasTeams: false,
       hasScoring: true,
       roundBased: true
     }

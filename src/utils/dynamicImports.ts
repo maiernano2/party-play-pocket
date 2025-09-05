@@ -42,3 +42,9 @@ export const InteractiveTruthOrDare = lazy(() =>
     default: module.InteractiveTruthOrDare
   }))
 );
+
+export const InteractiveImposterGame = lazy(() => 
+  import('@/components/interactive/InteractiveImposterGame').then(module => ({
+    default: module.InteractiveImposterGame
+  }))
+);
