@@ -40,6 +40,7 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
   const [rounds, setRounds] = useState<GameRound[]>([]);
   const [votes, setVotes] = useState<Record<string, string>>({});
   const [imposterGuess, setImposterGuess] = useState('');
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState(0);
   const [eliminatedPlayer, setEliminatedPlayer] = useState<string | null>(null);
   const [newPlayerName, setNewPlayerName] = useState('');
 
@@ -89,9 +90,11 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
 
     usedWords.add(word);
     const randomImposterIndex = Math.floor(Math.random() * players.length);
+    const randomStartingIndex = Math.floor(Math.random() * players.length);
     
     setCurrentWord(word);
     setImposterIndex(randomImposterIndex);
+    setStartingPlayerIndex(randomStartingIndex);
     setCurrentPlayerIndex(0);
     setVotes({});
     setImposterGuess('');
@@ -307,8 +310,8 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                 </Button>
               ) : (
                 <div className="space-y-4">
-                  <div className="text-center p-6 bg-white/10 rounded-lg">
-                    <div className="text-xl font-bold mb-4 text-white">
+                  <div className="text-center p-6 bg-white/10 rounded-lg space-y-4">
+                    <div className="text-xl font-bold text-white">
                       {currentPlayer.isImposter ? (
                         <Badge variant="destructive" className="text-lg px-4 py-2">
                           IMPOSTER
@@ -321,6 +324,13 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                     </div>
                     <div className="text-lg text-white">
                       Wort: <strong>{currentPlayer.isImposter ? '???' : currentWord}</strong>
+                    </div>
+                    <div className="text-sm text-white/80 bg-white/10 p-3 rounded">
+                      {currentPlayer.isImposter ? (
+                        <p><strong>Deine Aufgabe:</strong> Verhalte dich unauffällig und versuche das geheime Wort zu erraten, ohne dass die anderen merken, dass du es nicht kennst!</p>
+                      ) : (
+                        <p><strong>Deine Aufgabe:</strong> Gib einen Hinweis zum Wort und versuche den Imposter zu entlarven, der das Wort nicht kennt!</p>
+                      )}
                     </div>
                   </div>
                   
@@ -345,12 +355,17 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
         <div className="max-w-2xl mx-auto space-y-6">
           <Card>
             <CardContent className="space-y-6 pt-6">
-              <div className="text-center text-white">
-                <h2 className="text-2xl font-bold mb-4">Hinweisrunde</h2>
-                <p className="mb-4">
+              <div className="text-center text-white space-y-4">
+                <h2 className="text-2xl font-bold">Hinweisrunde</h2>
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <p className="text-lg font-semibold text-orange-300">
+                    🎯 {players[startingPlayerIndex]?.name} beginnt!
+                  </p>
+                </div>
+                <p>
                   Jeder gibt genau EIN Wort als Hinweis. Der Imposter kennt das Wort nicht!
                 </p>
-                <p className="text-sm opacity-80 mb-6">
+                <p className="text-sm opacity-80">
                   Diskutiert danach frei und entscheidet, wann ihr voten wollt.
                 </p>
               </div>
