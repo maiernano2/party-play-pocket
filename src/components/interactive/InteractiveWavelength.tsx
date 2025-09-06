@@ -157,6 +157,14 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   return (
     <InteractiveGameContainer onExit={onExit} title="Wavelength">
       <div className="max-w-4xl mx-auto space-y-6">
+        {/* Wavelength Banner */}
+        <div className="w-full rounded-lg overflow-hidden">
+          <img 
+            src="/lovable-uploads/90203257-7dc9-4dc0-8f1d-d213cd9a8212.png" 
+            alt="Wavelength - The Party Team Game"
+            className="w-full h-auto object-cover"
+          />
+        </div>
         {/* Scoreboard */}
         <div className="grid grid-cols-2 gap-4">
           {teams.map((team, index) => (
