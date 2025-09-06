@@ -83,24 +83,8 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     
     if (difference === 0) {
       points = 3;
-      toast({
-        title: "Perfekt! 🎯",
-        description: `+${points} Punkte für ${teams[currentTeamIndex].name}`,
-        variant: "default"
-      });
     } else if (difference === 1) {
       points = 1;
-      toast({
-        title: "Nah dran! 👌",
-        description: `+${points} Punkt für ${teams[currentTeamIndex].name}`,
-        variant: "default"
-      });
-    } else {
-      toast({
-        title: "Zu weit weg 😔",
-        description: `Kein Punkt für ${teams[currentTeamIndex].name}`,
-        variant: "destructive"
-      });
     }
 
     // Update score
