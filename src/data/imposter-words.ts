@@ -2,6 +2,7 @@ export const imposterWords = [
   // Essen & Trinken
   "Pizza", "Spaghetti", "Burger", "Sushi", "Salat", "Kuchen", "Eis", "Kaffee", "Bier", "Wein",
   "Schokolade", "Nudeln", "Reis", "Brot", "Käse", "Fleisch", "Fisch", "Obst", "Gemüse", "Suppe",
+  "Früchte", "Apfel", "Flüssigkeit",
   
   // Tiere
   "Hund", "Katze", "Elefant", "Löwe", "Pinguin", "Delfin", "Adler", "Spinne", "Bär", "Wolf",
@@ -10,10 +11,12 @@ export const imposterWords = [
   // Gegenstände
   "Handy", "Auto", "Fahrrad", "Buch", "Stuhl", "Tisch", "Lampe", "Computer", "Fernseher", "Uhr",
   "Schlüssel", "Brille", "Schuhe", "Hut", "Regenschirm", "Tasche", "Kamera", "Gitarre", "Ball", "Messer",
+  "Eimer",
   
   // Orte
   "Strand", "Berg", "Wald", "Stadt", "Dorf", "Schule", "Krankenhaus", "Restaurant", "Kino", "Park",
   "Museum", "Bibliothek", "Supermarkt", "Bahnhof", "Flughafen", "Hotel", "Kirche", "Theater", "Zoo", "Café",
+  "Ozean",
   
   // Berufe
   "Arzt", "Lehrer", "Polizist", "Feuerwehrmann", "Koch", "Pilot", "Anwalt", "Ingenieur", "Künstler", "Musiker",
@@ -30,6 +33,7 @@ export const imposterWords = [
   // Natur & Wetter
   "Sonne", "Mond", "Stern", "Wolke", "Regen", "Schnee", "Wind", "Blitz", "Regenbogen", "Feuer",
   "Wasser", "Erde", "Luft", "Baum", "Blume", "Gras", "Stein", "Sand", "Eis", "Nebel",
+  "Sonnenblume", "Planet", "Baby",
 ];
 
 export const getRandomWord = (usedWords: Set<string> = new Set()): string | null => {
