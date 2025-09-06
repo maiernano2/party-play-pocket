@@ -108,11 +108,28 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     newTeams[currentTeamIndex].score += points;
     setTeams(newTeams);
 
-    // Check for game end
-    if (newTeams[currentTeamIndex].score >= 15 || round >= maxRounds) {
+    setPhase('reveal');
+  };
+
+  const nextRound = () => {
+    const nextTeamIndex = (currentTeamIndex + 1) % teams.length;
+    
+    // If we're back to team 0, increment the round
+    if (nextTeamIndex === 0) {
+      setRound(prev => prev + 1);
+    }
+    
+    setCurrentTeamIndex(nextTeamIndex);
+    
+    // Check for game end after round completion or score limit
+    const currentTeams = teams;
+    const maxScore = Math.max(...currentTeams.map(team => team.score));
+    const hasWinner = maxScore >= 15;
+    const isLastRound = round >= maxRounds && nextTeamIndex === 0;
+    
+    if (hasWinner || isLastRound) {
       setGameFinished(true);
-      const maxScore = Math.max(...newTeams.map(team => team.score));
-      const winners = newTeams.filter(team => team.score === maxScore);
+      const winners = currentTeams.filter(team => team.score === maxScore);
       
       if (winners.length > 1) {
         toast({
@@ -127,14 +144,9 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
           variant: "default"
         });
       }
+      return;
     }
-
-    setPhase('reveal');
-  };
-
-  const nextRound = () => {
-    setCurrentTeamIndex((prev) => (prev + 1) % teams.length);
-    setRound(prev => prev + 1);
+    
     generateNewRound();
   };
 
