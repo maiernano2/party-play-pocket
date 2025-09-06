@@ -19,6 +19,11 @@ interface WavelengthProps {
 
 export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   const { toast } = useToast();
+  
+  // Auto-scroll to bottom
+  useEffect(() => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  });
   const [teams, setTeams] = useState<Team[]>([
     { name: 'Team A', score: 0 },
     { name: 'Team B', score: 0 }
@@ -137,15 +142,6 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   return (
     <InteractiveGameContainer onExit={onExit} title="Wavelength">
       <div className="max-w-4xl mx-auto space-y-6">
-        {/* Wavelength Banner */}
-        <div className="w-full max-w-md mx-auto rounded-lg overflow-hidden">
-          <img 
-            src="/lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png" 
-            alt="Wavelength - The Party Team Game"
-            className="w-full h-auto object-cover"
-            loading="lazy"
-          />
-        </div>
         {/* Scoreboard */}
         <div className="grid grid-cols-2 gap-4">
           {teams.map((team, index) => (
