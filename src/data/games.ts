@@ -9,7 +9,7 @@ import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 import truthOrDareImage from '@/assets/truth-or-dare-illustration.webp';
 import imposterGameImage from '@/assets/imposter-game.webp';
-import teamCollaborationImage from '@/assets/team-collaboration.jpg';
+
 
 export const games: Game[] = [
   {
@@ -210,7 +210,7 @@ export const games: Game[] = [
     category: 'teamspiel',
     playerCount: '4-12 Spieler',
     duration: '20-40 Minuten',
-    image: teamCollaborationImage,
+    image: '/lovable-uploads/bc1a0d8e-7931-4b18-9047-ab831024ff27.png',
     rules: [
       'Es gibt Team A und Team B',
       'Beide Teams starten mit 0 Punkten',
