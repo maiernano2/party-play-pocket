@@ -158,10 +158,10 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     <InteractiveGameContainer onExit={onExit} title="Wavelength">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Wavelength Banner */}
-        <div className="w-full rounded-lg overflow-hidden">
+        <div className="w-full max-w-md mx-auto rounded-lg overflow-hidden">
           <img 
-            src="/lovable-uploads/90203257-7dc9-4dc0-8f1d-d213cd9a8212.png" 
-            alt="Wavelength - The Party Team Game"
+            src="/lovable-uploads/bc1a0d8e-7931-4b18-9047-ab831024ff27.png" 
+            alt="Wavelength - Interaktives Team-Partyspiel"
             className="w-full h-auto object-cover"
           />
         </div>
