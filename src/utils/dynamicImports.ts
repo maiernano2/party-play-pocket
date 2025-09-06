@@ -48,3 +48,9 @@ export const InteractiveImposterGame = lazy(() =>
     default: module.InteractiveImposterGame
   }))
 );
+
+export const InteractiveWavelength = lazy(() => 
+  import('@/components/interactive/InteractiveWavelength').then(module => ({
+    default: module.InteractiveWavelength
+  }))
+);

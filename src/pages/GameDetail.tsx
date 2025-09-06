@@ -14,7 +14,8 @@ import {
   InteractivePantomimeRaten,
   InteractiveChaosChallenge,
   InteractiveTruthOrDare,
-  InteractiveImposterGame
+  InteractiveImposterGame,
+  InteractiveWavelength
 } from '@/utils/dynamicImports';
 
 export const GameDetail = () => {
@@ -91,6 +92,8 @@ export const GameDetail = () => {
           return <InteractiveTruthOrDare onExit={handleExitInteractive} />;
         case 'imposter-game':
           return <InteractiveImposterGame onExit={handleExitInteractive} />;
+        case 'wavelength':
+          return <InteractiveWavelength onExit={handleExitInteractive} />;
         default:
           return (
             <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">

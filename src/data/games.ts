@@ -9,6 +9,7 @@ import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 import truthOrDareImage from '@/assets/truth-or-dare-illustration.webp';
 import imposterGameImage from '@/assets/imposter-game.webp';
+import teamCollaborationImage from '@/assets/team-collaboration.jpg';
 
 export const games: Game[] = [
   {
@@ -202,6 +203,33 @@ export const games: Game[] = [
       roundBased: true
     }
   },
+  {
+    id: 'wavelength',
+    title: 'Wavelength',
+    description: 'Interaktives Team-Partyspiel mit Skalen von 1-10. Rate die geheime Zahl anhand von Hinwörtern.',
+    category: 'teamspiel',
+    playerCount: '4-12 Spieler',
+    duration: '20-40 Minuten',
+    image: teamCollaborationImage,
+    rules: [
+      'Es gibt Team A und Team B',
+      'Beide Teams starten mit 0 Punkten',
+      'Vor jeder Runde wird eine zufällige Skala angezeigt (z.B. "lustig – langweilig")',
+      'Ein Spieler aus dem aktiven Team sieht eine geheime Zahl zwischen 1 und 10',
+      'Er denkt sich ein Wort aus, das diese Zahl auf der Skala beschreibt',
+      'Das Team berät sich und schätzt die Zahl',
+      'Punktevergabe: Genau getroffen = +3 Punkte, ±1 daneben = +1 Punkt, mehr daneben = 0 Punkte',
+      'Nach einer Runde ist das andere Team dran',
+      'Wörter dürfen nicht doppelt verwendet werden',
+      'Gewonnen hat das Team mit den meisten Punkten nach 10 Runden oder wer zuerst 15 Punkte erreicht'
+    ],
+    interactive: {
+      roundBased: true,
+      hasTimer: false,
+      hasTeams: true,
+      hasScoring: true
+    }
+  }
 ];
 
 export const getGameById = (id: string): Game | undefined => {
