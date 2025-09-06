@@ -27,11 +27,9 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   const [currentScale, setCurrentScale] = useState<string>('');
   const [secretNumber, setSecretNumber] = useState<number | null>(null);
   const [showSecretNumber, setShowSecretNumber] = useState(false);
-  const [clueWord, setClueWord] = useState('');
   const [teamGuess, setTeamGuess] = useState<number>(5);
   const [phase, setPhase] = useState<'setup' | 'clue' | 'guess' | 'reveal'>('setup');
   const [usedScales, setUsedScales] = useState<Set<string>>(new Set());
-  const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
   const [round, setRound] = useState(1);
   const [gameFinished, setGameFinished] = useState(false);
 
@@ -52,7 +50,6 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     
     setSecretNumber(Math.floor(Math.random() * 10) + 1);
     setShowSecretNumber(false);
-    setClueWord('');
     setTeamGuess(5);
     setPhase('clue');
   };
@@ -67,9 +64,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
 
   const hideSecretNumber = () => {
     setShowSecretNumber(false);
-    if (clueWord.trim()) {
-      setPhase('guess');
-    }
+    setPhase('guess');
   };
 
   const submitGuess = () => {
@@ -120,10 +115,6 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   };
 
   const nextRound = () => {
-    if (clueWord.trim()) {
-      setUsedWords(prev => new Set([...prev, clueWord.toLowerCase().trim()]));
-    }
-    
     setCurrentTeamIndex((prev) => (prev + 1) % teams.length);
     setRound(prev => prev + 1);
     generateNewRound();
@@ -137,20 +128,10 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     setCurrentTeamIndex(0);
     setRound(1);
     setUsedScales(new Set());
-    setUsedWords(new Set());
     setGameFinished(false);
     setPhase('setup');
   };
 
-  useEffect(() => {
-    if (clueWord.trim() && usedWords.has(clueWord.toLowerCase().trim())) {
-      toast({
-        title: "Wort bereits verwendet!",
-        description: "Bitte wähle ein anderes Wort.",
-        variant: "destructive"
-      });
-    }
-  }, [clueWord, usedWords, toast]);
 
   const currentTeam = teams[currentTeamIndex];
 
@@ -245,25 +226,16 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
                   <div className="text-6xl font-bold text-white mb-4">
                     {secretNumber}
                   </div>
-                  <Input
-                    placeholder="Dein Hinweiswort eingeben..."
-                    value={clueWord}
-                    onChange={(e) => setClueWord(e.target.value)}
-                    className="mb-4 bg-white/20 border-white/30 text-white placeholder:text-white/50"
-                  />
+                  <p className="text-white/80 mb-4">
+                    Denke dir ein Hinweiswort aus und sage es laut!
+                  </p>
                   <Button 
                     onClick={hideSecretNumber}
-                    disabled={!clueWord.trim() || usedWords.has(clueWord.toLowerCase().trim())}
                     className="bg-green-500 hover:bg-green-600 text-white"
                   >
                     <EyeOff className="w-4 h-4 mr-2" />
-                    Zahl verstecken & weiter
+                    Hinwort gesagt & weiter
                   </Button>
-                  {usedWords.has(clueWord.toLowerCase().trim()) && (
-                    <p className="text-red-400 text-sm mt-2">
-                      Dieses Wort wurde bereits verwendet!
-                    </p>
-                  )}
                 </div>
               )}
             </Card>
@@ -278,8 +250,8 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
               <div className="text-2xl font-bold text-center text-white mb-4">
                 {currentScale}
               </div>
-              <div className="text-3xl font-bold text-center text-blue-400 mb-4">
-                Hinwort: "{clueWord}"
+              <div className="text-xl text-center text-blue-400 mb-4">
+                Ratet die Zahl basierend auf dem Hinwort!
               </div>
             </Card>
 
@@ -326,11 +298,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
             <Card className="p-6 bg-white/10 border-white/20">
               <h2 className="text-xl font-bold text-white text-center mb-4">Auflösung</h2>
               
-              <div className="grid grid-cols-3 gap-4 text-center mb-6">
-                <div>
-                  <div className="text-white/60 text-sm">Hinwort</div>
-                  <div className="text-xl font-bold text-white">"{clueWord}"</div>
-                </div>
+              <div className="grid grid-cols-2 gap-4 text-center mb-6">
                 <div>
                   <div className="text-white/60 text-sm">Geheime Zahl</div>
                   <div className="text-3xl font-bold text-yellow-400">{secretNumber}</div>
