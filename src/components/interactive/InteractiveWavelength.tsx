@@ -160,8 +160,8 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
         {/* Wavelength Banner */}
         <div className="w-full max-w-md mx-auto rounded-lg overflow-hidden">
           <img 
-            src="/lovable-uploads/bc1a0d8e-7931-4b18-9047-ab831024ff27.png" 
-            alt="Wavelength - Interaktives Team-Partyspiel"
+            src="/lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png" 
+            alt="Wavelength - The Party Team Game"
             className="w-full h-auto object-cover"
           />
         </div>
