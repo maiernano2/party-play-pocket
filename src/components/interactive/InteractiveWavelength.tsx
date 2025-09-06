@@ -23,8 +23,8 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     { name: 'Team A', score: 0 },
     { name: 'Team B', score: 0 }
   ]);
-  const [teamAName, setTeamAName] = useState('Team A');
-  const [teamBName, setTeamBName] = useState('Team B');
+  const [teamAName, setTeamAName] = useState('');
+  const [teamBName, setTeamBName] = useState('');
   const [maxRounds, setMaxRounds] = useState(5);
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
   const [currentScale, setCurrentScale] = useState<string>('');
@@ -111,12 +111,22 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     // Check for game end
     if (newTeams[currentTeamIndex].score >= 15 || round >= maxRounds) {
       setGameFinished(true);
-      const winner = newTeams.reduce((max, team) => team.score > max.score ? team : max);
-      toast({
-        title: "Spiel beendet! 🏆",
-        description: `${winner.name} gewinnt mit ${winner.score} Punkten!`,
-        variant: "default"
-      });
+      const maxScore = Math.max(...newTeams.map(team => team.score));
+      const winners = newTeams.filter(team => team.score === maxScore);
+      
+      if (winners.length > 1) {
+        toast({
+          title: "Spiel beendet! 🤝",
+          description: `Unentschieden! Alle Teams haben ${maxScore} Punkte!`,
+          variant: "default"
+        });
+      } else {
+        toast({
+          title: "Spiel beendet! 🏆",
+          description: `${winners[0].name} gewinnt mit ${winners[0].score} Punkten!`,
+          variant: "default"
+        });
+      }
     }
 
     setPhase('reveal');
@@ -177,7 +187,13 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
           <div className="text-white/80">Runde {round} von {maxRounds}</div>
           {gameFinished && (
             <div className="text-xl font-bold text-green-400 mt-2">
-              🏆 {teams.reduce((max, team) => team.score > max.score ? team : max).name} gewinnt!
+              {(() => {
+                const maxScore = Math.max(...teams.map(team => team.score));
+                const winners = teams.filter(team => team.score === maxScore);
+                return winners.length > 1 
+                  ? `🤝 Unentschieden!`
+                  : `🏆 ${winners[0].name} gewinnt!`;
+              })()}
             </div>
           )}
         </div>
