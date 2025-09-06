@@ -34,6 +34,15 @@ export const imposterWords = [
   "Sonne", "Mond", "Stern", "Wolke", "Regen", "Schnee", "Wind", "Blitz", "Regenbogen", "Feuer",
   "Wasser", "Erde", "Luft", "Baum", "Blume", "Gras", "Stein", "Sand", "Eis", "Nebel",
   "Sonnenblume", "Planet", "Baby",
+  
+  // Spiele & Entertainment
+  "Fortnite", "Minecraft", "Pokémon", "One Piece", "Stranger Things",
+  
+  // Marken & Unternehmen
+  "Nike", "Adidas", "Gucci", "Coca-Cola", "McDonald's",
+  
+  // Personen
+  "Olaf Scholz", "Donald Trump", "Steve Jobs", "Tanzverbot",
 ];
 
 export const getRandomWord = (usedWords: Set<string> = new Set()): string | null => {
