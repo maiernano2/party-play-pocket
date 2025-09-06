@@ -129,21 +129,6 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     
     if (hasWinner || isLastRound) {
       setGameFinished(true);
-      const winners = currentTeams.filter(team => team.score === maxScore);
-      
-      if (winners.length > 1) {
-        toast({
-          title: "Spiel beendet! 🤝",
-          description: `Unentschieden! Alle Teams haben ${maxScore} Punkte!`,
-          variant: "default"
-        });
-      } else {
-        toast({
-          title: "Spiel beendet! 🏆",
-          description: `${winners[0].name} gewinnt mit ${winners[0].score} Punkten!`,
-          variant: "default"
-        });
-      }
       return;
     }
     
@@ -398,7 +383,17 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
                 size="lg"
               >
                 <Users className="w-4 h-4 mr-2" />
-                Nächste Runde ({teams[(currentTeamIndex + 1) % teams.length].name})
+                {(() => {
+                  const nextTeamIndex = (currentTeamIndex + 1) % teams.length;
+                  const isLastRound = round >= maxRounds;
+                  const isLastTeamOfLastRound = isLastRound && nextTeamIndex === 0;
+                  
+                  if (isLastTeamOfLastRound) {
+                    return "Ergebnisse anzeigen";
+                  } else {
+                    return `Nächste Runde (${teams[nextTeamIndex].name})`;
+                  }
+                })()}
               </Button>
             ) : (
               <Button 
