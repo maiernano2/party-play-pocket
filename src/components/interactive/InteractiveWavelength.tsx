@@ -163,6 +163,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
             src="/lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png" 
             alt="Wavelength - The Party Team Game"
             className="w-full h-auto object-cover"
+            loading="lazy"
           />
         </div>
         {/* Scoreboard */}

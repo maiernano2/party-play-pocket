@@ -210,7 +210,7 @@ export const games: Game[] = [
     category: 'teamspiel',
     playerCount: '4-12 Spieler',
     duration: '20-40 Minuten',
-    image: '/lovable-uploads/bc1a0d8e-7931-4b18-9047-ab831024ff27.png',
+    image: '/lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png',
     rules: [
       'Es gibt Team A und Team B',
       'Beide Teams starten mit 0 Punkten',
