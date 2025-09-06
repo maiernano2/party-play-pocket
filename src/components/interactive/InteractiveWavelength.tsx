@@ -23,6 +23,9 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     { name: 'Team A', score: 0 },
     { name: 'Team B', score: 0 }
   ]);
+  const [teamAName, setTeamAName] = useState('Team A');
+  const [teamBName, setTeamBName] = useState('Team B');
+  const [maxRounds, setMaxRounds] = useState(5);
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
   const [currentScale, setCurrentScale] = useState<string>('');
   const [secretNumber, setSecretNumber] = useState<number | null>(null);
@@ -55,6 +58,11 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
   };
 
   const startGame = () => {
+    // Update team names before starting
+    setTeams([
+      { name: teamAName || 'Team A', score: 0 },
+      { name: teamBName || 'Team B', score: 0 }
+    ]);
     generateNewRound();
   };
 
@@ -101,7 +109,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
     setTeams(newTeams);
 
     // Check for game end
-    if (newTeams[currentTeamIndex].score >= 15 || round >= 10) {
+    if (newTeams[currentTeamIndex].score >= 15 || round >= maxRounds) {
       setGameFinished(true);
       const winner = newTeams.reduce((max, team) => team.score > max.score ? team : max);
       toast({
@@ -122,8 +130,8 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
 
   const resetGame = () => {
     setTeams([
-      { name: 'Team A', score: 0 },
-      { name: 'Team B', score: 0 }
+      { name: teamAName || 'Team A', score: 0 },
+      { name: teamBName || 'Team B', score: 0 }
     ]);
     setCurrentTeamIndex(0);
     setRound(1);
@@ -166,7 +174,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
 
         {/* Round Info */}
         <div className="text-center">
-          <div className="text-white/80">Runde {round}</div>
+          <div className="text-white/80">Runde {round} von {maxRounds}</div>
           {gameFinished && (
             <div className="text-xl font-bold text-green-400 mt-2">
               🏆 {teams.reduce((max, team) => team.score > max.score ? team : max).name} gewinnt!
@@ -177,10 +185,44 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
         {/* Game Content */}
         {phase === 'setup' && (
           <Card className="p-8 text-center bg-white/10 border-white/20">
-            <h2 className="text-2xl font-bold text-white mb-4">Bereit für Wavelength?</h2>
-            <p className="text-white/80 mb-6">
+            <h2 className="text-2xl font-bold text-white mb-6">Bereit für Wavelength?</h2>
+            <p className="text-white/80 mb-8">
               Teams versuchen, geheime Zahlen anhand von Hinwörtern zu erraten.
             </p>
+            
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div>
+                <label className="block text-white/80 text-sm mb-2">Team 1 Name</label>
+                <Input
+                  value={teamAName}
+                  onChange={(e) => setTeamAName(e.target.value)}
+                  placeholder="Team A"
+                  className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                />
+              </div>
+              <div>
+                <label className="block text-white/80 text-sm mb-2">Team 2 Name</label>
+                <Input
+                  value={teamBName}
+                  onChange={(e) => setTeamBName(e.target.value)}
+                  placeholder="Team B"
+                  className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                />
+              </div>
+            </div>
+            
+            <div className="mb-8">
+              <label className="block text-white/80 text-sm mb-2">Rundenanzahl</label>
+              <Input
+                type="number"
+                min="1"
+                max="20"
+                value={maxRounds}
+                onChange={(e) => setMaxRounds(Math.max(1, parseInt(e.target.value) || 5))}
+                className="bg-white/20 border-white/30 text-white text-center w-32 mx-auto"
+              />
+            </div>
+            
             <Button onClick={startGame} size="lg" className="bg-white text-primary hover:bg-white/90">
               <Play className="w-4 h-4 mr-2" />
               Spiel starten
