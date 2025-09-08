@@ -19,11 +19,6 @@ interface AssoziationProps {
 }
 
 export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
-  // Auto-scroll to bottom on team change
-  useEffect(() => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }, []);
-
   const [teams, setTeams] = useState<Team[]>([
     { name: '', score: 0 },
     { name: '', score: 0 }
@@ -40,6 +35,15 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
   const [maxRounds, setMaxRounds] = useState([0]); // 0 = unlimited
   const [currentRound, setCurrentRound] = useState(1);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  // Auto-scroll to bottom on team change and game state
+  useEffect(() => {
+    if (phase === 'playing' || phase === 'waiting') {
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 100);
+    }
+  }, [phase, currentTeamIndex, currentTopic]);
 
   // Timer effect
   useEffect(() => {
@@ -176,7 +180,7 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
                       onClick={() => removeTeam(index)}
                       variant="outline"
                       size="sm"
-                      className="text-white border-white/30 hover:bg-white/20 shrink-0"
+                      className="text-white border-white/30 hover:bg-red-500/50 hover:border-red-400 bg-red-500/20 shrink-0 min-w-[40px]"
                     >
                       <Minus className="w-4 h-4" />
                     </Button>
@@ -197,7 +201,7 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
                     onClick={addTeam}
                     variant="outline"
                     size="sm"
-                    className="text-white border-white/30 hover:bg-white/20 shrink-0 bg-white/10 z-10"
+                    className="text-white border-white/30 hover:bg-green-500/50 hover:border-green-400 bg-green-500/20 shrink-0 min-w-[40px]"
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -379,19 +383,19 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
                 Gleiches Wort gesagt?
               </div>
               
-              <div className="flex gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
                 <Button
                   onClick={() => handleAnswer(true)}
-                  className="bg-green-500/80 hover:bg-green-500 text-white px-8 py-3 text-lg"
+                  className="bg-green-500/80 hover:bg-green-500 text-white px-4 sm:px-8 py-3 text-base sm:text-lg flex-1"
                 >
-                  <Check className="w-5 h-5 mr-2" />
+                  <Check className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Ja (+1 Punkt)
                 </Button>
                 <Button
                   onClick={() => handleAnswer(false)}
-                  className="bg-red-500/80 hover:bg-red-500 text-white px-8 py-3 text-lg"
+                  className="bg-red-500/80 hover:bg-red-500 text-white px-4 sm:px-8 py-3 text-base sm:text-lg flex-1"
                 >
-                  <X className="w-5 h-5 mr-2" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Nein
                 </Button>
               </div>
@@ -401,17 +405,14 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
           {phase === 'waiting' && (
             <>
               <div className="text-white text-lg mb-4">
-                Handy ans nächste Team weitergeben
-              </div>
-              <div className="text-white/80 text-sm mb-6">
-                Nächstes Team: {teams[(currentTeamIndex + 1) % teams.length].name}
+                Handy an {teams[(currentTeamIndex + 1) % teams.length].name} weitergeben
               </div>
               
               <Button
                 onClick={nextTeam}
-                className="bg-white/20 hover:bg-white/30 text-white px-8 py-3 text-lg"
+                className="bg-white/20 hover:bg-white/30 text-white px-6 sm:px-8 py-3 text-base sm:text-lg"
               >
-                <ArrowRight className="w-5 h-5 mr-2" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Weiter
               </Button>
             </>
