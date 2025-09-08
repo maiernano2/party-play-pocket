@@ -26,8 +26,15 @@ export const GameCard = memo(({ game }: GameCardProps) => {
             {categoryLabel}
           </div>
           {game.gameOfTheMonth && (
-            <div className="absolute -top-2 -right-2 bg-yellow-400 text-red-600 px-3 py-1 rounded-lg text-xs font-bold shadow-xl border-2 border-yellow-300 transform rotate-45 origin-center animate-pulse hover:animate-none z-10">
-              Spiel des Monats
+            <div className="absolute -top-2 -right-2 z-20">
+              <div className="relative">
+                <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-400 text-red-700 px-4 py-2 transform rotate-45 translate-x-4 translate-y-4 shadow-xl border border-yellow-300">
+                  <div className="text-xs font-black whitespace-nowrap transform -rotate-45 -translate-x-1 -translate-y-0.5">
+                    SPIEL DES<br/>MONATS
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-300 opacity-50 blur-sm transform rotate-45 translate-x-4 translate-y-4"></div>
+              </div>
             </div>
           )}
         </div>
