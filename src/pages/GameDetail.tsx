@@ -15,7 +15,8 @@ import {
   InteractiveChaosChallenge,
   InteractiveTruthOrDare,
   InteractiveImposterGame,
-  InteractiveWavelength
+  InteractiveWavelength,
+  InteractiveAssoziation
 } from '@/utils/dynamicImports';
 
 export const GameDetail = () => {
@@ -94,6 +95,8 @@ export const GameDetail = () => {
           return <InteractiveImposterGame onExit={handleExitInteractive} />;
         case 'wavelength':
           return <InteractiveWavelength onExit={handleExitInteractive} />;
+        case 'assoziation':
+          return <InteractiveAssoziation onExit={handleExitInteractive} />;
         default:
           return (
             <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">

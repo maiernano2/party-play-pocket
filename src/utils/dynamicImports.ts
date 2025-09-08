@@ -54,3 +54,9 @@ export const InteractiveWavelength = lazy(() =>
     default: module.InteractiveWavelength
   }))
 );
+
+export const InteractiveAssoziation = lazy(() => 
+  import('@/components/interactive/InteractiveAssoziation').then(module => ({
+    default: module.InteractiveAssoziation
+  }))
+);

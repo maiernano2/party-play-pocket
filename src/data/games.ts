@@ -9,6 +9,7 @@ import speedGameImage from '@/assets/speed-game.webp';
 import facialExpressionsImage from '@/assets/facial-expressions.jpg';
 import truthOrDareImage from '@/assets/truth-or-dare-illustration.webp';
 import imposterGameImage from '@/assets/imposter-game.webp';
+import assoziationGameImage from '@/assets/assoziation-game.webp';
 
 
 export const games: Game[] = [
@@ -222,6 +223,30 @@ export const games: Game[] = [
       'Nach einer Runde ist das andere Team dran',
       'Wörter dürfen nicht doppelt verwendet werden',
       'Gewonnen hat das Team mit den meisten Punkten nach 10 Runden oder wer zuerst 15 Punkte erreicht'
+    ],
+    interactive: {
+      roundBased: true,
+      hasTimer: false,
+      hasTeams: true,
+      hasScoring: true
+    }
+  },
+  {
+    id: 'assoziation',
+    title: 'Assoziation',
+    description: 'Beide Teammitglieder denken an dasselbe Wort zum Überbegriff. Gleiches Wort = 1 Punkt!',
+    category: 'teamspiel',
+    playerCount: '4-16 Spieler (2-8 Teams)',
+    duration: '15-30 Minuten',
+    image: assoziationGameImage,
+    rules: [
+      'Es wird in 2er-Teams gespielt, beliebig viele Teams können mitmachen',
+      'Das Spiel gibt einen Überbegriff vor (z.B. "Farbe", "Tier", "Land")',
+      'Beide Teammitglieder überlegen kurz und sagen gleichzeitig ein Wort',
+      'Wenn beide das gleiche Wort gesagt haben → 1 Punkt für das Team',
+      'Danach wird das Handy ans nächste Team weitergegeben',
+      'Es gibt keine feste Rundenanzahl - spielt so lange ihr wollt',
+      'Team mit den meisten Punkten gewinnt'
     ],
     interactive: {
       roundBased: true,
