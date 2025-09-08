@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -36,12 +36,15 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
   const [currentRound, setCurrentRound] = useState(1);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
-  // Auto-scroll to bottom on team change and game state
+  // Refs for team name inputs
+  const teamInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Auto-scroll to bottom on team change and game state (instant, no smooth animation)
   useEffect(() => {
     if (phase === 'playing' || phase === 'waiting') {
       setTimeout(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      }, 100);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+      }, 50);
     }
   }, [phase, currentTeamIndex, currentTopic]);
 
@@ -86,17 +89,36 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
   };
 
   const startGame = () => {
-    if (teams.every(team => team.name.trim())) {
-      const topic = getRandomTopic(usedTopics);
-      if (topic) {
-        setCurrentTopic(topic);
-        setUsedTopics(prev => new Set([...prev, topic]));
-        setPhase('playing');
-        setCurrentTeamIndex(0);
-        setCurrentRound(1);
-        if (hasTimer) {
-          setTimeLeft(timerSeconds[0]);
-        }
+    // Use default names if teams have empty names
+    const teamsWithNames = teams.map((team, index) => ({
+      ...team,
+      name: team.name.trim() || `Team ${index + 1}`
+    }));
+    setTeams(teamsWithNames);
+    
+    const topic = getRandomTopic(usedTopics);
+    if (topic) {
+      setCurrentTopic(topic);
+      setUsedTopics(prev => new Set([...prev, topic]));
+      setPhase('playing');
+      setCurrentTeamIndex(0);
+      setCurrentRound(1);
+      if (hasTimer) {
+        setTimeLeft(timerSeconds[0]);
+      }
+    }
+  };
+
+  const handleTeamNameKeyPress = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'Enter') {
+      const nextIndex = index + 1;
+      if (nextIndex < teams.length) {
+        // Focus next team input
+        teamInputRefs.current[nextIndex]?.focus();
+      } else if (teams.length < 8) {
+        // Focus the "add new team" input
+        const addTeamInput = document.querySelector('input[placeholder="Neues Team hinzufügen"]') as HTMLInputElement;
+        addTeamInput?.focus();
       }
     }
   };
@@ -170,8 +192,10 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
               {teams.map((team, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <Input
+                    ref={(el) => teamInputRefs.current[index] = el}
                     value={team.name}
                     onChange={(e) => updateTeamName(index, e.target.value)}
+                    onKeyPress={(e) => handleTeamNameKeyPress(e, index)}
                     placeholder={`Team ${index + 1}`}
                     className="bg-white/10 border-white/30 text-white placeholder:text-white/60"
                   />
@@ -258,7 +282,6 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
             
             <Button
               onClick={startGame}
-              disabled={!teams.every(team => team.name.trim())}
               className="w-full mt-6 bg-white/20 hover:bg-white/30 text-white border border-white/30"
             >
               <Play className="w-4 h-4 mr-2" />
