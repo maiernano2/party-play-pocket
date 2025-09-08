@@ -28,7 +28,26 @@ export const assoziationTopics = [
   'Haushaltsgerät',
   'Wetterlage',
   'Wissenschaftsfach',
-  'Musikalbum'
+  'Musikalbum',
+  'Verkehrsmittel',
+  'Zimmerpflanze',
+  'Küchengerät',
+  'Brettspiel',
+  'Hobby',
+  'Märchenfigur',
+  'Werkzeug',
+  'Schreibwaren',
+  'Accessoire',
+  'Fernsehsendung',
+  'Backzutat',
+  'Soziales Netzwerk',
+  'Handy-App',
+  'Gewürz',
+  'Frisur',
+  'Urlaubsaktivität',
+  'Schulutensil',
+  'Gebäude',
+  'Naturphänomen'
 ];
 
 export const getRandomTopic = (usedTopics: Set<string>): string | null => {
