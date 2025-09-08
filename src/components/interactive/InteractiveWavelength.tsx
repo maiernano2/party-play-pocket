@@ -269,7 +269,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
                     className="bg-green-500 hover:bg-green-600 text-white"
                   >
                     <EyeOff className="w-4 h-4 mr-2" />
-                    Hinwort gesagt & weiter
+                    Hinweis gesagt & weiter
                   </Button>
                 </div>
               )}
@@ -286,7 +286,7 @@ export const InteractiveWavelength = ({ onExit }: WavelengthProps) => {
                 {currentScale}
               </div>
               <div className="text-xl text-center text-blue-400 mb-4">
-                Ratet die Zahl basierend auf dem Hinwort!
+                Ratet die Zahl basierend auf dem Hinweis!
               </div>
             </Card>
 

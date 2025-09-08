@@ -7,6 +7,7 @@ export interface Game {
   duration: string;
   image: string;
   rules: string[];
+  gameOfTheMonth?: boolean;
   interactive?: {
     hasTimer?: boolean;
     hasTeams?: boolean;

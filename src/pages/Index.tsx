@@ -198,7 +198,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>© 2024 Partyspiele.app - Made with ❤️ für unvergessliche Spieleabende</p>
+            <p>Made with ❤️ für unvergessliche Spieleabende</p>
           </div>
         </div>
       </footer>
