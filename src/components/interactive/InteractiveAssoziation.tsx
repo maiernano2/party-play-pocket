@@ -39,12 +39,11 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
   // Refs for team name inputs
   const teamInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Auto-scroll to bottom on team change and game state (instant, no smooth animation)
+  // Auto-scroll to bottom on team change and game state (instant, no flash)
   useEffect(() => {
     if (phase === 'playing' || phase === 'waiting') {
-      setTimeout(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
-      }, 50);
+      // Immediate scroll without timeout to prevent flash
+      window.scrollTo(0, document.body.scrollHeight);
     }
   }, [phase, currentTeamIndex, currentTopic]);
 
@@ -146,6 +145,9 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
         return;
       }
     }
+    
+    // Scroll to bottom immediately before state changes
+    window.scrollTo(0, document.body.scrollHeight);
     
     setCurrentTeamIndex(nextIndex);
     
