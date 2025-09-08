@@ -25,18 +25,6 @@ export const GameCard = memo(({ game }: GameCardProps) => {
           <div className={`absolute top-3 left-3 ${categoryColor} text-white px-3 py-1 rounded-full text-sm font-medium`}>
             {categoryLabel}
           </div>
-          {game.gameOfTheMonth && (
-            <div className="absolute -top-2 -right-2 z-20">
-              <div className="relative">
-                <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-400 text-red-700 px-4 py-2 transform rotate-45 translate-x-4 translate-y-4 shadow-xl border border-yellow-300">
-                  <div className="text-xs font-black whitespace-nowrap transform -rotate-45 -translate-x-1 -translate-y-0.5">
-                    SPIEL DES<br/>MONATS
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-300 opacity-50 blur-sm transform rotate-45 translate-x-4 translate-y-4"></div>
-              </div>
-            </div>
-          )}
         </div>
         
         <div className="flex flex-col flex-grow">
