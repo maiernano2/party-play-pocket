@@ -58,7 +58,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 Spiele entdecken
               </Button>
               <p className="text-xs md:text-sm text-muted-foreground">
-                Imposter Game • Chaos Challenge • Wavelength • und viele mehr
+                Imposter Game • Chaos Challenge • Wavelength & viele mehr
               </p>
             </div>
           </div>
