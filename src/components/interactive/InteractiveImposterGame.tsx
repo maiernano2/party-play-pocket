@@ -623,14 +623,14 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-2">
-                <Button onClick={resetGame} className="w-full">
-                  Neues Spiel
-                </Button>
-                <Button onClick={onExit} variant="outline" className="w-full">
-                  Beenden
-                </Button>
-              </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button onClick={resetGame} variant="secondary" className="w-full">
+                    Neues Spiel
+                  </Button>
+                  <Button onClick={onExit} variant="destructive" className="w-full">
+                    Beenden
+                  </Button>
+                </div>
             </CardContent>
           </Card>
         </div>

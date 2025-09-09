@@ -307,8 +307,10 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
   }
 
   if (phase === 'gameOver') {
-    const winner = teams.reduce((prev, current) => (prev.score > current.score) ? prev : current);
     const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+    const topScore = sortedTeams[0]?.score ?? 0;
+    const topTeams = sortedTeams.filter(t => t.score === topScore);
+    const isTie = topTeams.length > 1;
     
     return (
       <InteractiveGameContainer onExit={onExit} title="Assoziation">
@@ -317,7 +319,11 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
             <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-white mb-4">Spiel beendet!</h2>
             <div className="text-2xl text-white mb-6">
-              🏆 {winner.name} gewinnt mit {winner.score} Punkten!
+              {isTie ? (
+                <>Unentschieden! {topTeams.length} Teams mit {topScore} Punkten.</>
+              ) : (
+                <>🏆 {topTeams[0].name} gewinnt mit {topScore} Punkten!</>
+              )}
             </div>
             
             <div className="space-y-3 mb-6">
@@ -333,14 +339,14 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
             <div className="flex gap-4 justify-center">
               <Button
                 onClick={resetGame}
-                className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                variant="secondary"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Neues Spiel
               </Button>
               <Button
                 onClick={onExit}
-                className="bg-red-500/80 hover:bg-red-500 text-white border border-red-400/50"
+                variant="destructive"
               >
                 Beenden
               </Button>
