@@ -63,11 +63,11 @@ const Index = () => {
           <div className="container mx-auto max-w-6xl">
             <header className="text-center mb-12 fade-in">
               <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                Kostenlose <span className="gradient-text">Partyspiele</span> für Gruppen
+                Kostenlose <span className="gradient-text">Partyspiele</span> für deine Gruppe
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Entdecke über 6 verschiedene mobile Partyspiele ohne zusätzliches Material. 
-                Perfekt für Geburtstage, Partys und gesellige Abende - nur mit dem Handy spielbar!
+                Entdecke 10 abwechslungsreiche mobile Partyspiele komplett ohne zusätzliches Material. 
+                Perfekt für deine Geburtstage, Partys und geselligen Abende - einfach mit dem Handy spielen!
               </p>
             </header>
 
@@ -137,8 +137,8 @@ const Index = () => {
             <div className="p-8 bg-card border border-border rounded-xl shadow-sm">
               <h3 className="font-bold text-lg mb-4 gradient-text">Partyspiele.app</h3>
               <p className="text-muted-foreground mb-4">
-                Die ultimative Sammlung mobiler Partyspiele für unvergessliche 
-                Momente mit Freunden und Familie. Über 6 verschiedene Spiele mit 
+                Deine ultimative Sammlung mobiler Partyspiele für unvergessliche 
+                Momente mit Freunden und Familie. 10 verschiedene Spiele mit 
                 einzigartigen Spielmechaniken für jeden Anlass.
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
@@ -150,7 +150,7 @@ const Index = () => {
             <div className="p-8 bg-card border border-border rounded-xl shadow-sm">
               <h4 className="font-semibold mb-4">Feedback & Support</h4>
               <p className="text-muted-foreground text-sm mb-4">
-                Haben Sie Verbesserungsvorschläge oder Fehler gefunden? Wir freuen uns über Ihr Feedback!
+                Hast du Verbesserungsvorschläge oder Fehler gefunden? Wir freuen uns über dein Feedback!
               </p>
               <form className="space-y-4" onSubmit={(e) => {
                 e.preventDefault();
@@ -186,7 +186,7 @@ const Index = () => {
                 </div>
                 <textarea
                   name="message"
-                  placeholder="Ihre Nachricht"
+                  placeholder="Deine Nachricht"
                   required
                   rows={3}
                   className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"

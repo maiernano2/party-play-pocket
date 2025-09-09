@@ -355,7 +355,7 @@ export const GameDetail = () => {
             <div>
               <h4 className="font-semibold mb-2">Kann ich das Spiel jederzeit beenden?</h4>
               <p className="text-muted-foreground text-sm">
-                Ja, du kannst jedes Spiel jederzeit beenden oder eine Pause einlegen – die App passt sich flexibel eurer Runde an.
+                Ja, du kannst jedes Spiel jederzeit beenden oder eine Pause einlegen – die App passt sich flexibel an deine Runde an.
               </p>
             </div>
           </div>
@@ -373,7 +373,7 @@ export const GameDetail = () => {
             {game.title} jetzt spielen
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
-            Für {game.playerCount} • {game.duration} Spielzeit • Maximaler Spaßfaktor
+            Für {game.playerCount} • {game.duration} Spielzeit • Maximaler Spaß für deine Gruppe
           </p>
         </div>
       </main>

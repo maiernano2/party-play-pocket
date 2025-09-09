@@ -20,8 +20,8 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 kostenlos & sofort spielen!
               </h2>
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
-                Über 6 verschiedene Gruppenspiele ohne zusätzliches Material. 
-                Nur das Handy als Moderator - perfekt für Partys, Geburtstage und gesellige Abende!
+                10 verschiedene Gruppenspiele ohne zusätzliches Material. 
+                Nur dein Handy als Moderator - perfekt für Partys, Geburtstage und gesellige Abende!
               </p>
             </div>
 
@@ -58,7 +58,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 Spiele entdecken
               </Button>
               <p className="text-xs md:text-sm text-muted-foreground">
-                Quiz • Chaos Challenge • Pantomime • Teamspiele & mehr
+                Quiz • Chaos Challenge • Pantomime • Wavelength & mehr
               </p>
             </div>
           </div>
