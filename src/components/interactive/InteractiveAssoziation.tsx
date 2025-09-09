@@ -340,8 +340,7 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
               </Button>
               <Button
                 onClick={onExit}
-                variant="outline"
-                className="text-white border-white/30 hover:bg-white/20"
+                className="bg-red-500/80 hover:bg-red-500 text-white border border-red-400/50"
               >
                 Beenden
               </Button>
