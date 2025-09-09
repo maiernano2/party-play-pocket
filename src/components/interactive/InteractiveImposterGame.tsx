@@ -542,21 +542,21 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-white/10 p-4 rounded-lg">
+              <div className="bg-muted/20 p-4 rounded-lg">
                 <div className="text-center space-y-2">
-                  <p className="text-white">
+                  <p className="text-foreground">
                     <strong>Wort:</strong> {currentWord}
                   </p>
-                  <p className="text-white">
+                  <p className="text-foreground">
                     <strong>Imposter:</strong> {players[imposterIndex]?.name}
                   </p>
                   {eliminatedPlayer && (
-                    <p className="text-white">
+                    <p className="text-foreground">
                       <strong>Eliminiert:</strong> {players.find(p => p.id === eliminatedPlayer)?.name}
                     </p>
                   )}
                   {lastRound?.imposterGuess && (
-                    <p className="text-white">
+                    <p className="text-foreground">
                       <strong>Imposter Guess:</strong> {lastRound.imposterGuess}
                     </p>
                   )}
@@ -564,14 +564,14 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
               </div>
               
               <div className="space-y-2">
-                <h3 className="font-semibold text-white text-center">Aktuelle Punkte</h3>
+                <h3 className="font-semibold text-foreground text-center">Aktuelle Punkte</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {players
                     .sort((a, b) => b.score - a.score)
                     .map((player) => (
-                    <div key={player.id} className="flex justify-between bg-white/10 p-2 rounded">
-                      <span className="text-white">{player.name}</span>
-                      <span className="text-white font-bold">{player.score}</span>
+                    <div key={player.id} className="flex justify-between bg-card/80 border border-border/30 p-2 rounded">
+                      <span className="text-foreground">{player.name}</span>
+                      <span className="text-foreground font-bold">{player.score}</span>
                     </div>
                   ))}
                 </div>
@@ -608,16 +608,16 @@ export const InteractiveImposterGame = ({ onExit }: { onExit: () => void }) => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <h3 className="font-semibold text-white text-center">Endstand</h3>
+                <h3 className="font-semibold text-foreground text-center">Endstand</h3>
                 <div className="space-y-2">
                   {players
                     .sort((a, b) => b.score - a.score)
                     .map((player, index) => (
-                    <div key={player.id} className="flex justify-between bg-white/10 p-3 rounded">
-                      <span className="text-white">
+                    <div key={player.id} className="flex justify-between bg-card/80 border border-border/30 p-3 rounded">
+                      <span className="text-foreground">
                         #{index + 1} {player.name}
                       </span>
-                      <span className="text-white font-bold">{player.score} Punkte</span>
+                      <span className="text-foreground font-bold">{player.score} Punkte</span>
                     </div>
                   ))}
                 </div>
