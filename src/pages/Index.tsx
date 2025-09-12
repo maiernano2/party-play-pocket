@@ -5,16 +5,19 @@ import { GameFilter } from '@/components/GameFilter';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { games, getGamesByCategory } from '@/data/games';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Index = () => {
   const [activeFilter, setActiveFilter] = useState<'alle' | 'einzelspiel' | 'teamspiel'>('alle');
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const gamesRef = useRef<HTMLElement>(null);
+  const { trackEvent } = useAnalytics();
 
   const filteredGames = useMemo(() => getGamesByCategory(activeFilter), [activeFilter]);
 
   const scrollToGames = () => {
+    trackEvent('scroll_to_games', { page_title: 'Homepage' });
     gamesRef.current?.scrollIntoView({ 
       behavior: 'smooth',
       block: 'start'
@@ -154,6 +157,7 @@ const Index = () => {
               </p>
               <form className="space-y-4" onSubmit={(e) => {
                 e.preventDefault();
+                trackEvent('feedback_submit', { rating, page_title: 'Homepage' });
                 const formData = new FormData(e.target as HTMLFormElement);
                 const message = formData.get('message') as string;
                 const subject = `Feedback (${rating} Sterne) - Partyspiele.app`;

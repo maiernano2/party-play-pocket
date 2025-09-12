@@ -31,6 +31,18 @@
     <meta name="twitter:description" content="6+ kostenlose Partyspiele für Gruppen. Nur Handy benötigt - sofort spielbereit!" />
     <meta name="twitter:image" content="https://partyspiele.app/og-image.jpg" />
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID', {
+        page_title: document.title,
+        custom_map: {'custom_parameter_1': 'game_type'}
+      });
+    </script>
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {

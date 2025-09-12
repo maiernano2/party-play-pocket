@@ -5,6 +5,7 @@ import { ArrowLeft, Users, Clock, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { Suspense } from 'react';
 import { 
   InteractiveDerDuemmsteFliegt,
@@ -24,10 +25,18 @@ export const GameDetail = () => {
   const navigate = useNavigate();
   const game = gameId ? getGameById(gameId) : null;
   const [showInteractive, setShowInteractive] = useState(false);
+  const { trackEvent } = useAnalytics();
 
   // SEO and scroll management
   useEffect(() => {
     if (game) {
+      // Track game view
+      trackEvent('game_view', { 
+        game_id: game.id, 
+        game_type: game.category,
+        page_title: `${game.title} - Details`
+      });
+
       // Dynamic SEO updates
       document.title = `${game.title} - Kostenlos online spielen | Partyspiele.app`;
       
@@ -45,7 +54,7 @@ export const GameDetail = () => {
     }
     
     window.scrollTo(0, 0);
-  }, [game, gameId]);
+  }, [game, gameId, trackEvent]);
 
   if (!game) {
     return (
@@ -64,7 +73,10 @@ export const GameDetail = () => {
   const categoryColor = game.category === 'einzelspiel' ? 'bg-accent' : 'bg-team-blue';
 
   if (showInteractive) {
-    const handleExitInteractive = () => setShowInteractive(false);
+    const handleExitInteractive = () => {
+      trackEvent('interactive_mode_exit', { game_id: game?.id });
+      setShowInteractive(false);
+    };
     
     const LoadingFallback = () => (
       <div className="min-h-screen bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -211,7 +223,14 @@ export const GameDetail = () => {
               </div>
               
               <Button 
-                onClick={() => setShowInteractive(true)}
+                onClick={() => {
+                  trackEvent('game_start', { 
+                    game_id: game.id, 
+                    game_type: game.category 
+                  });
+                  trackEvent('interactive_mode_enter', { game_id: game.id });
+                  setShowInteractive(true);
+                }}
                 className="btn-hero text-lg mb-6"
                 size="lg"
                 aria-label={`${game.title} jetzt spielen`}
@@ -364,7 +383,14 @@ export const GameDetail = () => {
         {/* Start Game CTA */}
         <div className="text-center fade-in">
           <Button 
-            onClick={() => setShowInteractive(true)}
+            onClick={() => {
+              trackEvent('game_start', { 
+                game_id: game.id, 
+                game_type: game.category 
+              });
+              trackEvent('interactive_mode_enter', { game_id: game.id });
+              setShowInteractive(true);
+            }}
             className="btn-hero text-lg"
             size="lg"
             aria-label={`${game.title} jetzt kostenlos spielen`}

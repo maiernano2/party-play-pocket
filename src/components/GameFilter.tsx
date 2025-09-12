@@ -1,4 +1,5 @@
 import { Button } from './ui/button';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 interface GameFilterProps {
   activeFilter: 'alle' | 'einzelspiel' | 'teamspiel';
@@ -6,6 +7,7 @@ interface GameFilterProps {
 }
 
 export const GameFilter = ({ activeFilter, onFilterChange }: GameFilterProps) => {
+  const { trackEvent } = useAnalytics();
   const filters = [
     { key: 'alle' as const, label: 'Alle Spiele' },
     { key: 'einzelspiel' as const, label: 'Einzelspiele' },
@@ -18,7 +20,10 @@ export const GameFilter = ({ activeFilter, onFilterChange }: GameFilterProps) =>
         <Button
           key={filter.key}
           variant={activeFilter === filter.key ? "default" : "secondary"}
-          onClick={() => onFilterChange(filter.key)}
+          onClick={() => {
+            trackEvent('filter_games', { filter_type: filter.key });
+            onFilterChange(filter.key);
+          }}
           className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
             activeFilter === filter.key 
               ? filter.key === 'einzelspiel' 
