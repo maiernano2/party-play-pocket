@@ -68,7 +68,7 @@ export const games: Game[] = [
     category: 'teamspiel',
     playerCount: '4-12 Spieler',
     duration: '15-30 Minuten',
-    image: '/lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png',
+    image: `${import.meta.env.BASE_URL}lovable-uploads/c82f115a-c63e-49d6-9d0a-6e481d7b4e66.png`,
     gameOfTheMonth: true,
     rules: [
       'Es gibt Team A und Team B',
