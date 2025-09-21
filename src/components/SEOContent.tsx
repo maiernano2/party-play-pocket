@@ -80,7 +80,7 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="space-y-4 text-center">
+               <div className="space-y-4 text-center">
                 <div className="bg-gradient-primary p-4 rounded-2xl w-fit mx-auto">
                   <Heart className="w-8 h-8 text-white" />
                 </div>
@@ -94,9 +94,9 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                 <div className="bg-gradient-game p-4 rounded-2xl w-fit mx-auto">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold">WG-Partys</h3>
+                <h3 className="text-xl font-semibold">Vortrinken & WG-Partys</h3>
                 <p className="text-muted-foreground">
-                  Bringe deine WG-Party auf das nächste Level mit interaktiven Spielen.
+                  Perfekt zum Aufwärmen vor dem Ausgehen oder für entspannte WG-Abende.
                 </p>
               </div>
 
@@ -144,8 +144,8 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                     ))}
                   </div>
                   <p className="text-muted-foreground italic">
-                    "Endlich Partyspiele wie bei Papaplatte! Das Imposter Game ist der absolute Hit 
-                    auf jeder Feier. Alle sind sofort dabei!"
+                    "Krass gut diese Spiele! Das Imposter Game läuft bei uns jetzt auf jeder Party. 
+                    Alle raffen es sofort und haben mega Bock darauf."
                   </p>
                   <p className="font-semibold">- Lisa, 24</p>
                 </CardContent>
@@ -159,10 +159,10 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                     ))}
                   </div>
                   <p className="text-muted-foreground italic">
-                    "Perfekt für unsere WG-Partys! Wavelength und Chaos Challenge sind unsere Favoriten. 
-                    Kein Material nötig - nur das Handy!"
+                    "Perfekt zum Vortrinken! Wir spielen immer Wavelength und Truth or Dare bevor wir losgehen. 
+                    Bringt richtig gute Stimmung in die Gruppe und man braucht echt nichts außer dem Handy."
                   </p>
-                  <p className="font-semibold">- Marco, 28</p>
+                  <p className="font-semibold">- Marco, 26</p>
                 </CardContent>
               </Card>
 
@@ -174,8 +174,8 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                     ))}
                   </div>
                   <p className="text-muted-foreground italic">
-                    "Als Twitch-Viewer kannte ich diese Spiele schon. Jetzt kann ich sie 
-                    endlich selbst mit Freunden spielen. Genial!"
+                    "Endlich kann ich die Games aus den Streams auch selbst spielen! 
+                    Chaos Challenge ist der absolute Wahnsinn auf Partys."
                   </p>
                   <p className="font-semibold">- Anna, 22</p>
                 </CardContent>

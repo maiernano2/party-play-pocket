@@ -21,7 +21,7 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
                 10 verschiedene Gruppenspiele ohne zusätzliches Material. Beliebte Formate aus der Gaming-Community - 
-                nur dein Handy als Moderator für perfekte Partys!
+                perfekt für Partys, gesellige Abende oder zum Aufwärmen vor dem Ausgehen!
               </p>
               <div className="flex flex-wrap gap-2 text-sm font-medium">
                 <span className="bg-primary/10 text-primary px-3 py-1 rounded-full">Community-Favoriten</span>
