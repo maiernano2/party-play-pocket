@@ -15,12 +15,12 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center space-y-6 mb-12">
               <h2 className="text-3xl md:text-4xl font-bold gradient-text">
-                Beliebte Spiele von Streamern wie Papaplatte, Eligella & Schmobin
+                Beliebte Spiele aus der Gaming-Community
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Entdecke die gleichen Partyspiele, die auch bekannte Twitch-Streamer wie Papaplatte, 
-                Eligella, Schmobin und viele andere für ihre Community-Events verwenden. 
-                Diese interaktiven Gruppenspiele sorgen garantiert für Unterhaltung!
+                Entdecke interaktive Partyspiele, die auch von bekannten Content Creators 
+                für ihre Community-Events verwendet werden. Diese bewährten Formate 
+                sorgen garantiert für Unterhaltung in deiner Gruppe!
               </p>
             </div>
 
@@ -30,9 +30,9 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                   <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto">
                     <Gamepad2 className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold">Twitch Partyspiele</h3>
+                  <h3 className="text-xl font-semibold">Community-Spiele</h3>
                   <p className="text-muted-foreground">
-                    Die gleichen Spiele, die Streamer für ihre Community nutzen - 
+                    Die gleichen Spiele, die Content Creator für ihre Community nutzen - 
                     jetzt auch für deine private Party verfügbar.
                   </p>
                 </CardContent>

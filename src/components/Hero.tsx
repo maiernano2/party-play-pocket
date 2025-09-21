@@ -17,16 +17,16 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
               <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
                 <span className="gradient-text">Mobile Partyspiele</span>
                 <br />
-                wie bei Papaplatte & Co.
+                kostenlos & sofort spielen!
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
-                Die gleichen Gruppenspiele, die auch Streamer wie Papaplatte, Eligella und Schmobin spielen! 
-                10 verschiedene Twitch-Partyspiele ohne zusätzliches Material - nur dein Handy als Moderator.
+                10 verschiedene Gruppenspiele ohne zusätzliches Material. Beliebte Formate aus der Gaming-Community - 
+                nur dein Handy als Moderator für perfekte Partys!
               </p>
               <div className="flex flex-wrap gap-2 text-sm font-medium">
-                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full">Streamer-Games</span>
-                <span className="bg-accent/10 text-accent px-3 py-1 rounded-full">Community-erprobt</span>
-                <span className="bg-team-blue/10 text-team-blue px-3 py-1 rounded-full">Twitch-Spiele</span>
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full">Community-Favoriten</span>
+                <span className="bg-accent/10 text-accent px-3 py-1 rounded-full">Sofort spielbar</span>
+                <span className="bg-team-blue/10 text-team-blue px-3 py-1 rounded-full">Keine Vorbereitung</span>
               </div>
             </div>
 
