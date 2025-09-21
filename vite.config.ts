@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: process.env.GITHUB_ACTIONS ? '/partyspiele/' : '/',
+  base: '/', // Always use root for Lovable direct domain hosting
   server: {
     host: "::",
     port: 8080,
