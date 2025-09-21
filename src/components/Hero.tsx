@@ -14,15 +14,20 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
           {/* Content */}
           <div className="space-y-4 md:space-y-8 fade-in">
             <div className="space-y-3 md:space-y-4">
-              <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
                 <span className="gradient-text">Mobile Partyspiele</span>
                 <br />
-                kostenlos & sofort spielen!
-              </h2>
+                wie bei Papaplatte & Co.
+              </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
-                10 verschiedene Gruppenspiele ohne zusätzliches Material. 
-                Nur dein Handy als Moderator - perfekt für Partys, Geburtstage und gesellige Abende!
+                Die gleichen Gruppenspiele, die auch Streamer wie Papaplatte, Eligella und Schmobin spielen! 
+                10 verschiedene Twitch-Partyspiele ohne zusätzliches Material - nur dein Handy als Moderator.
               </p>
+              <div className="flex flex-wrap gap-2 text-sm font-medium">
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full">Streamer-Games</span>
+                <span className="bg-accent/10 text-accent px-3 py-1 rounded-full">Community-erprobt</span>
+                <span className="bg-team-blue/10 text-team-blue px-3 py-1 rounded-full">Twitch-Spiele</span>
+              </div>
             </div>
 
             {/* Features */}
@@ -58,7 +63,10 @@ export const Hero = ({ onDiscoverGames }: HeroProps) => {
                 Spiele entdecken
               </Button>
               <p className="text-xs md:text-sm text-muted-foreground">
-                Imposter Game • Chaos Challenge • Wavelength & viele mehr
+                Beliebte Spiele: Imposter Game • Wavelength • Chaos Challenge • Truth or Dare
+              </p>
+              <p className="text-xs text-muted-foreground/80">
+                ⭐ Von Streamern gespielt ⭐ Community-Favoriten ⭐ Millionenfach erprobt
               </p>
             </div>
           </div>

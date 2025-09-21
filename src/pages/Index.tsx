@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { games, getGamesByCategory } from '@/data/games';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { SEOContent } from '@/components/SEOContent';
+import { Smartphone, Users, Clock, Heart } from 'lucide-react';
 
 const Index = () => {
   const [activeFilter, setActiveFilter] = useState<'alle' | 'einzelspiel' | 'teamspiel'>('alle');
@@ -103,34 +105,56 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section className="py-16 px-4 bg-background">
-          <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-8">
-              Warum unsere <span className="gradient-text">mobilen Partyspiele</span>?
+      {/* SEO Content with Streamer Keywords */}
+      <SEOContent page="home" />
+
+      {/* Benefits Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-secondary/20 to-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center space-y-6 mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Mobile Partyspiele - die Vorteile
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">🎯 Perfekt für jede Party</h3>
-                <p className="text-muted-foreground">
-                  Von Geburtstagen bis Silvester - unsere Spiele bringen garantiert Stimmung in jede Runde!
-                </p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Warum unsere Handy-Partyspiele die perfekte Wahl für deine nächste Feier sind
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center space-y-4">
+              <div className="bg-primary/10 p-4 rounded-2xl w-fit mx-auto">
+                <Smartphone className="w-8 h-8 text-primary" />
               </div>
-              <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">📱 Handy als Spielleiter</h3>
-                <p className="text-muted-foreground">
-                  Das Smartphone übernimmt die Moderation - alle können entspannt mitspielen.
-                </p>
+              <h3 className="text-xl font-semibold">Nur Handy nötig</h3>
+              <p className="text-muted-foreground">Ein Smartphone reicht - kein zusätzliches Material oder Apps zum Download</p>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <div className="bg-accent/10 p-4 rounded-2xl w-fit mx-auto">
+                <Users className="w-8 h-8 text-accent" />
               </div>
-              <div className="bg-card p-6 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">👥 Verschiedene Spielmodi</h3>
-                <p className="text-muted-foreground">
-                  Einzelwettkämpfe oder Teamspiele - für jeden Geschmack das richtige Format.
-                </p>
+              <h3 className="text-xl font-semibold">Große Gruppen</h3>
+              <p className="text-muted-foreground">Spiele für 3-16 Personen - perfekt für jede Gruppengröße</p>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <div className="bg-team-blue/10 p-4 rounded-2xl w-fit mx-auto">
+                <Clock className="w-8 h-8 text-team-blue" />
               </div>
+              <h3 className="text-xl font-semibold">Sofort spielbar</h3>
+              <p className="text-muted-foreground">Keine Vorbereitung oder Aufbau - direkt losspielen</p>
+            </div>
+            
+            <div className="text-center space-y-4">
+              <div className="bg-team-green/10 p-4 rounded-2xl w-fit mx-auto">
+                <Heart className="w-8 h-8 text-team-green" />
+              </div>
+              <h3 className="text-xl font-semibold">Kostenlos</h3>
+              <p className="text-muted-foreground">Alle Spiele komplett gratis - keine versteckten Kosten</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
       </main>
 
       {/* Footer */}

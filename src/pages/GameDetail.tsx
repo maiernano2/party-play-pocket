@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { SEOContent } from '@/components/SEOContent';
 import { Suspense } from 'react';
 import { 
   InteractiveDerDuemmsteFliegt,
@@ -37,15 +38,59 @@ export const GameDetail = () => {
         page_title: `${game.title} - Details`
       });
 
-      // Dynamic SEO updates
-      document.title = `${game.title} - Kostenlos online spielen | Partyspiele.app`;
+      // Keyword-rich SEO updates for each game
+      const keywordTitles = {
+        'imposter-game': `Imposter Game wie bei Papaplatte - Das beliebte Streamer Partyspiel`,
+        'wavelength': `Wavelength Spiel wie bei Eligella - Interaktives Team-Partyspiel`,
+        'chaos-challenge': `Chaos Challenge wie bei Schmobin - Verrücktes Twitch Partyspiel`,
+        'wahrheit-oder-pflicht': `Truth or Dare - Wahrheit oder Pflicht Partyspiel online`,
+        'der-duemmste-fliegt': `Der Dümmste fliegt - Quiz Partyspiel für Gruppen`,
+        'assoziation': `Assoziation Teamspiel - Gedanken lesen wie die Profis`,
+        'schnellantwort': `Schnellantwort Spiel - Reaktionsspiel für Partys`,
+        'team-quiz': `Team Quiz - Interaktives Wissensduell für Gruppen`,
+        'begriff-beschreiben': `Begriff Beschreiben - Das klassische Wortspiel digital`,
+        'pantomime-raten': `Pantomime Raten - Scharade Spiel für mobile Partys`
+      };
+
+      const seoTitle = keywordTitles[game.id as keyof typeof keywordTitles] || 
+        `${game.title} - Mobile Partyspiel für ${game.playerCount}`;
+      
+      document.title = `${seoTitle} | Partyspiele.app`;
       
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
-        metaDescription.setAttribute('content', 
-          `${game.title}: ${game.description} ✓ ${game.playerCount} ✓ ${game.duration} ✓ Kostenlos ohne Material spielbar`
-        );
+        const keywordDescriptions = {
+          'imposter-game': `Spiele Imposter Game wie Papaplatte! Das beliebte Twitch-Partyspiel für ${game.playerCount}. Findet den Imposter in eurer Runde - spannend und kostenlos.`,
+          'wavelength': `Wavelength wie bei Eligella spielen! Interaktives Team-Partyspiel für ${game.playerCount}. Rate die geheime Zahl anhand von Hinweisen - community-erprobt.`,
+          'chaos-challenge': `Chaos Challenge wie bei Schmobin! Verrücktes Twitch-Partyspiel mit Trinkregeln für ${game.playerCount}. Nur für Erwachsene ab 18 Jahren.`,
+          'wahrheit-oder-pflicht': `Truth or Dare online spielen! Das klassische Wahrheit oder Pflicht Partyspiel für ${game.playerCount}. Verschiedene Intensitätsstufen verfügbar.`
+        };
+        
+        const seoDescription = keywordDescriptions[game.id as keyof typeof keywordDescriptions] || 
+          `${game.title}: ${game.description} ✓ ${game.playerCount} ✓ ${game.duration} ✓ Streamer-approved ✓ Kostenlos ohne Material spielbar`;
+        
+        metaDescription.setAttribute('content', seoDescription);
       }
+
+      // Add keywords meta tag for each game
+      const keywordsMap = {
+        'imposter-game': 'imposter game papaplatte, streamer spiele, twitch partyspiele, imposter spiel deutsch, partyspiele online, spielee',
+        'wavelength': 'wavelength eligella, team partyspiele, skalen spiel, gruppenspiele online, wavelength deutsch, spielee',
+        'chaos-challenge': 'chaos challenge schmobin, trinkspiele, party challenge, twitch games, erwachsenen spiele, spielee',
+        'wahrheit-oder-pflicht': 'truth or dare, wahrheit oder pflicht online, partyspiele erwachsene, wahrheitsspiel, spielee'
+      };
+
+      let keywordsMeta = document.querySelector('meta[name="keywords"]');
+      if (!keywordsMeta) {
+        keywordsMeta = document.createElement('meta');
+        keywordsMeta.setAttribute('name', 'keywords');
+        document.head.appendChild(keywordsMeta);
+      }
+      
+      const gameKeywords = keywordsMap[game.id as keyof typeof keywordsMap] || 
+        `${game.title.toLowerCase()}, partyspiele, gruppenspiele, mobile spiele, spielee`;
+      
+      keywordsMeta.setAttribute('content', gameKeywords);
 
       const canonicalLink = document.querySelector('link[rel="canonical"]');
       if (canonicalLink) {
@@ -301,34 +346,37 @@ export const GameDetail = () => {
           </section>
         )}
 
+        {/* Streamer Content Section */}
+        <SEOContent page="game" gameTitle={game.title} />
+
         {/* Benefits Section */}
         <section className="fade-in bg-muted/30 rounded-2xl p-8 mb-8">
           <h3 className="text-xl font-bold mb-4">
-            Warum {game.title} das perfekte Partyspiel ist
+            Warum {game.title} bei Streamern und Partys so beliebt ist
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-2">🎮 Innovative Spielmechanik</h4>
+              <h4 className="font-semibold mb-2">🎮 Streamer-approved</h4>
               <p className="text-muted-foreground text-sm">
-                Durchdachte Regeln und spannende Wendungen sorgen für maximalen Spielspaß.
+                Dieses Format wird von Content Creators verwendet und ist millionenfach erprobt.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">⚡ Dynamische Spielverläufe</h4>
+              <h4 className="font-semibold mb-2">⚡ Community-Favorit</h4>
               <p className="text-muted-foreground text-sm">
-                Jede Runde bringt neue Überraschungen und unvorhersehbare Momente.
+                Beliebtes Partyspiel in der Gaming-Community und bei Twitch-Zuschauern.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">🏆 Faire Wettkämpfe</h4>
+              <h4 className="font-semibold mb-2">🏆 Interaktiv & spannend</h4>
               <p className="text-muted-foreground text-sm">
-                Ausgewogene Spielbalance gibt allen Teilnehmern echte Gewinnchancen.
+                Packende Spielmechanik, die alle Teilnehmer bis zum Ende fesselt.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">🎭 Verschiedene Kategorien</h4>
+              <h4 className="font-semibold mb-2">🎭 Für jeden geeignet</h4>
               <p className="text-muted-foreground text-sm">
-                Vielfältige Themen und Aufgaben halten das Spiel immer interessant.
+                Perfekt für WG-Partys, Geburtstage, Familientreffen oder Stream-Events.
               </p>
             </div>
           </div>
