@@ -23,8 +23,8 @@ export const useThemeProvider = () => {
     const stored = localStorage.getItem('theme');
     if (stored) return stored as Theme;
     
-    // Auto-detect system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to light mode
+    return 'light';
   });
 
   useEffect(() => {
