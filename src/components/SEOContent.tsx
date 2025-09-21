@@ -106,7 +106,7 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                 </div>
                 <h3 className="text-xl font-semibold">Vortrinken</h3>
                 <p className="text-muted-foreground">
-                  Perfekte Spiele zum Aufwärmen vor dem Ausgehen und für eine lockere Stimmung.
+                  Perfekte Spiele zum Vorglühen vor dem Ausgehen und für eine lockere Stimmung.
                 </p>
               </div>
 
