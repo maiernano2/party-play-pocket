@@ -26,6 +26,7 @@ type AnalyticsEventType =
   | 'game_resume'
   | 'score_achieved'
   | 'feedback_submit'
+  | 'beta_signup'
   | 'theme_toggle'
   | 'engagement_time';
 
@@ -71,6 +72,7 @@ export const useAnalytics = () => {
           'game_resume': 'resume',
           'score_achieved': 'earn_virtual_currency',
           'feedback_submit': 'generate_lead',
+          'beta_signup': 'sign_up',
           'theme_toggle': 'select_content',
           'engagement_time': 'user_engagement'
         };

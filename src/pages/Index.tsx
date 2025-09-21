@@ -157,6 +157,49 @@ const Index = () => {
       </section>
       </main>
 
+      {/* Beta Access Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-primary/5 to-accent/5 border-t">
+        <div className="container mx-auto max-w-2xl text-center">
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                Früher Zugang zur <span className="gradient-text">Partyspiele-App</span>
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Sei einer der Ersten, die unsere neue mobile App testen können. 
+                Exklusive Features, Offline-Modus und noch mehr Spiele!
+              </p>
+            </div>
+            
+            <form 
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target as HTMLFormElement);
+                const email = formData.get('email') as string;
+                trackEvent('beta_signup', { email, page_title: 'Homepage' });
+                window.location.href = `mailto:beta@partyspiele.app?subject=Beta-Zugang angefordert&body=Hallo! Ich möchte gerne frühen Zugang zur Partyspiele-App. Meine E-Mail: ${email}`;
+              }}
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="deine@email.de"
+                required
+                className="flex-1 px-4 py-3 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              />
+              <Button type="submit" className="px-6 py-3 whitespace-nowrap">
+                Beta-Zugang sichern
+              </Button>
+            </form>
+            
+            <p className="text-sm text-muted-foreground">
+              🚀 Kostenlos • 📱 Früher Zugang • ✨ Exklusive Features
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-card border-t py-12 px-4">
         <div className="container mx-auto max-w-4xl">
