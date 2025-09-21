@@ -104,9 +104,9 @@ export const SEOContent = ({ page = 'home', gameTitle }: SEOContentProps) => {
                 <div className="bg-gradient-team p-4 rounded-2xl w-fit mx-auto">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold">Familientreffen</h3>
+                <h3 className="text-xl font-semibold">Vortrinken</h3>
                 <p className="text-muted-foreground">
-                  Verbinde Generationen mit Spielen, die Jung und Alt Spaß machen.
+                  Perfekte Spiele zum Aufwärmen vor dem Ausgehen und für eine lockere Stimmung.
                 </p>
               </div>
 
