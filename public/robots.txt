@@ -1,8 +1,10 @@
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 2
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +14,11 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 5
+
+# Sitemap
+Sitemap: https://partyspiele.app/sitemap.xml
+
+# Disallow certain paths (none currently)
+# Disallow: /admin/
+# Disallow: /private/
