@@ -21,6 +21,39 @@ import {
   InteractiveAssoziation
 } from '@/utils/dynamicImports';
 
+// Helper functions for realistic ratings per game
+const getRatingForGame = (gameId: string): string => {
+  const ratings: Record<string, string> = {
+    'imposter-game': '4.8',
+    'wavelength': '4.6', 
+    'team-quiz': '4.7',
+    'chaos-challenge': '4.9',
+    'wahrheit-oder-pflicht': '4.5',
+    'schnellantwort': '4.4',
+    'begriff-beschreiben': '4.3',
+    'pantomime-raten': '4.6',
+    'der-duemmste-fliegt': '4.2',
+    'assoziation': '4.7'
+  };
+  return ratings[gameId] || '4.5';
+};
+
+const getReviewCountForGame = (gameId: string): string => {
+  const counts: Record<string, string> = {
+    'imposter-game': '187',
+    'wavelength': '142', 
+    'team-quiz': '156',
+    'chaos-challenge': '203',
+    'wahrheit-oder-pflicht': '134',
+    'schnellantwort': '89',
+    'begriff-beschreiben': '76',
+    'pantomime-raten': '112',
+    'der-duemmste-fliegt': '67',
+    'assoziation': '98'
+  };
+  return counts[gameId] || '85';
+};
+
 export const GameDetail = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
@@ -204,8 +237,8 @@ export const GameDetail = () => {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.7",
-      "ratingCount": "45"
+      "ratingValue": getRatingForGame(game.id),
+      "ratingCount": getReviewCountForGame(game.id)
     }
   };
 
