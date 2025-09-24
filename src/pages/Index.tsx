@@ -270,6 +270,11 @@ const Index = () => {
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
             <p>Made with ❤️ in Mainz</p>
+            <p className="text-xs mt-2">
+              <a href="https://www.flaticon.com/free-icons/wine" title="wine icons" className="hover:text-foreground transition-colors">
+                Wine icons created by Freepik - Flaticon
+              </a>
+            </p>
           </div>
         </div>
       </footer>
