@@ -14,6 +14,29 @@ import assoziationGameImage from '@/assets/assoziation-game.webp';
 
 export const games: Game[] = [
   {
+    id: 'der-duemmste-fliegt',
+    title: 'Der Dümmste fliegt',
+    description: 'Moderator stellt Wissensfragen - Spieler antworten mündlich. Schlechteste Antwort verliert ein Leben.',
+    category: 'einzelspiel',
+    playerCount: '3-10 Spieler',
+    duration: '8-15 Minuten',
+    image: quizGameImage,
+    rules: [
+      'Jeder Spieler startet mit einer einstellbaren Anzahl Leben (Standard: 3)',
+      'Das Handy stellt Wissensfragen in einstellbaren Runden',
+      'Alle Spieler schreiben ihre Antworten auf',
+      'Am Ende jeder Runde wird die dümmste/falscheste Antwort gewählt',
+      'Der Spieler mit der dümmsten Antwort verliert ein Leben',
+      'Wer alle Leben verliert, scheidet aus',
+      'Letzter Überlebender gewinnt'
+    ],
+    interactive: {
+      hasTimer: true,
+      hasScoring: true,
+      roundBased: true
+    }
+  },
+  {
     id: 'imposter-game',
     title: 'Imposter Game',
     description: 'Ein Spieler ist der Imposter und kennt das geheime Wort nicht. Findet heraus, wer es ist!',
@@ -87,29 +110,6 @@ export const games: Game[] = [
       hasTimer: false,
       hasTeams: true,
       hasScoring: true
-    }
-  },
-  {
-    id: 'der-duemmste-fliegt',
-    title: 'Der Dümmste fliegt',
-    description: 'Moderator stellt Wissensfragen - Spieler antworten mündlich. Schlechteste Antwort verliert ein Leben.',
-    category: 'einzelspiel',
-    playerCount: '3-10 Spieler',
-    duration: '8-15 Minuten',
-    image: quizGameImage,
-    rules: [
-      'Jeder Spieler startet mit einer einstellbaren Anzahl Leben (Standard: 3)',
-      'Das Handy stellt Wissensfragen in einstellbaren Runden',
-      'Alle Spieler schreiben ihre Antworten auf',
-      'Am Ende jeder Runde wird die dümmste/falscheste Antwort gewählt',
-      'Der Spieler mit der dümmsten Antwort verliert ein Leben',
-      'Wer alle Leben verliert, scheidet aus',
-      'Letzter Überlebender gewinnt'
-    ],
-    interactive: {
-      hasTimer: true,
-      hasScoring: true,
-      roundBased: true
     }
   },
   {
