@@ -1,0 +1,22 @@
+# Partyspiele.app
+
+> Kostenlose mobile Partyspiele für Gruppen von 3-12 Personen — sofort spielbar im Browser, ohne Material oder App-Download.
+
+Partyspiele.app ist eine Sammlung von 10 interaktiven Partyspielen im Stil bekannter Twitch-Streamer wie Papaplatte, Eligella und Schmobin. Jedes Spiel bringt eigene Mechaniken (Timer, Punktesystem, Fragengenerierung) mit und lässt sich direkt auf dem Handy starten — perfekt zum Vorglühen, für Geburtstage und gesellige Abende.
+
+## Pages
+
+- [Startseite](/): Übersicht aller Partyspiele mit Filtern für Einzel- und Teamspiele.
+
+## Spiele
+
+- [Der Dümmste fliegt](/spiel/der-duemmste-fliegt): Quizspiel mit Eliminierungsrunden.
+- [Imposter Game](/spiel/imposter-game): Finde den Hochstapler in der Gruppe.
+- [Wavelength](/spiel/wavelength): Errate die Position auf einer Skala.
+- [Team Quiz](/spiel/team-quiz): Klassisches Quiz für zwei Teams.
+- [Chaos Challenge](/spiel/chaos-challenge): Verrückte Aufgaben mit Zufallsregeln.
+- [Truth or Dare](/spiel/truth-or-dare): Wahrheit oder Pflicht für Erwachsene.
+- [Schnellantwort](/spiel/schnellantwort): Antworte unter Zeitdruck.
+- [Begriff beschreiben](/spiel/begriff-beschreiben): Tabu-ähnliches Erklärspiel.
+- [Pantomime raten](/spiel/pantomime-raten): Begriffe ohne Worte darstellen.
+- [Assoziation](/spiel/assoziation): Schnelle Wortassoziationen im Team.
