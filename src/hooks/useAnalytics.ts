@@ -107,7 +107,7 @@ export const useAnalytics = () => {
         window.gtag('event', gaEventName, gaParams);
         
         // Console log for development
-        if (process.env.NODE_ENV === 'development') {
+        if (import.meta.env.DEV) {
           console.log('Analytics Event:', eventType, gaParams);
         }
       } catch (error) {

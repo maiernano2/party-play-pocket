@@ -49,7 +49,7 @@ export const InteractiveAssoziation = ({ onExit }: AssoziationProps) => {
 
   // Timer effect
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (hasTimer && timeLeft !== null && timeLeft > 0 && phase === 'playing') {
       interval = setInterval(() => {
         setTimeLeft(prev => {
